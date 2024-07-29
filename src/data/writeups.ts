@@ -199,5 +199,22 @@ ncat --ssl push-and-pickle.chal.uiuc.tf 1337`,
       }
     ],
     sourceUrl: ''
+  },
+  'hi-doggy': {
+    title: 'Hi Doggy',
+    subtitle: 'Author: devesh',
+    description: `I figured out the best defence against SSTI, just remove the stuff that can execute code from the template! I even used a whitelist like the pros tell you to do!
+
+http://challs.nusgreyhats.org:33433/`,
+    cats: ['web'],
+    numSolves: 4,
+    numPoints: 968,
+    attachments: [
+      {
+        name: 'dist-hi-doggy.zip',
+        url: 'https://ctfd.nusgreyhats.org/files/2ff82bee8684e96e347fe9de0a744dd2/dist-hi-doggy.zip?token=eyJ1c2VyX2lkIjozNSwidGVhbV9pZCI6MTEsImZpbGVfaWQiOjM3fQ.Zqcayw.wKbYG8wRwpZ2VZUC7TkEESrBueo'
+      }
+    ],
+    sourceUrl: ''
   }
 }

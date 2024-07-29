@@ -7,11 +7,11 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/writeups/push-and-pickle' // latest writeup
+      redirect: '/writeups/hi-doggy' // latest writeup
     },
     {
       path: '/writeups',
-      redirect: '/writeups/push-and-pickle' // latest writeup
+      redirect: '/writeups/hi-doggy' // latest writeup
     },
     {
       path: '/writeups/:slug',

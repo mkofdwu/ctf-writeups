@@ -3,6 +3,15 @@ const { fullWidth } = defineProps<{ fullWidth?: boolean }>()
 
 const ctfs = [
   {
+    name: 'Greyhats 2024',
+    chals: [
+      {
+        name: 'Hi Doggy',
+        slug: 'hi-doggy'
+      }
+    ]
+  },
+  {
     name: 'UIUCTF 2024',
     chals: [
       {

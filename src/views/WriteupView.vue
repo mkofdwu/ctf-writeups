@@ -14,6 +14,7 @@ import theChosenOnes from '@/assets/writeups/tisc23/the-chosen-ones.md?raw'
 import devSecMeow from '@/assets/writeups/tisc23/devsecmeow.md?raw'
 import blindSqlInjection from '@/assets/writeups/tisc23/blind-sql-injection.md?raw'
 import pushAndPickle from '@/assets/writeups/push-and-pickle.md?raw'
+import hiDoggy from '@/assets/writeups/hi-doggy.md?raw'
 import ChalInfoCard from '@/components/ChalInfoCard.vue'
 import { chals } from '@/data/writeups'
 
@@ -27,7 +28,8 @@ const writeups: { [slug: string]: { md: string; datePosted: string } } = {
   'the-chosen-ones': { md: theChosenOnes, datePosted: '3 Oct 2023' },
   devsecmeow: { md: devSecMeow, datePosted: '3 Oct 2023' },
   'blind-sql-injection': { md: blindSqlInjection, datePosted: '3 Oct 2023' },
-  'push-and-pickle': { md: pushAndPickle, datePosted: '7 Jul 2024' }
+  'push-and-pickle': { md: pushAndPickle, datePosted: '7 Jul 2024' },
+  'hi-doggy': { md: hiDoggy, datePosted: '29 Jul 2024' }
 }
 
 const { slug } = useRoute().params
@@ -79,17 +81,21 @@ nextTick(() => {
   margin-bottom: 1rem;
 }
 
+#article :deep(code) {
+  font-size: 0.875rem;
+  padding: 2px 4px 2px 4px;
+  border-radius: 4px;
+  background-color: #ddd;
+}
+
 #article :deep(pre > code) {
   padding: 1.75rem;
   border-radius: 1.25rem;
+  background-color: #222;
 }
 
 #article :deep(pre.named-fence-block > code) {
   padding-top: 4rem;
-}
-
-#article :deep(code) {
-  font-size: 0.875rem;
 }
 
 #article :deep(.named-fence-block) {
