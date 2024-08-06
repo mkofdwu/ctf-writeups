@@ -3,11 +3,8 @@ module.exports = {
   content: ['./src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ['DM Sans', 'sans-serif']
-      },
       colors: {
-        primary: '#478C3C'
+        primary: '#64A577'
       },
       scale: {
         101: '101%',

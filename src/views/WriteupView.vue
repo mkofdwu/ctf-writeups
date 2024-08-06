@@ -129,7 +129,7 @@ nextTick(() => {
 }
 
 #article :deep(a) {
-  color: #478c3c;
+  color: #64a577;
   text-decoration: underline;
 }
 </style>
