@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { nextTick } from 'vue'
+import { nextTick, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import MarkdownIt from 'markdown-it'
+import mdItAnchor from 'markdown-it-anchor'
 import namedCodeBlocks from 'markdown-it-named-code-blocks'
 import hljs from 'highlight.js'
 import theOtherObligatoryPyjail from '@/assets/writeups/the-other-obligatory-pyjail.md?raw'
@@ -16,6 +17,7 @@ import blindSqlInjection from '@/assets/writeups/tisc23/blind-sql-injection.md?r
 import pushAndPickle from '@/assets/writeups/push-and-pickle.md?raw'
 import hiDoggy from '@/assets/writeups/hi-doggy.md?raw'
 import ChalInfoCard from '@/components/ChalInfoCard.vue'
+import SectionsBar from '@/components/SectionsBar.vue'
 import { chals } from '@/data/writeups'
 
 const writeups: { [slug: string]: { md: string; datePosted: string } } = {
@@ -39,27 +41,32 @@ if (typeof slug !== 'string' || !(slug in chals)) {
 
 const chalInfo = chals[slug as string]
 
-const mdIt = new MarkdownIt().use(namedCodeBlocks)
-const { md, datePosted } = writeups[slug as string]
+const mdIt = new MarkdownIt().use(namedCodeBlocks).use(mdItAnchor)
+const { md } = writeups[slug as string]
 let renderedMd = mdIt.render(md)
+
+const sections = ref<{ label: string; id: string }[]>([])
 
 nextTick(() => {
   hljs.highlightAll()
+  const elements = document.getElementById('article')!.getElementsByTagName('h1')
+  for (const el of elements) {
+    sections.value.push({ label: el.textContent!, id: el.id })
+  }
 })
 </script>
 
 <template>
-  <div class="writeup flex flex-col items-center py-20 max-md:py-10 max-sm:py-6">
-    <div class="w-2/3 max-xl:w-full max-xl:px-20 max-md:px-10 max-sm:px-6">
-      <chal-info-card :info="chalInfo" class="mb-12" />
-      <div class="text-sm opacity-40 mx-10 mb-4 max-md:mx-6 max-sm:mx-0">
-        Posted {{ datePosted }}
-      </div>
-      <div
-        id="article"
-        class="mx-10 flex flex-col gap-y-2 max-md:mx-6 max-sm:mx-0"
-        v-html="renderedMd"
-      ></div>
+  <div class="writeup flex flex-col pl-20 pr-[360px] py-10 max-md:py-10 max-sm:py-6">
+    <chal-info-card :info="chalInfo" class="mb-9" />
+    <div
+      id="article"
+      class="flex flex-col gap-y-3 max-md:mx-6 max-sm:mx-0"
+      v-html="renderedMd"
+    ></div>
+    <div class="absolute w-[280px] h-full top-0 right-0 flex pointer-events-none">
+      <div class="wave mr-8"></div>
+      <sections-bar :sections="sections" />
     </div>
   </div>
 </template>
@@ -70,7 +77,7 @@ nextTick(() => {
 }
 
 #article :deep(::-webkit-scrollbar-thumb) {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 4px;
 }
 
@@ -79,23 +86,31 @@ nextTick(() => {
   /* overflow: hidden; */
   margin-top: 1rem;
   margin-bottom: 1rem;
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+  padding-bottom: 0.5rem;
+  border-radius: 1.25rem;
+  background-color: #121212;
+}
+
+#article :deep(code),
+#article :deep(code *) {
+  font-size: 0.875rem;
 }
 
 #article :deep(code) {
-  font-size: 0.875rem;
   padding: 2px 4px 2px 4px;
   border-radius: 4px;
-  background-color: #ddd;
+  background-color: #323232;
 }
 
 #article :deep(pre > code) {
-  padding: 1.75rem;
-  border-radius: 1.25rem;
-  background-color: #222;
+  padding: 1rem 0.375rem 0.5rem 0.375rem;
+  background-color: transparent;
 }
 
 #article :deep(pre.named-fence-block > code) {
-  padding-top: 4rem;
+  padding-top: 3.5rem;
 }
 
 #article :deep(.named-fence-block) {
@@ -104,20 +119,20 @@ nextTick(() => {
 
 #article :deep(.named-fence-filename) {
   position: absolute;
-  top: 1rem;
-  left: 1rem;
-  color: white;
-  font-size: 0.875rem;
-  font-weight: bold;
-  padding: 4px 8px 4px 8px;
-  background-color: rgba(255, 255, 255, 0.1);
+  top: 0.625rem;
+  left: 0.625rem;
+  color: #f2f2f2;
+  font-family: 'Gabarito', sans-serif;
+  padding: 4px 12px 4px 12px;
+  background-color: #222;
   border-radius: 8px;
 }
 
 #article :deep(h1) {
+  font-family: 'Gabarito', sans-serif;
   font-size: 1.25rem;
-  font-weight: bold;
-  margin-top: 1rem;
+  font-weight: 600;
+  margin-top: 0.75rem;
 }
 
 #article :deep(img) {
@@ -129,7 +144,33 @@ nextTick(() => {
 }
 
 #article :deep(a) {
-  color: #478c3c;
+  color: #64a577;
   text-decoration: underline;
+}
+
+/* Generated from https://css-generators.com/wavy-shapes/ */
+.wave {
+  background: #727272;
+  width: 7px;
+  height: calc(100%-72px);
+  margin-top: 36px;
+  margin-bottom: 36px;
+
+  --mask: radial-gradient(
+        6.58px at calc(100% + 3px) 50%,
+        #0000 calc(99% - 1.5px),
+        #000 calc(101% - 1.5px) 99%,
+        #0000 101%
+      )
+      calc(50% - 3.25px + 0.5px) calc(50% - 10px) / 6.5px 20px repeat-y,
+    radial-gradient(
+        6.58px at -3px 50%,
+        #0000 calc(99% - 1.5px),
+        #000 calc(101% - 1.5px) 99%,
+        #0000 101%
+      )
+      calc(50% + 3.25px) 50%/6.5px 20px repeat-y;
+  -webkit-mask: var(--mask);
+  mask: var(--mask);
 }
 </style>

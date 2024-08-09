@@ -116,7 +116,7 @@ You will be provided with the following:
     subtitle: 'TISC Level 5',
     description: `Valuable intel suggests that PALINDROME has established a secret online chat room for their members to discuss on plans to invade Singapore's cyber space. One of their junior developers accidentally left a repository public, but he was quick enough to remove all the commit history, only leaving some non-classified files behind. One might be able to just dig out some secrets of PALINDROME and get invited to their secret chat room...who knows?
 
-Start here: https://github.com/palindrome-wow/PALINDROME-PORTAL`,
+Start here: [https://github.com/palindrome-wow/PALINDROME-PORTAL](https://github.com/palindrome-wow/PALINDROME-PORTAL)`,
     cats: ['osint', 'misc'],
     numSolves: 58,
     numPoints: 0,
@@ -128,7 +128,7 @@ Start here: https://github.com/palindrome-wow/PALINDROME-PORTAL`,
     subtitle: 'TISC Level 6',
     description: `We have discovered PALINDROME's recruitment site. Infiltrate it and see what you can find!
 
-http://chals.tisc23.ctf.sg:51943`,
+[http://chals.tisc23.ctf.sg:51943](http://chals.tisc23.ctf.sg:51943)`,
     cats: ['web'],
     numSolves: 52,
     numPoints: 0,
@@ -140,7 +140,7 @@ http://chals.tisc23.ctf.sg:51943`,
     subtitle: 'TISC Level 7',
     description: `Palindrome has accidentally exposed one of their onboarding guide! Sneak in as a new developer and exfiltrate any meaningful intelligence on their production system.
 
-https://d3mg5a7c6anwbv.cloudfront.net/
+[https://d3mg5a7c6anwbv.cloudfront.net/](https://d3mg5a7c6anwbv.cloudfront.net/)
 
 Note: Concatenate flag1 and flag2 to form the flag for submission.`,
     cats: ['cloud'],
@@ -158,7 +158,7 @@ Note: Concatenate flag1 and flag2 to form the flag for submission.`,
 
 You ready your fingers on the keyboard, confident that you'll be able to deliver.
 
-http://chals.tisc23.ctf.sg:28471/`,
+[http://chals.tisc23.ctf.sg:28471/](http://chals.tisc23.ctf.sg:28471/)`,
     cats: ['web', 'rev', 'pwn', 'cloud'],
     numSolves: 18,
     numPoints: 0,
@@ -205,7 +205,7 @@ ncat --ssl push-and-pickle.chal.uiuc.tf 1337`,
     subtitle: 'Author: devesh',
     description: `I figured out the best defence against SSTI, just remove the stuff that can execute code from the template! I even used a whitelist like the pros tell you to do!
 
-http://challs.nusgreyhats.org:33433/`,
+[http://challs.nusgreyhats.org:33433/](http://challs.nusgreyhats.org:33433/)`,
     cats: ['web'],
     numSolves: 4,
     numPoints: 968,

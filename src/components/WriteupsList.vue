@@ -41,19 +41,23 @@ const ctfs = [
 </script>
 
 <template>
-  <div v-for="ctf in ctfs" :key="ctf.name" class="flex flex-col mb-10">
-    <span class="text-sm font-bold opacity-40 uppercase ml-10 mb-3">{{ ctf.name }}</span>
+  <div v-for="ctf in ctfs" :key="ctf.name" class="flex flex-col mb-8">
+    <span class="opacity-60 ml-9 mb-3">{{ ctf.name }}</span>
     <router-link
-      v-for="chal in ctf.chals"
+      v-for="(chal, i) in ctf.chals"
       :key="chal.slug"
       :to="`/writeups/${chal.slug}`"
-      class="h-12 flex items-center pl-10 transition-colors"
+      class="h-14 flex items-center pl-10 transition-colors"
       :class="
         ($route.path.includes(chal.slug)
-          ? 'bg-primary bg-opacity-10 text-primary font-medium'
-          : 'hover:bg-black hover:bg-opacity-5') +
+          ? 'bg-primary text-black font-medium'
+          : 'bg-almost-black hover:bg-almost-black-lighter') +
         ' ' +
-        (fullWidth ? 'w-full' : 'w-72 rounded-r-full')
+        (fullWidth
+          ? 'w-full'
+          : 'w-[280px] ' +
+            (i === 0 ? 'rounded-tr-2.5xl ' : '') +
+            (i === ctf.chals.length - 1 ? 'rounded-br-2.5xl ' : ''))
       "
     >
       {{ chal.name }}

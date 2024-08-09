@@ -10,7 +10,7 @@ import { RouterView } from 'vue-router'
       <writeups-mobile-app-bar />
       <div class="flex overflow-hidden">
         <writeups-side-bar />
-        <div class="flex-1 overflow-x-hidden overflow-y-scroll bg-[#f6f6f6]">
+        <div id="scroll-container" class="flex-1 overflow-x-hidden overflow-y-scroll">
           <router-view :key="$route.path" />
         </div>
       </div>

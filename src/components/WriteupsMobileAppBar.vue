@@ -12,11 +12,11 @@ watch(useRoute(), () => {
 </script>
 
 <template>
-  <div class="w-full h-16 bg-white flex-shrink-0 flex items-center justify-between px-8 lg:hidden">
-    <h1 class="text-lg font-bold">jiajie's writeups</h1>
+  <div class="w-full h-16 flex-shrink-0 flex items-center justify-between px-8 lg:hidden">
+    <span class="text-xl font-semibold">Jia Jie's writeups</span>
     <menu-button class="cursor-pointer" :opened="opened" @click="opened = !opened" />
     <div
-      class="menu fixed left-0 top-16 z-10 w-full bg-white overflow-y-auto origin-top duration-300 transition-all"
+      class="menu fixed left-0 top-16 z-10 w-full bg-black overflow-y-auto origin-top duration-300 transition-all"
       :class="opened ? 'menu-opened' : 'h-0'"
     >
       <div

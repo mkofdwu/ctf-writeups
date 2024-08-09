@@ -3,8 +3,15 @@ module.exports = {
   content: ['./src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Gabarito', 'sans-serif']
+      },
       colors: {
-        primary: '#64A577'
+        primary: '#64A577',
+        black: '#1e1e1e',
+        white: '#f2f2f2',
+        'almost-black': '#323232',
+        'almost-black-lighter': '#424242'
       },
       scale: {
         101: '101%',
@@ -12,10 +19,6 @@ module.exports = {
       },
       borderWidth: {
         3: '3px'
-      },
-      backgroundColor: {
-        'almost-black': '#222',
-        'almost-black-lighter': '#444'
       },
       letterSpacing: {
         hover: '0.15em'

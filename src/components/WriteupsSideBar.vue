@@ -3,8 +3,8 @@ import WriteupsList from './WriteupsList.vue'
 </script>
 
 <template>
-  <div class="w-80 flex flex-col pt-12 overflow-y-auto bg-white max-lg:hidden">
-    <h1 class="ml-10 mb-12 text-xl font-bold">jiajie's writeups</h1>
+  <div class="hide-scrollbar w-[280px] flex flex-col pt-7 overflow-y-auto max-lg:hidden">
+    <span class="ml-9 mb-12 text-xl font-semibold">Jia Jie's writeups</span>
     <writeups-list />
   </div>
 </template>
