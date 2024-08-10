@@ -99,7 +99,7 @@ nextTick(() => {
 
 #article :deep(code),
 #article :deep(code *) {
-  font-size: 14px;
+  font-size: 0.8rem;
 }
 
 #article :deep(code) {
