@@ -58,7 +58,7 @@ nextTick(() => {
 
 <template>
   <div
-    class="writeup relative flex flex-col pl-[80px] pr-[360px] py-10 max-lg:pl-[60px] max-lg:pr-[340px] max-[900px]:pr-[60px] max-sm:px-5"
+    class="writeup flex flex-col pl-[80px] pr-[360px] py-10 max-lg:pl-[60px] max-lg:pr-[340px] max-lg:pt-3 max-[900px]:pr-[60px] max-sm:px-5"
   >
     <chal-info-card :info="chalInfo" class="mb-9" />
     <div
@@ -67,7 +67,7 @@ nextTick(() => {
       v-html="renderedMd"
     ></div>
     <div
-      class="absolute w-[280px] h-full top-0 right-0 flex pointer-events-none max-[900px]:hidden"
+      class="absolute w-[280px] h-full top-0 right-0 flex pointer-events-none max-xl:pt-16 max-[900px]:hidden"
     >
       <div class="wave mr-8"></div>
       <sections-bar :sections="sections" />
