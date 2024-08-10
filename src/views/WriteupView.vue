@@ -57,14 +57,18 @@ nextTick(() => {
 </script>
 
 <template>
-  <div class="writeup flex flex-col pl-20 pr-[360px] py-10 max-md:py-10 max-sm:py-6">
+  <div
+    class="writeup relative flex flex-col pl-[80px] pr-[360px] py-10 max-lg:pl-[60px] max-lg:pr-[340px] max-[900px]:pr-[60px] max-sm:px-5"
+  >
     <chal-info-card :info="chalInfo" class="mb-9" />
     <div
       id="article"
       class="flex flex-col gap-y-3 max-md:mx-6 max-sm:mx-0"
       v-html="renderedMd"
     ></div>
-    <div class="absolute w-[280px] h-full top-0 right-0 flex pointer-events-none">
+    <div
+      class="absolute w-[280px] h-full top-0 right-0 flex pointer-events-none max-[900px]:hidden"
+    >
       <div class="wave mr-8"></div>
       <sections-bar :sections="sections" />
     </div>

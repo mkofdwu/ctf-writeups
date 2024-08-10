@@ -12,7 +12,9 @@ watch(useRoute(), () => {
 </script>
 
 <template>
-  <div class="w-full h-16 flex-shrink-0 flex items-center justify-between px-8 lg:hidden">
+  <div
+    class="w-full h-16 flex-shrink-0 flex items-center justify-between px-8 xl:hidden max-sm:px-5"
+  >
     <span class="text-xl font-semibold">Jia Jie's writeups</span>
     <menu-button class="cursor-pointer" :opened="opened" @click="opened = !opened" />
     <div
