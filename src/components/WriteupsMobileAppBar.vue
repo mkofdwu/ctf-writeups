@@ -18,7 +18,7 @@ watch(useRoute(), () => {
     <span class="text-xl font-semibold">Jia Jie's writeups</span>
     <menu-button class="cursor-pointer" :opened="opened" @click="opened = !opened" />
     <div
-      class="menu fixed left-0 top-16 z-10 w-full bg-black overflow-y-auto origin-top duration-300 transition-all"
+      class="hide-scrollbar fixed left-0 top-16 z-10 w-full bg-black overflow-y-auto origin-top duration-300 transition-all"
       :class="opened ? 'menu-opened' : 'h-0'"
     >
       <div
