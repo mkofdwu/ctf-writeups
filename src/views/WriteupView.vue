@@ -16,6 +16,7 @@ import devSecMeow from '@/assets/writeups/tisc23/devsecmeow.md?raw'
 import blindSqlInjection from '@/assets/writeups/tisc23/blind-sql-injection.md?raw'
 import pushAndPickle from '@/assets/writeups/push-and-pickle.md?raw'
 import hiDoggy from '@/assets/writeups/hi-doggy.md?raw'
+import protoGrader from '@/assets/writeups/proto-grader.md?raw'
 import ChalInfoCard from '@/components/ChalInfoCard.vue'
 import SectionsBar from '@/components/SectionsBar.vue'
 import { chals } from '@/data/writeups'
@@ -31,7 +32,8 @@ const writeups: { [slug: string]: { md: string; datePosted: string } } = {
   devsecmeow: { md: devSecMeow, datePosted: '3 Oct 2023' },
   'blind-sql-injection': { md: blindSqlInjection, datePosted: '3 Oct 2023' },
   'push-and-pickle': { md: pushAndPickle, datePosted: '7 Jul 2024' },
-  'hi-doggy': { md: hiDoggy, datePosted: '29 Jul 2024' }
+  'hi-doggy': { md: hiDoggy, datePosted: '29 Jul 2024' },
+  'proto-grader': { md: protoGrader, datePosted: '12 Aug 2024' }
 }
 
 const { slug } = useRoute().params
@@ -88,8 +90,8 @@ nextTick(() => {
 #article :deep(pre) {
   /* overflow: auto; */
   /* overflow: hidden; */
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
   padding-left: 0.625rem;
   padding-right: 0.625rem;
   padding-bottom: 0.5rem;

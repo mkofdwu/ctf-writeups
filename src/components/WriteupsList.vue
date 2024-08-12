@@ -6,6 +6,10 @@ const ctfs = [
     name: 'Greyhats 2024',
     chals: [
       {
+        name: 'Proto Grader',
+        slug: 'proto-grader'
+      },
+      {
         name: 'Hi Doggy',
         slug: 'hi-doggy'
       }

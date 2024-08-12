@@ -215,6 +215,25 @@ ncat --ssl push-and-pickle.chal.uiuc.tf 1337`,
         url: 'https://ctfd.nusgreyhats.org/files/2ff82bee8684e96e347fe9de0a744dd2/dist-hi-doggy.zip?token=eyJ1c2VyX2lkIjozNSwidGVhbV9pZCI6MTEsImZpbGVfaWQiOjM3fQ.Zqcayw.wKbYG8wRwpZ2VZUC7TkEESrBueo'
       }
     ],
-    sourceUrl: ''
+    sourceUrl:
+      'https://github.com/NUSGreyhats/greyctf24-challs-public/tree/main/finals/web/hi-doggy'
+  },
+  'proto-grader': {
+    title: 'Proto Grader',
+    subtitle: 'Author: jro',
+    description: `Here's a website to check if you've got the right flag! It's just a prototype at the moment, I hope it doesn't break!
+
+[http://challs.nusgreyhats.org:33337](http://challs.nusgreyhats.org:33337)`,
+    cats: ['web'],
+    numSolves: 2,
+    numPoints: 997,
+    attachments: [
+      {
+        name: 'dist-proto_grader.zip',
+        url: 'https://ctfd.nusgreyhats.org/files/b109c61e525f342d1f08427dff46ea9d/dist-proto_grader.zip?token=eyJ1c2VyX2lkIjozNSwidGVhbV9pZCI6MTEsImZpbGVfaWQiOjM4fQ.ZrbkIw.JZLnLOMwC6WLvoFgY5eTq_NbCh4'
+      }
+    ],
+    sourceUrl:
+      'https://github.com/NUSGreyhats/greyctf24-challs-public/tree/main/finals/web/proto_grader'
   }
 }
