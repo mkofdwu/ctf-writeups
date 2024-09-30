@@ -31,7 +31,7 @@ function downloadAll() {
   <div class="flex flex-col items-start">
     <h1 class="mb-0">{{ info.title }}</h1>
     <span class="font-semibold mb-8">{{ info.subtitle }}</span>
-    <div class="description mb-9 flex flex-col gap-y-3" v-html="descriptionRendered"></div>
+    <div class="description mb-8 flex flex-col gap-y-3" v-html="descriptionRendered"></div>
     <div class="flex flex-wrap gap-3">
       <div
         v-for="(cat, i) in info.cats"
@@ -48,7 +48,7 @@ function downloadAll() {
     </div>
     <div
       v-if="info.attachments.length"
-      class="w-full flex border border-almost-black-lighter rounded-2.5xl mt-9 max-sm:flex-col"
+      class="w-full flex border border-almost-black-lighter rounded-2.5xl mt-8 max-sm:flex-col"
     >
       <div class="flex-1 flex flex-col gap-y-3 px-6 py-5">
         <span>Attachments</span>
