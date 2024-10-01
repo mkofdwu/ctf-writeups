@@ -17,6 +17,16 @@ import blindSqlInjection from '@/assets/writeups/tisc23/blind-sql-injection.md?r
 import pushAndPickle from '@/assets/writeups/push-and-pickle.md?raw'
 import hiDoggy from '@/assets/writeups/hi-doggy.md?raw'
 import protoGrader from '@/assets/writeups/proto-grader.md?raw'
+import navigatingTheDigitalLabyrinth from '@/assets/writeups/tisc24/navigating-the-digital-labyrinth.md?raw'
+import languageLabyrinthAndGraphicsMagick from '@/assets/writeups/tisc24/language-labyrinth-and-graphicsmagick.md?raw'
+import diggingUpHistory from '@/assets/writeups/tisc24/digging-up-history.md?raw'
+import alligatorPay from '@/assets/writeups/tisc24/alligatorpay.md?raw'
+import hardwareIsntThatHard from '@/assets/writeups/tisc24/hardware-isnt-that-hard.md?raw'
+import noncevigator from '@/assets/writeups/tisc24/noncevigator.md?raw'
+import babyFlagchecker from '@/assets/writeups/tisc24/baby-flagchecker.md?raw'
+import wallfacer from '@/assets/writeups/tisc24/wallfacer.md?raw'
+import imphash from '@/assets/writeups/tisc24/imphash.md?raw'
+import diffuse from '@/assets/writeups/tisc24/diffuse.md?raw'
 import ChalInfoCard from '@/components/ChalInfoCard.vue'
 import SectionsBar from '@/components/SectionsBar.vue'
 import { chals } from '@/data/writeups'
@@ -33,7 +43,47 @@ const writeups: { [slug: string]: { md: string; datePosted: string } } = {
   'blind-sql-injection': { md: blindSqlInjection, datePosted: '3 Oct 2023' },
   'push-and-pickle': { md: pushAndPickle, datePosted: '7 Jul 2024' },
   'hi-doggy': { md: hiDoggy, datePosted: '29 Jul 2024' },
-  'proto-grader': { md: protoGrader, datePosted: '12 Aug 2024' }
+  'proto-grader': { md: protoGrader, datePosted: '12 Aug 2024' },
+  'navigating-the-digital-labyrinth': {
+    md: navigatingTheDigitalLabyrinth,
+    datePosted: '30 Sep 2024'
+  },
+  'language-labyrinth-and-graphicsmagick': {
+    md: languageLabyrinthAndGraphicsMagick,
+    datePosted: '30 Sep 2024'
+  },
+  'digging-up-history': {
+    md: diggingUpHistory,
+    datePosted: '30 Sep 2024'
+  },
+  alligatorpay: {
+    md: alligatorPay,
+    datePosted: ''
+  },
+  'hardware-isnt-that-hard': {
+    md: hardwareIsntThatHard,
+    datePosted: ''
+  },
+  noncevigator: {
+    md: noncevigator,
+    datePosted: ''
+  },
+  'baby-flagchecker': {
+    md: babyFlagchecker,
+    datePosted: ''
+  },
+  wallfacer: {
+    md: wallfacer,
+    datePosted: ''
+  },
+  imphash: {
+    md: imphash,
+    datePosted: ''
+  },
+  diffuse: {
+    md: diffuse,
+    datePosted: ''
+  }
 }
 
 const { slug } = useRoute().params
@@ -152,6 +202,11 @@ nextTick(() => {
 #article :deep(a) {
   color: #64a577;
   text-decoration: underline;
+}
+
+#article :deep(li) {
+  /* temporary */
+  list-style-type: circle;
 }
 
 /* Generated from https://css-generators.com/wavy-shapes/ */

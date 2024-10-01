@@ -14,7 +14,8 @@ const catIcons: { [cat: string]: string } = {
   crypto: 'key',
   mobile: 'phone_android',
   cloud: 'cloud',
-  osint: 'visibility'
+  osint: 'visibility',
+  blockchain: 'currency_bitcoin'
 }
 
 const mdIt = new MarkdownIt()
@@ -29,8 +30,7 @@ function downloadAll() {
 
 <template>
   <div class="flex flex-col items-start">
-    <h1 class="mb-0">{{ info.title }}</h1>
-    <span class="font-semibold mb-8">{{ info.subtitle }}</span>
+    <h1 class="mb-8">{{ info.title }}</h1>
     <div class="description mb-8 flex flex-col gap-y-3" v-html="descriptionRendered"></div>
     <div class="flex flex-wrap gap-3">
       <div

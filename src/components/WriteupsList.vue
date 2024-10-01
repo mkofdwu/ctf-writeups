@@ -3,6 +3,51 @@ const { fullWidth } = defineProps<{ fullWidth?: boolean }>()
 
 const ctfs = [
   {
+    name: 'TISC 2024',
+    chals: [
+      {
+        name: 'Level 1',
+        slug: 'navigating-the-digital-labyrinth'
+      },
+      {
+        name: 'Level 2',
+        slug: 'language-labyrinth-and-graphicsmagick'
+      },
+      {
+        name: 'Level 3',
+        slug: 'digging-up-history'
+      },
+      {
+        name: 'Level 4',
+        slug: 'alligatorpay'
+      },
+      {
+        name: 'Level 5',
+        slug: 'hardware-isnt-that-hard'
+      },
+      {
+        name: 'Level 6',
+        slug: 'noncevigator'
+      },
+      {
+        name: 'Level 7',
+        slug: 'baby-flagchecker'
+      },
+      {
+        name: 'Level 8',
+        slug: 'wallfacer'
+      },
+      {
+        name: 'Level 9',
+        slug: 'imphash'
+      },
+      {
+        name: 'Level 10',
+        slug: 'diffuse'
+      }
+    ]
+  },
+  {
     name: 'Greyhats 2024',
     chals: [
       {

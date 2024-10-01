@@ -235,5 +235,198 @@ ncat --ssl push-and-pickle.chal.uiuc.tf 1337`,
     ],
     sourceUrl:
       'https://github.com/NUSGreyhats/greyctf24-challs-public/tree/main/finals/web/proto_grader'
+  },
+  'navigating-the-digital-labyrinth': {
+    title: 'Navigating the Digital Labyrinth',
+    subtitle: 'TISC Level 1',
+    description: `The dust has settled since we won the epic battle against PALINDROME one year ago.
+
+Peace returned to cyberspace, but it was short-lived. Two months ago, screens turned deathly blue, and the base went dark. When power returned, a mysterious entity glitched to life on our monitors. No one knows where it came from or what it plans to do.
+
+Amidst the clandestine realm of cyber warfare, intelligence sources have uncovered the presence of a formidable adversary, Vivoxanderith—a digital specter whose footprint spans the darkest corners of the internet. As a skilled cyber operative, you are entrusted with the critical mission of investigating this elusive figure and their network to end their reign of disruption.
+
+Recent breakthroughs have unveiled Vivoxanderith's online persona: vi_vox223. This revelation marks a pivotal advancement in our pursuit, offering a significant lead towards identifying and neutralizing this threat.
+
+Our mission now requires a meticulous investigation into **vi_vox223**'s activities and connections within the cyber underworld. Identifying and tracking Vivoxanderith brings us one crucial step closer to uncovering the source of the attack and restoring stability to our systems. It is up to you, agent!`,
+    cats: ['osint', 'misc'],
+    numSolves: 981,
+    numPoints: 0,
+    attachments: [],
+    sourceUrl: ''
+  },
+  'language-labyrinth-and-graphicsmagick': {
+    title: 'Language, Labyrinth and (Graphics)Magick',
+    subtitle: 'TISC Level 2',
+    description: `Good job on identifying the source of the attack! We are one step closer to identifying the mysterious entity, but there's still much we do not know.
+
+Beyond Discord and Uber H3, seems like our enemies are super excited about AI and using it for image transformation. Your fellow agents have managed to gain access to their image transformation app. Is there anyyy chance we could find some vulnerabilities to identify the secrets they are hiding?
+
+Any one of the following instances will work:
+
+[http://chals.tisc24.ctf.sg:36183/](http://chals.tisc24.ctf.sg:36183/)
+
+[http://chals.tisc24.ctf.sg:45018/](http://chals.tisc24.ctf.sg:45018/)
+
+[http://chals.tisc24.ctf.sg:51817/](http://chals.tisc24.ctf.sg:51817/)`,
+    cats: ['misc'],
+    numSolves: 451,
+    numPoints: 0,
+    attachments: [],
+    sourceUrl: ''
+  },
+  'digging-up-history': {
+    title: 'Digging Up History',
+    subtitle: 'TISC Level 3',
+    description: `Ah, who exactly is behind the attacks? If only our enemies left more images on their image transformation server. We are one step closer, but there is still so much to uncover...
+
+A disc image file was recovered from them! We have heard that they have a history of hiding sensitive data through file hosting sites... Can you help us determine what they might be hiding this time?
+
+[https://assets-hgsv2z3wsyxzjayx.sgp1.digitaloceanspaces.com/disk.zip](https://assets-hgsv2z3wsyxzjayx.sgp1.digitaloceanspaces.com/disk.zip)`,
+    cats: ['forensics'],
+    numSolves: 342,
+    numPoints: 0,
+    attachments: [
+      {
+        name: 'metadata.txt',
+        url: 'https://api.tisc24.csit-events.sg/file?id=cm0y2897q386d0854o00mm0rp&name=metadata.txt&req=clzv2z8zr0c5q0854jk6g5acs&reqHash=f316095a237261216e1674a9501c74d2129ef2734263c6cedbc04ddcc4edc5049442a55e83eef141e093af331a2db2e0bc2d8f0cea3803ec5104932fb45f6856&reqExp=1727782114'
+      }
+    ],
+    sourceUrl: ''
+  },
+  alligatorpay: {
+    title: 'AlligatorPay',
+    subtitle: 'TISC Level 4',
+    description: `![AlligatorPay logo](https://assets-hgsv2z3wsyxzjayx.sgp1.digitaloceanspaces.com/agpay.png)
+
+In the dark corners of the internet, whispers of an elite group of hackers aiding our enemies have surfaced. The word on the street is that a good number of members from the elite group happens to be part of an exclusive member tier within AlligatorPay (agpay), a popular payment service.
+
+![AlligatorPay mascot](https://assets-hgsv2z3wsyxzjayx.sgp1.digitaloceanspaces.com/albert.png)
+
+Your task is to find a way to join this exclusive member tier within AlligatorPay and give us intel on future cyberattacks. AlligatorPay recently launched an [online balance checker](https://agpay.chals.tisc24.ctf.sg/) for their payment cards. We heard it's still in beta, so maybe you might find something useful.`,
+    cats: ['web'],
+    numSolves: 304,
+    numPoints: 0,
+    attachments: [],
+    sourceUrl: ''
+  },
+  'hardware-isnt-that-hard': {
+    title: 'Hardware isnt that Hard!',
+    subtitle: 'TISC Level 5',
+    description: `Shucks... it seems like our enemies are making their own silicon chips??!? They have decided to make their own source of trust, a TPM (Trusted Platform Module) or I guess their best attempt at it.
+
+Your fellow agent smuggled one out for us to reverse engineer. Don't ask us how we did it, we just did it, it was hard ...
+
+All we know so far is that their TPM connects to other devices using the i2c bus and does some security stuff inside. Agent! Your mission, should you choose to accept it, is to get us unparalleled intel by finding their TPM's weakness and exfiltrating its secrets.
+
+You will be provided with the following compressed flash dump:
+- MD5 (flash_dump.bin.xz) = fdff2dbda38f694111ad744061ca2f8a
+
+Flash was dumped from the device using the command:
+esptool.py -p /dev/REDACTED -b 921600 read_flash 0 0x400000 flash_dump.bin
+
+You can perform your attack on a live TPM module via the i2c implant device hosted behind enemy lines: nc chals.tisc24.ctf.sg 61622`,
+    cats: ['rev', 'hardware'],
+    numSolves: 89,
+    numPoints: 0,
+    attachments: [],
+    sourceUrl: ''
+  },
+  noncevigator: {
+    title: 'Noncevigator',
+    subtitle: 'TISC Level 6',
+    description: `I guess their Trusted Platform Modules were not so trusted afterall. What about blockchain? Blockchain is secure by design, right?
+
+It seems like our enemies may have hidden some of their treasures somewhere along in our little island, all secured by this blockchain technology.
+
+We have heard rumours that to access the treasure, you must navigate to the correct location and possess the correct value of the "number used only once". This unique code is essential for unlocking the fortified gate guarding the treasure!
+
+Ensure your wallet is sufficiently funded for travel and any potential challenges you may encounter. Your journey begins now. It's your mission now - crack the code and see what treasures they are hiding!
+
+nc chals.tisc24.ctf.sg 31127`,
+    cats: ['blockchain'],
+    numSolves: 63,
+    numPoints: 0,
+    attachments: [
+      {
+        name: 'Noncevigator.sol',
+        url: 'https://api.tisc24.csit-events.sg/file?id=cm0y2ck5t38p80854hillis2k&name=Noncevigator.sol&req=clzv2z8zr0c5q0854jk6g5acs&reqHash=f316095a237261216e1674a9501c74d2129ef2734263c6cedbc04ddcc4edc5049442a55e83eef141e093af331a2db2e0bc2d8f0cea3803ec5104932fb45f6856&reqExp=1727782114'
+      }
+    ],
+    sourceUrl: ''
+  },
+  'baby-flagchecker': {
+    title: 'Baby Flagchecker',
+    subtitle: 'TISC Level 7',
+    description: `You've come so far, brave agents! Let us continue our mission to identify our threats, and retrieve the crucial information that they are hiding from the world.
+
+While scanning their network, your fellow agents chanced upon a tool used by the adversary that checks for the validity of a secret passphrase.
+
+We know that they use this phrase for establishing communications between one another, but the one we have is way outdated... It's time for an update.
+
+http://chals.tisc24.ctf.sg:52416/`,
+    cats: ['rev', 'blockchain'],
+    numSolves: 50,
+    numPoints: 0,
+    attachments: [
+      {
+        name: 'baby_flagchecker.zip',
+        url: 'https://api.tisc24.csit-events.sg/file?id=cm0y2eipy38w208543nwsh40i&name=baby_flagchecker.zip&req=clzv2z8zr0c5q0854jk6g5acs&reqHash=f316095a237261216e1674a9501c74d2129ef2734263c6cedbc04ddcc4edc5049442a55e83eef141e093af331a2db2e0bc2d8f0cea3803ec5104932fb45f6856&reqExp=1727782114'
+      }
+    ],
+    sourceUrl: ''
+  },
+  wallfacer: {
+    title: 'Wallfacer',
+    subtitle: 'TISC Level 8',
+    description: `Breaking news! We've managed to seize an app from their device.
+
+It seems to be an app that stores user data, but doesn’t seem to do much other than that... The other agent who recovered this said he heard them say something about parts of the app are only loaded during runtime, hiding crucial details.
+
+It's up to you now! Can you break through the walls and unveil the hidden secrets within this app?`,
+    cats: ['rev', 'mobile'],
+    numSolves: 33,
+    numPoints: 0,
+    attachments: [
+      {
+        name: 'wallfacer-x86_64.apk',
+        url: 'https://api.tisc24.csit-events.sg/file?id=cm0y2fvoj39f30854r5m17r1q&name=wallfacer-x86_64.apk&req=clzv2z8zr0c5q0854jk6g5acs&reqHash=f316095a237261216e1674a9501c74d2129ef2734263c6cedbc04ddcc4edc5049442a55e83eef141e093af331a2db2e0bc2d8f0cea3803ec5104932fb45f6856&reqExp=1727782114'
+      }
+    ],
+    sourceUrl: ''
+  },
+  imphash: {
+    title: 'Imphash',
+    subtitle: 'TISC Level 9',
+    description: `Almost there agent, we might have a chance to gain access into the enemy's systems again!! We are so close.
+
+But, it seems like they've developed a robust anti-malware service that's thwarting all attempts to breach their systems!
+
+We've found this import hashing plugin which is a key component of their malware analysis pipeline. Agent, can you find a way around it?
+
+nc chals.tisc24.ctf.sg 53719`,
+    cats: ['pwn'],
+    numSolves: 17,
+    numPoints: 0,
+    attachments: [
+      {
+        name: 'imphash.zip',
+        url: 'https://api.tisc24.csit-events.sg/file?id=cm0y2gp5539kc0854kuz8ze52&name=imphash.zip&req=clzv2z8zr0c5q0854jk6g5acs&reqHash=f316095a237261216e1674a9501c74d2129ef2734263c6cedbc04ddcc4edc5049442a55e83eef141e093af331a2db2e0bc2d8f0cea3803ec5104932fb45f6856&reqExp=1727782114'
+      }
+    ],
+    sourceUrl: ''
+  },
+  diffuse: {
+    title: 'Diffuse',
+    subtitle: 'TISC Level 10',
+    description: `!!! We've found a weird device with a timer counting down! Ccould..it... be...a bomb....?? Your fellow agents found some access into the engineer's machine, will you be able to find some clues and diffuse it before it's too late?
+
+For details on your instance, talk to @DiffuseInstanceBot on Telegram.
+
+Note: Instances may be refreshed periodically. Remember to save your work outside of the instance!`,
+    cats: ['forensics', 'web', 'rev', 'hardware'],
+    numSolves: 14,
+    numPoints: 0,
+    attachments: [],
+    sourceUrl: ''
   }
 }

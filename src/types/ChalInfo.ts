@@ -1,7 +1,7 @@
 export type ChalInfo = {
-  title: string;
-  subtitle: string;
-  description: string;
+  title: string
+  subtitle: string
+  description: string
   cats: (
     | 'web'
     | 'misc'
@@ -10,13 +10,13 @@ export type ChalInfo = {
     | 'rev'
     | 'forensics'
     | 'osint'
-    | 'stego'
     | 'hardware'
     | 'mobile'
     | 'cloud'
-  )[];
-  numSolves: number;
-  numPoints: number;
-  attachments: { name: string; url: string }[];
-  sourceUrl: string;
-};
+    | 'blockchain'
+  )[]
+  numSolves: number
+  numPoints: number
+  attachments: { name: string; url: string }[]
+  sourceUrl: string
+}
