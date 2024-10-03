@@ -206,7 +206,7 @@ LAB_400d1689:
 
 clicking on the `DAT_3ffbdb6a` symbol I found that it points to an interesting string:
 
-![](/hardware_interesting_string)
+![](/hardware_interesting_string.png)
 
 A fake flag! This proves we're on the right track. The function above is probably the main function, and `FUN_400f25bc` is probably analgous to `__libc_start_main`?
 
@@ -253,7 +253,7 @@ ushort FUN_400d1508(void)
 
 `DAT_3ffbdb68` is a 2 byte region of memory right before the fake flag. So it is presumably some sort of global variable that gets updated each time the function is called. I tried to simplify the equation used to update it but failed to do so. However, safe to say that the resulting xored flag is determined based on the starting value of `DAT_3ffbdb68`.
 
-Now looking back at the main function `FUN_400d1614`, it's reasonable to deduce that `uVar5` is a value supplied by the user, like an opcode of sorts, and if we somehow send `0x46` to the firmware it should return us the xored flag. This xored flag can then be easily brute-forced.
+Now looking back at the main function `FUN_400d1614`, it's reasonable to deduce that `uVar5` is a value supplied by the user, like an opcode of sorts, and if we somehow send `0x46` to the firmware it should return us the xored flag. This xored flag can then be easily brute-forced by trying all 65536 values for `DAT_3ffbdb68`.
 
 # Testing/fuzzing the firmware
 

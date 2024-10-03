@@ -1,4 +1,4 @@
-NOTE: This writeup is still WIP. Here are some notes I took while solving the challenge, as well as any solve script(s)
+NOTE: this writeup is still WIP
 
 * decompile using jadx. Later on I used apktool as well (with apktool i can modify the AndroidManifest.xml file and rebuild the apk)
 * sqlite.db cannot be opened: possibly encrypted

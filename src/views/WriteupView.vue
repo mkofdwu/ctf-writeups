@@ -206,7 +206,12 @@ nextTick(() => {
 
 #article :deep(li) {
   /* temporary */
-  list-style-type: circle;
+  list-style-type: disc;
+  list-style-position: inside;
+}
+
+#article :deep(ul li) {
+  margin-left: 1.5rem;
 }
 
 /* Generated from https://css-generators.com/wavy-shapes/ */

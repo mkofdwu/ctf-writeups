@@ -1,22 +1,74 @@
-NOTE: This writeup is still WIP. Here are some notes I took while solving the challenge, as well as any solve script(s)
+NOTE: this writeup is still WIP
+
+For level 10, participants were emailed a code with used to access an instance through a Telegram bot. Interacting with the Telegram bot gave me the ssh details.
+
+sshing into the instance reveals that it is a windows computer. I began a very long process of scouring the filesystem for any clues.
+
+# Enumeration method
+
+I used [this powershell script](https://stackoverflow.com/questions/43810090/print-directory-tree-but-exclude-a-folder-on-windows-cmd/43810460#43810460) which basically is the `tree` command that displays all subfolders and files under a certain folder recursively, including hidden items (the default windows tree command lacks this feature). Here were some of the folders I looked through (that turned out to be dead ends):
+
+- `C:\WindowsAzure\Logs`
+- `C:\ProgramData\USOPrivate\UpdateStore\store.db`
+    - windows Update Session Orchestrator
+- `C:\$Recycle.Bin`
+    - contains some files we cannot access
+- `C:\Users\diffuser\AppData\Local\ConnectedDevicesPlatform`
+- `C:\Users\diffuser\AppData\Local\Comms\UnistoreDB`
+    - Stores mail application data
+- `C:\Users\diffuser\AppData\Local\Microsoft\Credentials`
+    - Contains a file which im not sure how to decode, or if it even contains useful data
+- Firefox AppData
+
+When I came across files of interest, I would bring them over to my local machine for further analysis using `scp diffuser@20.212.177.201:C:/path/to/file file`. To transfer an entire folder, I would first compress it to a zip file in powershell: `Compress-Archive folder folder.zip`. I also used `sshpass` so I wouldn't have to enter the password manually each time I ran an `ssh` or `scp` command: `sshpass -p <password> scp <source> <destination>`
+
+# Microsoft Edge history
+
+Recalling how browsing history stored key information in level 3, I decided to look into the user's Edge browsing history. Opening the file `C:\Users\diffuser\AppData\Local\Microsoft\Edge\User Data\Default\History` in vscode sqlite browser, we see the following links: [https://github.com/xaitax/TotalRecall](https://github.com/xaitax/TotalRecall) and [https://github.com/thebookisclosed/AmperageKit](https://github.com/thebookisclosed/AmperageKit). Amperage Kit is a tool used to enable Windows Recall on devices that aren't natively supported. (Recall is a feature on windows that periodically takes snapshots of your desktop so that you can look it up later with AI).
+
+I tried accessing Recall data, stored at `C:\Users\diffuser\AppData\Local\CoreAIPlatform.00\UKP`. Unfortunately, I do not have access to this folder. But looking at the TotalRecall github repo, a tool that parses Recall data, it seems that they have a way to circumvent this:
+
+```python:totalrecall.py
+...
+
+def modify_permissions(path):
+    try:
+        subprocess.run(
+            ["icacls", path, "/grant", f"{getpass.getuser()}:(OI)(CI)F", "/T", "/C", "/Q"],
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        print(f"{GREEN}✅ Permissions modified for {path} and all its subdirectories and files{ENDC}")
+    except subprocess.CalledProcessError as e:
+        print(f"{RED}❌ Failed to modify permissions for {path}: {e}{ENDC}")
+
+def main(from_date=None, to_date=None, search_term=None):
+    display_banner()
+    username = getpass.getuser()
+    base_path = f"C:\\Users\\{username}\\AppData\\Local\\CoreAIPlatform.00\\UKP"
+
+    if not os.path.exists(base_path):
+        print("🚫 Base path does not exist.")
+        return
+
+    modify_permissions(base_path)
+
+...
+```
+
+Using this, I tried running the command `icacls UKP /grant diffuser:(OI)(CI)F /T /C /Q` and to my surprise, I now had access to the UKP folder! I'm not exactly sure why I dont have permissions to access the folder but have permissions to grant myself access to the folder, but ok. Next, I referred to [this article](https://cybercx.com/blog/forensic-applications-of-microsoft-recall/) which explained what each item in the folder was for.
+
+`ukg.db` seems to be the main sqlite database, but I couldn't read it. I tried running the above icacls command on it but that failed, so I modified the command to give myself read permissions only: `icacls ukg.db /grant diffuser:R /T /C /Q`. This time, I was able to read it.
+
+Looking in the `WindowCaptureTextIndex_content` table under ukg.db, we see some interesting strings, for example `Command Prompt - curl  -v -X "POST" --data-binary "<?php echo system('whoami /all'); ?>" -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0" -H "Content-Type: application/x-www-form-urlencoded" "http://localho`.
+
+Running `curl http://localhost/` reveals that there is indeed a web server running.
+
+![](/diffuse_gobuster.png)
 
 # Stuff I did (and stuff todo)
 
-- Listed processes using `get-process`
-- Used script at https://stackoverflow.com/questions/43810090/print-directory-tree-but-exclude-a-folder-on-windows-cmd/43810460#43810460 to list all files below home directory, including hidden
-- potentially useful folders (to explore)
-    - `C:\WindowsAzure\Logs`
-        - Doesn’t seem to be useful
-    - `C:\ProgramData\USOPrivate\UpdateStore\store.db`
-        - windows Update Session Orchestrator (doesnt seem to be important)
-    - `C:\$Recycle.Bin`
-    - `C:\Users\diffuser\AppData\Local\ConnectedDevicesPlatform`
-    - `C:\Users\diffuser\AppData\Local\Comms\UnistoreDB`
-        - Stores mail application data: https://darkdefender.medium.com/windows-10-mail-app-forensics-39025f5418d2
-    - `C:\Users\diffuser\AppData\Local\Microsoft\Credentials`
-        - Contains a file which im not sure how to decode, or if it even contains useful data
-    - `C:\Users\diffuser\AppData\Local\Microsoft\Edge\User Data\Default`
-    - There is nothing in firefox appdata
 - https://cybercx.com/blog/forensic-applications-of-microsoft-recall/
 - NOTE: the embedded key *might* be inside `ukg.db-wal` (3x the size of ukg.db, seems to contain 5 sqlite databases inside). If stuck maybe look into this
 - https://www.avrfreaks.net/s/topic/a5C3l000000U4mYEAS/t032182
