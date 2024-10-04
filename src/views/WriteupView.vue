@@ -112,7 +112,7 @@ nextTick(() => {
 </script>
 
 <template>
-  <div class="relative flex flex-col items-center max-w-2xl mx-auto pt-24 pb-14">
+  <div class="relative flex flex-col items-center max-w-3xl mx-auto pt-24 pb-14">
     <chal-info-card :info="chalInfo" :date-posted="datePosted" />
     <div
       id="article"

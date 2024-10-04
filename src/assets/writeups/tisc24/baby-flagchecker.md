@@ -1,5 +1,3 @@
-NOTE: this writeup is still WIP
-
 Similar to level 6, this is also a blockchain challenge, though with more emphasis on rev. Partial source is provided for this challenge:
 
 ![](/tisc24/baby_flagchecker_tree.png)
@@ -63,6 +61,35 @@ async def check(password_input: PasswordInput):
         return output_json
     except RuntimeError as e:
         raise HTTPException(status_code=500, detail=str(e))
+```
+
+The format of `output_json` is as follows:
+
+```python:connect_to_testnet.py
+...
+
+def call_check_password(setup_contract, password):
+    # Call checkPassword function
+    passwordEncoded = '0x' + bytes(password.ljust(32, '\0'), 'utf-8').hex()
+
+    # Get result and gas used
+    try:
+        gas = setup_contract.functions.checkPassword(passwordEncoded).estimate_gas()
+        output = setup_contract.functions.checkPassword(passwordEncoded).call()
+        logger.info(f'Gas used: {gas}')
+        logger.info(f'Check password result: {output}')
+    except Exception as e:
+        logger.error(f'Error calling checkPassword: {e}')
+
+    # Return debugging information
+    return {
+        "output": output,
+        "contract_address": setup_contract.address,
+        "setup_contract_bytecode": os.environ['SETUP_BYTECODE'],
+        "adminpanel_contract_bytecode": os.environ['ADMINPANEL_BYTECODE'],
+        "secret_contract_bytecode": os.environ['SECRET_BYTECODE'],
+        "gas": gas
+    }
 ```
 
 Essentially it connects to the private blockchain network and calls the `checkPassword` function on the Setup contract. The addresses of 2 other contracts are passed to Setup's constructor, so it probably calls some functions in them too.
@@ -209,11 +236,11 @@ The next section is a bit long winded, but after tracking how the stack changes 
 	008D    F3    *RETURN
 ```
 
-Since we don't have access to the `mystery_contract` bytecode (also, it's reasonable to guess that `mystery_contract` is the Secret contract), we have to continue reversing.
+Since we don't have access to the `mystery_contract` bytecode, we have to continue reversing.
 
 # Reversing Setup
 
-When I decompiled Setup on ethervm.io, it helpfully informed me that the decompilation was probably constructor bytecode and to get the actual deployed contract I would have to "remove the constructor prefix, usually up to the next 6060 or 6080". I did so, and got the following decompilation (with a few comments added):
+When I decompiled Setup on ethervm.io, it helpfully informed me that the decompilation was probably constructor bytecode and to get the actual deployed contract I would have to "remove the constructor prefix, usually up to the next 6060 or 6080". I did so, and got the following decompilation (annotated with my comments):
 
 ```solidity
 contract Contract {
@@ -233,8 +260,8 @@ contract Contract {
         var var2 = 0x003e;
         var var3 = msg.data.length;
         var var4 = 0x04;
-        var2 = func_0115(var3, var4);
-        var1 = func_003E(var2);
+        var2 = func_0115(var3, var4); // get first argument
+        var1 = func_003E(var2); // call checkPassword
         var temp0 = memory[0x40:0x60];
         memory[temp0:temp0 + 0x20] = !!var1;
         var temp1 = memory[0x40:0x60];
@@ -242,27 +269,54 @@ contract Contract {
     }
     
     function func_003E(var arg0) returns (var r0) {
-        // check password
-        // arg0: user input
+        // Called from main
+        //
+        // Parameters:
+        // ===========
+        // - arg0: user input
+        //
+        // What it does:
+        // =============
+        // - this should be checkPassword. returns 1 or 0
+
         var var0 = 0x00;
-        var temp0 = memory[0x40:0x60];
+        var temp0 = memory[0x40:0x60]; // some sort of solidity stack pointer?
         memory[temp0 + 0x24:temp0 + 0x24 + 0x20] = arg0;
-        var temp1 = (0x01 << 0xa0) - 0x01;
-        memory[temp0 + 0x44:temp0 + 0x44 + 0x20] = temp1 & storage[0x01];
+        var temp1 = (0x01 << 0xa0) - 0x01; // mask for lower 20 bytes
+        memory[temp0 + 0x44:temp0 + 0x44 + 0x20] = temp1 & storage[0x01]; // storage[1] probably contains some contract address
         var temp2 = memory[0x40:0x60];
-        memory[temp2:temp2 + 0x20] = temp0 - temp2 + 0x44;
+        memory[temp2:temp2 + 0x20] = temp0 - temp2 + 0x44; // temp0 and temp2 cancel out, not sure why this suboptimal bytecode was generated.
         memory[0x40:0x60] = temp0 + 0x64;
         var temp3 = temp2 + 0x20;
+        // the next line is essentially memory[temp3:temp3 + 4] = "TISC"
         memory[temp3:temp3 + 0x20] = (memory[temp3:temp3 + 0x20] & (0x01 << 0xe0) - 0x01) | (0x54495343 << 0xe0);
+
+        // at this point, we have the following data in memory[temp0:temp0 + 0x64]:
+        // [temp0 + 0x00]: 0x44 - 32 bytes
+        // [temp0 + 0x20]: "TISC" - 4 bytes
+        // [temp0 + 0x24]: user input (arg0) - 32 bytes
+        // [temp0 + 0x44]: contract address - 32 bytes (only lower 20 bytes are used)
+
         var var1 = var0;
         var var2 = var1;
-        var var3 = temp1 & storage[var2];
+        var var3 = temp1 & storage[var2]; // storage[0], seems to be another contract address
         var var5 = temp2;
         var var6 = memory[0x40:0x60];
         var var4 = 0x00b9;
-        var4 = func_012E(var5, var6);
+        var4 = func_012E(var5, var6); // copy 0x44 bytes from [temp0 + 0x20] to [temp0 + 0x64]
         var temp4 = memory[0x40:0x60];
         var temp5;
+
+        // the following function call:
+        // ============================
+        // - contract address: storage[0]
+        // - function selector: "TISC"
+        // - extra data:
+        //   - user input
+        //   - storage[1]
+        //
+        // here, we can deduce that it's calling the AdminPanel function we reversed previously.
+        // so storage[1] is the address of 'mystery_contract', most likely the Secret contract.
         temp5, memory[temp4:temp4 + 0x00] = address(var3).call.gas(msg.gas)(memory[temp4:temp4 + var4 - temp4]);
         var4 = returndata.length;
         var5 = var4;
@@ -293,9 +347,17 @@ contract Contract {
     }
     
     function func_0115(var arg0, var arg1) returns (var r0) {
-        // seems to be getting the first param (32 bytes) in arguments (msg.data)
-        // arg0: msg.data.length
-        // arg1: 0x4
+        // Called from func_003E
+        // 
+        // Parameters:
+        // ===========
+        // - arg0: msg.data.length
+        // - arg1: 0x4
+        // 
+        // What it does:
+        // =============
+        // - returns the first param (32 bytes) in arguments (msg.data)
+
         var var0 = 0x00;
     
         if (arg0 - arg1 i>= 0x20) { return msg.data[arg1:arg1 + 0x20]; }
@@ -303,6 +365,20 @@ contract Contract {
     }
     
     function func_012E(var arg0, var arg1) returns (var r0) {
+        // Called from func_003E
+        // 
+        // Parameters:
+        // ===========
+        // - arg0: func_003E_temp0 (initial 'base pointer')
+        // - arg1: func_003E_temp0 + 0x64
+        //
+        // What it does:
+        // =============
+        // - copies data from [arg0 + 0x20] to [arg1]
+        // - length is specified by 32 byte number at [arg0]
+        // - in the context of func_003E it copies 0x44 bytes from [func_003E_temp0 + 0x20] to [func_003E_temp0 + 0x64]
+        // - returns the memory index right after the destination
+
         var var0 = 0x00;
         var var1 = memory[arg0:arg0 + 0x20];
         var var2 = 0x00;
@@ -333,10 +409,32 @@ contract Contract {
 }
 ```
 
-So it checks for the `0x410eee02` function selector (this is probably checkPasssword) and gets the first argument (the password) by calling `func_0115`. 
-I added some comments 
+After reversing all the code, we now have a clear understanding of what's going on. Here's the python equivalent:
 
-I also went down a mini rabbit hole looking at the suspicious instructions near the end of the contract:
+```python
+class Secret:
+    def getSecret(self):
+        # unknown
+        return ...
+
+
+class AdminPanel:
+    def actualChecking(self, password, secret):
+        return xor_bytes(password, keccak256(0x6b35340a) << 0x98) == secret.getSecret()
+
+
+class Setup:
+    def __init__(self, adminPanel, secret):
+        self.adminPanel = adminPanel
+        self.secret = secret
+
+    def checkPassword(self, password):
+        return self.adminPanel.actualChecking(password, self.secret) == 1
+```
+
+We still have no way of getting the flag without knowing what's going on in `Secret.getSecret()`. Hmm ...
+
+I went down a mini rabbit hole looking at the suspicious instructions near the end of the Setup contract:
 
 ```plaintext
 0184    FE    *ASSERT
@@ -373,19 +471,19 @@ I also went down a mini rabbit hole looking at the suspicious instructions near 
 	01B9    33    CALLER
 ```
 
-I saw some ascii text and thought this might be important to the challenge. But eventually I came across [this stackexchange post](https://ethereum.stackexchange.com/questions/23525/what-is-the-cryptic-part-at-the-end-of-a-solidity-contract-bytecode) and realised it was just some metadata not relevant to the challenge.
+I saw the ascii hex values and thought this might be important to the challenge. But eventually I came across [this stackexchange post](https://ethereum.stackexchange.com/questions/23525/what-is-the-cryptic-part-at-the-end-of-a-solidity-contract-bytecode) and realised it was just some metadata not relevant to the challenge.
 
-* look at decompilation of Setup contract
-	* calls a function on another contract that I assume is the function in AdminPanel contract
-* after many unsuccessful attempts, return to web stuff
-* realised that the `gas` value is provided
-* recall from previous googling that each opcode has a certain gas cost, hence total gas cost of a transaction is calculated based on what opcodes are executed
-* we can use `gas` as an oracle (more opcodes are executed for success path, when flag check fails it ends early)
-* write python script:
+# Finding an Oracle
 
-```
-{'output': False, 'setup_contract_address': '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0', 'setup_contract_bytecode': '0x608060405234801561001057600080fd5b5060405161027838038061027883398101604081905261002f9161007c565b600080546001600160a01b039384166001600160a01b031991821617909155600180549290931691161790556100af565b80516001600160a01b038116811461007757600080fd5b919050565b6000806040838503121561008f57600080fd5b61009883610060565b91506100a660208401610060565b90509250929050565b6101ba806100be6000396000f3fe608060405234801561001057600080fd5b506004361061002b5760003560e01c8063410eee0214610030575b600080fd5b61004361003e366004610115565b610057565b604051901515815260200160405180910390f35b6000805460015460408051602481018690526001600160a01b0392831660448083019190915282518083039091018152606490910182526020810180516001600160e01b0316635449534360e01b17905290518493849316916100b99161012e565b6000604051808303816000865af19150503d80600081146100f6576040519150601f19603f3d011682016040523d82523d6000602084013e6100fb565b606091505b50915091508061010a9061015d565b600114949350505050565b60006020828403121561012757600080fd5b5035919050565b6000825160005b8181101561014f5760208186018101518583015201610135565b506000920191825250919050565b8051602080830151919081101561017e576000198160200360031b1b821691505b5091905056fea2646970667358221220e0f8333be083b807f8951d4868a6231b41254b2f6157a9fb62eff1bcefafd84e64736f6c63430008130033', 'adminpanel_contract_bytecode': '0x60858060093d393df35f358060d81c64544953437b148160801b60f81c607d1401600214610022575f5ffd5b6004356098636b35340a6060526020606020901b186024356366fbf07e60205260205f6004603c845af4505f515f5f5b82821a85831a14610070575b9060010180600d146100785790610052565b60010161005e565b81600d1460405260206040f3', 'secret_contract_bytecode': '0xREDACTED', 'gas': 29283}:
-```
+I went back to the web interface to see if there was anything I missed. Looking at the response_data leak, is there any additional information we can use? Aside from the contract bytecodes and output, we also have access to `setup_contract_address` and `gas`. The former is useless since it is a fixed value we can't do anything with. But what about `gas`?
+
+I recalled from browsing this list of [ethervm opcodes](https://ethereum.org/en/developers/docs/evm/opcodes/) that each opcode has a specific gas cost. So if a different sequence of opcodes are executed, the gas cost will be different. After testing some payloads, I confirmed that `gas` is deterministic based on the input.
+
+![](/evm_opcode_gas.png)
+
+I realised that it was possible to perform something similar to a timing attack, where in this case the gas cost represents the 'time' taken to execute the flag checking algorithm. If a certain string has a higher gas cost compared to another one, that means it passed more of the checks in the character-by-character string comparison. Thus, we can write a script to query a large number of strings that vary by only a single character, and narrow down which character is correct. Repeating this process for each character in the flag allows us to leak it eventually.
+
+I wrote a python script to achieve this:
 
 ```python:s.py
 import requests
@@ -393,7 +491,7 @@ from string import printable
 
 template = list('{XXXXXXXXXXX}' + '{{response_data}}')
 
-space = set(printable).difference('#{}%')
+space = set(printable).difference('#{}%')  # these characters were causing errors with flask templating
 
 for x in range(1, 12):
     for c in space:
@@ -415,53 +513,4 @@ for x in range(1, 12):
             sys.exit(1)
 ```
 
-my notes (a bit disorganised) for setup contract reversing
-
-```plaintext:setup.notes.txt
-# 0x10A: A | B | C | D | E | val
-    -> val == 1, $pc=A
-# 0x127: A | B | C | D
-    -> msg.data[C], $pc=A
-# 0x14F: A | B | C | D | E | F
-    -> E+C, $pc=A, memory[E+C]=0
-# 0x17E: A | B | C | D
-    -> C, $pc=A
-
-unknown, 0, storage[0], (1 << 0xa0) - 1, 0, memory[0x40], 0
-- 'stack base ptr' at memory[0x40], 32 bytes
-- base[0x24] = arg0
-- base[0x44] = storage[1] & ((1 << 0xa0) - 1) # mask last 20 bytes of storage
-- base[0] = 0x44
-- base[0x20] = base[0x20] & ((1 << 0xe0) - 1) | b'TISC'  # replace first 4 bytes with TISC
-- storage[0] & ((1 << 0xa0) - 1)
-- addr = func_012E(base, base+0x64)
-- address(storage[0] & ((1 << 0xa0) - 1)).call(memory[base+0x64:base+0x64+0x44]) 
-
-- storage[0] should be address of AdminPanel contract
-- storage[1] should be address of Secret contract
-
-# func_012E
-- number = memory[base] (should be 0x44)
-- i
-while (true) {
-  if (i >= number) {
-    memory[base + 0x64 + number] = 0
-    return base + 0x64 + number;
-  }
-  memory[base + 0x64 + i] = memory[base + i + 0x20] # copy 0x20 sized chunk
-  i += 0x20
-}
-```
-
-notes for adminpanel reverse:
-
-```plaintext:adminpanel.notes.txt
-- check that starts with `TISC{` and ends with `}`
-- `Secret.getSecret() == user_input[4:] ^ (keccak256(0x6b35340a) << 0x98)`
-
-all the following are in uint256 words (i.e. memory[0x60] means memory[0x60:0x60+0x20])
-- memory[0x60] = 0x6b35340a
-- memory[0x20] = 0x66fbf07e // parameter passed to secret call (the selector). Probably a getsecret function
-- memory[0x40] = 0x1 if passes check else 0x0
-- memory[0x0] = return value of secret call
-```
+Running the script, we are able to leak the flag. Now wrap it in the flag format: `TISC{g@s_Ga5_94S}`
