@@ -69,9 +69,9 @@ app.run(port=34567)
 
 Now when I run the app, the ships are always placed in the same squares. I found their positions through brute force and got a victory screen.
 
-![rubg grid](/rubg-grid.png)
+![rubg grid](/tisc23/rubg-grid.png)
 
-![rubg victory](/rubg-victory.png)
+![rubg victory](/tisc23/rubg-victory.png)
 
 However, I still didn't get the flag - when I looked back at the chal description I learned that a "flawless victory" is needed to get the flag. Through further experimentation, I realised that b, c and d did not have an impact on the grid layout, so it must be only a. After some guessing, I realised that a is basically a bitmap for where the ships are positioned, with two numbers corresponding to one row. For example, the second row is from `a[3]` and `a[2]`, `2 0 = 01000000 00000000`
 
@@ -79,7 +79,7 @@ Since I still didn't know what b, c and d did, I returned to analysing the binar
 
 Thus, I extract the files from the appimage using `rubg-1.0.0.AppImage --appimage-extract`, resulting in a squashfs-root folder. Then I run `asar extract squashfs-root/resources/app.asar decomp`, which produced the following directory:
 
-![rubg decompiled folder](/rubg-electron-decomp.png)
+![rubg decompiled folder](/tisc23/rubg-electron-decomp.png)
 
 The main logic is in `dist/assets/index-c08c228b.js`. After a while, I found the following function:
 

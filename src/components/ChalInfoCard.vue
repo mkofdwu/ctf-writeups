@@ -33,7 +33,7 @@ function downloadAll() {
   <div class="flex flex-col items-start">
     <span class="text-2xl opacity-40 mb-1">{{ info.datePosted }}</span>
     <h1 class="mb-7">{{ info.title }}</h1>
-    <div class="description mb-7 flex flex-col gap-y-3" v-html="descriptionRendered"></div>
+    <div class="markdown mb-7 flex flex-col gap-y-3" v-html="descriptionRendered"></div>
     <div class="flex flex-wrap gap-3">
       <div
         v-for="(cat, i) in info.cats"
@@ -54,7 +54,7 @@ function downloadAll() {
     </div>
     <div
       v-if="info.attachments.length"
-      class="w-full flex border border-almost-black-lighter rounded-2.5xl mt-7 max-sm:flex-col"
+      class="w-full flex border border-almost-black-lighter rounded-2.5xl mt-7 mb-9 max-sm:flex-col"
     >
       <div class="flex-1 flex flex-col gap-y-3 px-6 py-5">
         <span>Attachments</span>
@@ -75,12 +75,6 @@ function downloadAll() {
         Download all
       </button>
     </div>
+    <div v-else class="dotted-line-hori self-stretch w-auto mx-4 mt-10 mb-7"></div>
   </div>
 </template>
-
-<style scoped>
-.description :deep(a) {
-  color: #64a577;
-  text-decoration: underline;
-}
-</style>

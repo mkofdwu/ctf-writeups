@@ -65,7 +65,7 @@ Looking in the `WindowCaptureTextIndex_content` table under ukg.db, we see some 
 
 Running `curl http://localhost/` reveals that there is indeed a web server running.
 
-![](/diffuse_gobuster.png)
+![](/tisc24/diffuse_gobuster.png)
 
 # Stuff I did (and stuff todo)
 

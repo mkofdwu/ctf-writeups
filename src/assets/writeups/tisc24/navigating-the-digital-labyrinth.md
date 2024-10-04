@@ -4,11 +4,11 @@ This challenge provides us with only a single username: `vi_vox223`. I started b
 
 I looked through the profile and saw an interesting higlights reel titled 'Discord'. 
 
-![](/vi_vox223_ig.png)
+![](/tisc24/vi_vox223_ig.png)
 
 Seems like this discord bot is the next part of the challenge. A few slides later, another piece of information is revealed:
 
-![](/vi_vox223_ig_2.png)
+![](/tisc24/vi_vox223_ig_2.png)
 
 # 2. Discord bot
 
@@ -18,15 +18,15 @@ After some googling, I found [this guide](https://discordjs.guide/preparations/a
 
 I thought it was because the bot was missing some permissions, and used the following site to get the correct permissions code: [https://discordapi.com/permissions.html](https://discordapi.com/permissions.html). After some failed attempts (I was pinging the bot when in retrospect I should have just typed the command at the start of each message) I eventually just gave the bot all permissions, inviting it to the server via the following link: `https://discord.com/oauth2/authorize?client_id=1258440262951370813&scope=bot&permissions=1099511627775`. Now the bot seems to be working properly.
 
-![](/factbuddy.png)
+![](/tisc24/factbuddy.png)
 
 I created the role `D0PP3L64N63R` and assigned it to myself. Now when running `!help`, we get some new commands:
 
-![](/factbuddy_new_commands.png)
+![](/tisc24/factbuddy_new_commands.png)
 
 I listed the files:
 
-![](/factbuddy_list.png)
+![](/tisc24/factbuddy_list.png)
 
 After looking through each file one by one, I reached `Update_030624.eml`:
 
@@ -99,10 +99,10 @@ nd partitions areas of the Earth into identifiable cells.
 
 After googling for Uber's geospatial technology, I found the website: [https://h3geo.org/](https://h3geo.org/). Keying in the 3 hex values in the email shows a promising result:
 
-![](/uber_geolocation.png)
+![](/tisc24/uber_geolocation.png)
 
 I tried sending the two locations named on the map, 'San francesco' and 'Cimitero di Sermoneta', to the Telegram bot, but this yielded no results. More digging is required. I found 'Cimitero di Sermoneta' on Google maps, and found that the exact location covered by the three hexagons was 'Quercia secolare'.
 
 Submitting this to the Telegram bot, I got the flag!
 
-![](/tisc24_l1_flag.jpg)
+![](/tisc24/tisc24_l1_flag.jpg)

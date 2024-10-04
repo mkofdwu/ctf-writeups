@@ -52,7 +52,7 @@ public void M(String str) {
 
 Unfortunately, it seems that `str` is user-entered, and there is no way to reverse the sha1 hashes, hence we have to look elsewhere. At this point, I installed the apk on my phone, and saw that there was the following dialog:
 
-![Screenshot of the app](/kpa-screenshot.jpg)
+![Screenshot of the app](/tisc23/kpa-screenshot.jpg)
 
 I realised this is loaded by the onResume method: 
 

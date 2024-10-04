@@ -16,8 +16,8 @@ import theChosenOnes from '@/assets/writeups/tisc23/the-chosen-ones.md?raw'
 import devSecMeow from '@/assets/writeups/tisc23/devsecmeow.md?raw'
 import blindSqlInjection from '@/assets/writeups/tisc23/blind-sql-injection.md?raw'
 import pushAndPickle from '@/assets/writeups/push-and-pickle.md?raw'
-import hiDoggy from '@/assets/writeups/hi-doggy.md?raw'
-import protoGrader from '@/assets/writeups/proto-grader.md?raw'
+import hiDoggy from '@/assets/writeups/grey24/hi-doggy.md?raw'
+import protoGrader from '@/assets/writeups/grey24/proto-grader.md?raw'
 import navigatingTheDigitalLabyrinth from '@/assets/writeups/tisc24/navigating-the-digital-labyrinth.md?raw'
 import languageLabyrinthAndGraphicsMagick from '@/assets/writeups/tisc24/language-labyrinth-and-graphicsmagick.md?raw'
 import diggingUpHistory from '@/assets/writeups/tisc24/digging-up-history.md?raw'
@@ -31,6 +31,7 @@ import diffuse from '@/assets/writeups/tisc24/diffuse.md?raw'
 import ChalInfoCard from '@/components/ChalInfoCard.vue'
 import SectionsBar from '@/components/SectionsBar.vue'
 import { chals } from '@/data/writeups'
+import { defaultWriteupSlug } from '@/data/sidebarList'
 
 const writeups: { [slug: string]: { md: string; datePosted: string } } = {
   'the-other-obligatory-pyjail': { md: theOtherObligatoryPyjail, datePosted: '11 Sep 2023' },
@@ -89,7 +90,7 @@ const writeups: { [slug: string]: { md: string; datePosted: string } } = {
 
 const { slug } = useRoute().params
 if (typeof slug !== 'string' || !(slug in chals)) {
-  useRouter().push('/writeups/disk-archaeology')
+  useRouter().push(defaultWriteupSlug)
 }
 
 const chalInfo = chals[slug as string]
@@ -112,10 +113,10 @@ nextTick(() => {
 
 <template>
   <div class="relative flex flex-col items-center max-w-2xl mx-auto pt-24 pb-14">
-    <chal-info-card :info="chalInfo" :date-posted="datePosted" class="mb-6" />
+    <chal-info-card :info="chalInfo" :date-posted="datePosted" />
     <div
       id="article"
-      class="w-full flex flex-col gap-y-3 max-md:mx-6 max-sm:mx-0"
+      class="markdown w-full flex flex-col gap-y-3 px-4 max-md:mx-6 max-sm:mx-0"
       v-html="renderedMd"
     ></div>
     <div class="fixed w-[17.5rem] h-full top-0 right-0 pointer-events-none pr-8 max-[900px]:hidden">
@@ -123,117 +124,3 @@ nextTick(() => {
     </div>
   </div>
 </template>
-
-<style scoped>
-#article :deep(::-webkit-scrollbar) {
-  height: 8px;
-}
-
-#article :deep(::-webkit-scrollbar-thumb) {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-}
-
-#article :deep(pre) {
-  /* overflow: auto; */
-  /* overflow: hidden; */
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-  padding-left: 0.625rem;
-  padding-right: 0.625rem;
-  padding-bottom: 0.5rem;
-  border-radius: 1.25rem;
-  background-color: #121212;
-}
-
-#article :deep(code),
-#article :deep(code *) {
-  font-size: 0.8rem;
-}
-
-#article :deep(code) {
-  padding: 2px 4px 2px 4px;
-  border-radius: 4px;
-  background-color: #323232;
-}
-
-#article :deep(pre > code) {
-  padding: 1rem 0.375rem 0.5rem 0.375rem;
-  background-color: transparent;
-}
-
-#article :deep(pre.named-fence-block > code) {
-  padding-top: 3.5rem;
-}
-
-#article :deep(.named-fence-block) {
-  position: relative;
-}
-
-#article :deep(.named-fence-filename) {
-  position: absolute;
-  top: 0.625rem;
-  left: 0.625rem;
-  color: #f2f2f2;
-  font-family: 'Gabarito', sans-serif;
-  padding: 4px 12px 4px 12px;
-  background-color: #222;
-  border-radius: 8px;
-}
-
-#article :deep(h1) {
-  font-family: 'Gabarito', sans-serif;
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-top: 0.75rem;
-}
-
-#article :deep(img) {
-  /* width: 100%; */
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
-
-#article :deep(a) {
-  color: #64a577;
-  text-decoration: underline;
-}
-
-#article :deep(li) {
-  /* temporary */
-  list-style-type: disc;
-  list-style-position: inside;
-}
-
-#article :deep(ul li) {
-  margin-left: 1.5rem;
-}
-
-/* Generated from https://css-generators.com/wavy-shapes/ */
-.wave {
-  background: #727272;
-  width: 7px;
-  height: calc(100%-72px);
-  margin-top: 36px;
-  margin-bottom: 36px;
-
-  --mask: radial-gradient(
-        6.58px at calc(100% + 3px) 50%,
-        #0000 calc(99% - 1.5px),
-        #000 calc(101% - 1.5px) 99%,
-        #0000 101%
-      )
-      calc(50% - 3.25px + 0.5px) calc(50% - 10px) / 6.5px 20px repeat-y,
-    radial-gradient(
-        6.58px at -3px 50%,
-        #0000 calc(99% - 1.5px),
-        #000 calc(101% - 1.5px) 99%,
-        #0000 101%
-      )
-      calc(50% + 3.25px) 50%/6.5px 20px repeat-y;
-  -webkit-mask: var(--mask);
-  mask: var(--mask);
-}
-</style>

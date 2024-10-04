@@ -258,7 +258,7 @@ contract Noncevigator2 {
 
 I deployed this contract after running `getCorrectNonce.js`, and sure enough it was at the correct address. Now calling `startUnlockingGate()` succeeds! Checking the isSolved property shows we have solved the challenge!
 
-![](/noncevigator_solve.jpeg)
+![](/tisc24/noncevigator_solve.jpeg)
 
 I returned to the network instancer and obtained the flag:
 

@@ -4,13 +4,13 @@ I initially encountered many server issues with this challenge on the first day,
 
 We are greeted with the following webpage:
 
-![](/llm_welcome.png)
+![](/tisc24/llm_welcome.png)
 
 Clearly there is some llm in the challenge, but how is it being used to transform the image? I tried a bunch of different payloads to get an idea of what was going on, using a random image of a blank white square. 
 
 For example, sending the blank image with the prompt `Make this square white` yields the following result:
 
-![](/llm_example.png)
+![](/tisc24/llm_example.png)
 
 If we click on the 'View your hash.txt' link, we get a plaintext response: `gm convert /tmp/ecf823bce33c430c89eda6f1114a7ffc_Blank_Square.png -fill red -draw 'color 0,0 floodfill' /tmp/ecf823bce33c430c89eda6f1114a7ffc_Blank_Square.png_output.png`
 

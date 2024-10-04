@@ -2,7 +2,7 @@
 
 The web page is a simple flag checker with a single input field:
 
-![screenshot](/proto_grader.png)
+![screenshot](/grey24/proto_grader.png)
 
 Looking in the source code, here is the flag checking route in flask:
 
@@ -466,7 +466,7 @@ grey{n0d3j5_3v3ry7h1n6_p0llu710n}
 
 We solved this challenge around 30 minutes before the end of the CTF, clinching first place by a very narrow margin of 29 points. That was pretty cool.
 
-![GreyCTF 2024 scoreboard](/grey24_scoreboard.jpg)
+![GreyCTF 2024 scoreboard](/grey24/scoreboard.jpg)
 
 # Understanding the buffer overflow
 

@@ -2,7 +2,7 @@ Overall, I feel this challenge was comparitively straightforward and provided so
 
 We are asked to guess a number on the landing page, and the number seems to be randomly generated each time:
 
-![number guessing page](/the-chosen-ones-first.png)
+![number guessing page](/tisc23/the-chosen-ones-first.png)
 
 Initially, I assumed the php `rand()` function was being used, and spent sometime researching on methods to predict the next random value based on previous outputs. This was largely unsuccessful. However, I eventually realised the source code for generating the 6 digit number was provided in a base32 encoded comment in the html.
 
@@ -70,7 +70,7 @@ Personnel List <br>
 
 I copied the `PHPSESSID` and `rank` cookies into Chrome, and viewed `/table.php`.
 
-![table](/the-chosen-ones-table.png)
+![table](/tisc23/the-chosen-ones-table.png)
 
 I tried some standard sql injection payloads such as `' or 1=1;--`, however they didn't seem to work. I then tried a polyglot injection payload I found on PayloadAllTheThings:
 
@@ -82,7 +82,7 @@ This yielded no results on both the username and password fields.
 
 Then I remembered the strange `rank` cookie and tried to figure out what it did. I changed the value to 1, and this time the table was larger:
 
-![table](/the-chosen-ones-table-2.png)
+![table](/tisc23/the-chosen-ones-table-2.png)
 
 Changing the value to 2, I could see more rows with users of rank 2 as well. So rank is probably included in the sql query as well and a possible vector for sql injection. I set rank to the polyglot injection payload above and sent another request. This time, the request returned a server error after a while, so the sql injection was successful.
 

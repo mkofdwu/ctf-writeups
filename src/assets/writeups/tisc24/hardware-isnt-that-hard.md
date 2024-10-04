@@ -6,7 +6,7 @@ I started by trying to get an overall idea of the the various concepts involved,
 
 Based on my understanding, a TPM is a piece of hardware that does encryption and decryption of data passed to it. It has a "mini-processor" and the key is stored inside it, allowing all operations to occur independently of the actual computer. Hence, it is impossible for an attacker to inject their own code or otherwise interfere with the encryption and decryption algorithms. Neither is it possible to leak the encryption key since it is stored on an entirely different memory chip.
 
-![](https://upload.wikimedia.org/wikipedia/commons/b/be/TPM.svg)
+![](/tisc24https://upload.wikimedia.org/wikipedia/commons/b/be/TPM.svg)
 
 Next, I began researching ways to reverse the firmware dump. My search led to [esp32_image_parser](https://github.com/tenable/esp32_image_parser) on github (some other useful resources I came across are [https://github.com/BlackVS/ESP32-reversing?tab=readme-ov-file#firmware](https://github.com/BlackVS/ESP32-reversing?tab=readme-ov-file#firmware) and [https://olof-astrand.medium.com/reverse-engineering-of-esp32-flash-dumps-with-ghidra-or-ida-pro-8c7c58871e68](https://olof-astrand.medium.com/reverse-engineering-of-esp32-flash-dumps-with-ghidra-or-ida-pro-8c7c58871e68))
 
@@ -102,7 +102,7 @@ index 6503cf7..0abcc86 100755
 
 Now, rerunning the command produces an ELF file. To decompile the file with ghidra, I had to install ghidra version 11+ as previous versions did not have support for xtensa esp32 instructions (another option was using https://github.com/Ebiroll/ghidra-xtensa). Now after importing the file into ghidra, we can see the decompilation.
 
-![](/firmware_decomp.png)
+![](/tisc24/firmware_decomp.png)
 
 To be honest, I wasn't expecting the decompilation to work since I wasn't even sure if the ELF had been extracted correctly, or if the patches had messed it up somehow. Anyway, I continued on.
 
@@ -112,7 +112,7 @@ The entry function seems to be quite complex and there is no immediately obvious
 
 I searched for this string in ghidra using `Search > Memory`
 
-![](/hardware_ghidra_search.png)
+![](/tisc24/hardware_ghidra_search.png)
 
 Following its references, we can see its being used in the following function:
 
@@ -206,7 +206,7 @@ LAB_400d1689:
 
 clicking on the `DAT_3ffbdb6a` symbol I found that it points to an interesting string:
 
-![](/hardware_interesting_string.png)
+![](/tisc24/hardware_interesting_string.png)
 
 A fake flag! This proves we're on the right track. The function above is probably the main function, and `FUN_400f25bc` is probably analgous to `__libc_start_main`?
 
@@ -271,7 +271,7 @@ I assumed that passing `0x4d` to the firmware would result in the string "BRYXco
 
 Now I had to figure out how to interact with the firmware. Here is the firmware interface provided (nc command in chal description):
 
-![](/firmware_interface.png)
+![](/tisc24/firmware_interface.png)
 
 Looking at the example for SEND, it seems like the first argument is some address or opcode, and the second argument is the payload.
 

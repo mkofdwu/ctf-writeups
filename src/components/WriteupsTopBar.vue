@@ -66,19 +66,12 @@ nextTick(() => {
         </div>
       </div> -->
     </div>
-    <div class="line w-[calc(100vw-5rem)] max-sm:w-screen"></div>
+    <div class="dotted-line-hori z-10 w-[calc(100vw-5rem)] max-sm:w-screen"></div>
   </div>
 </template>
 
 <style scoped>
 .menu-opened {
   height: calc(100vh - 4rem);
-}
-
-.line {
-  height: 1.5px;
-  z-index: 10;
-  background-image: linear-gradient(to right, #525252 33%, rgba(82, 82, 82, 0) 0%);
-  background-size: 12px;
 }
 </style>

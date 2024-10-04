@@ -4,13 +4,13 @@ Unzipping `disk.zip` we see a single disk file: `csitfanUPDATED0509.ad1`. I ran 
 
 I opened the disk file in FTKImager, and began by looking in the user’s home folder.
 
-![](/ftk_1.png)
+![](/tisc24/ftk_1.png)
 
 There is a file `csitfan1@google[2].txt` under the Cookies folder (this later proved to be useless), as well as some program called `mypal`, which a quick google search reveals is a “web browser for windows XP”.
 
 Looking under the Recent folder, we see there link files, shown below:
 
-![](/ftk_2.png)
+![](/tisc24/ftk_2.png)
 
 `flag.lnk` contains a reference to a file path `C:\Documents and Settings\csitfan1\Desktop\flag.sus`. Examining the contents of `flag.txt (2).lnk` and `flag.txt.lnk` show that the point to similar files in the Desktop folder, named `flag.txt` and `flag.txt.sus` respectively. Of course, these files did not exist. Perhaps they had been deleted?
 
@@ -18,7 +18,7 @@ Looking under the Recent folder, we see there link files, shown below:
 
 I continued my search in the recycle bin and system restore points to try and find any trace of these files. 
 
-![](/ftk_3.png)
+![](/tisc24/ftk_3.png)
 
 This looks promising, there are seem to be 3 restore points as well as recycle bin data.
 
@@ -28,11 +28,11 @@ We have 3 restore points. I did some googling on Windows restore point data, and
 
 Take RP1 as an example:
 
-![](/ftk_4.png)
+![](/tisc24/ftk_4.png)
 
 Each `AXXXXXXX.ext` file contains the data of whichever file was backed up. The original filenames can be retrieved by referencing the `change.log` files, for example:
 
-![](/ftk_5.png)
+![](/tisc24/ftk_5.png)
 
 So `A0000011.dll` is actually `C:\Windows\System32\dllcache\fp4autl.dll`.
 
@@ -42,11 +42,11 @@ I spent some time looking through all the change.log files as well as the A file
 
 Another google search revealed that mypal browsing history is stored under `places.sqlite` in mypal’s AppData folder. I exported the entire folder:
 
-![](/ftk_6.png)
+![](/tisc24/ftk_6.png)
 
 Then I opened up places.sqlite in vscode:
 
-![](/places_sqlite.png)
+![](/tisc24/places_sqlite.png)
 
 The last url immediately caught my eye: `https://csitfan-chall.s3.amazonaws.com/flag.sus`. This was probably what the challenge description meant by 'hiding sensitive data through file hosting sites'. I downloaded the file, it contained the text `VElTQ3t0cnUzXzFudDNybjN0X2gxc3QwcjEzXzg0NDU2MzJwcTc4ZGZuM3N9`. Looks like base64. Decoding it with `echo VElTQ3t0cnUzXzFudDNybjN0X2gxc3QwcjEzXzg0NDU2MzJwcTc4ZGZuM3N9 | base64 -d`, we get the flag:
 

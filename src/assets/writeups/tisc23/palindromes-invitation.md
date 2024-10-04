@@ -20,11 +20,11 @@ jobs:
 
 I looked through the branches and commit history, but there was nothing interesting there. There seemed to be a few issues and pull requests, but I soon realised that these were created by other participants. Then I moved to the actions tab, and found the `Portal opening` job triggered by palindrome-wow, and saw interesting stuff in the logs:
 
-![portal opening logs](/palindromes-invitation-gh-log.png)
+![portal opening logs](/tisc23/palindromes-invitation-gh-log.png)
 
 It seems that the `PORTAL_URL` and `PORTAL_PASSWORD` have been leaked in the logs. Although `PORTAL_URL` is redacted, we can see there was an attempt to connect to 18.143.127.62:45938. Accessing this in the browser, we are greeted with a login page:
 
-![palindrome portal](/palindromes-invitation-portal.png)
+![palindrome portal](/tisc23/palindromes-invitation-portal.png)
 
 I tried submitting `:dIcH:..uU9gp1%3C@%3C3Q%22DBM5F%3C)64S%3C(01tF(Jj%25ATV@$Gl` as the password, but this didn't work. But after putting this value into CyberChef, I realised it was the base85 encoded and url encoded string `"PALINDROME has an AUTOMATED secretary"`. It turned out that the correct password was base85 encoded value, `":dIcH:..uU9gp1<@<3Q"DBM5F<)64S<(01tF(Jj%ATV@$Gl"`. After entering this in, I am presented with a discord invite link, with some token in the comments:
 

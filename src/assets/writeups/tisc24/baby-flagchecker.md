@@ -2,7 +2,7 @@ NOTE: this writeup is still WIP
 
 Similar to level 6, this is also a blockchain challenge, though with more emphasis on rev. Partial source is provided for this challenge:
 
-![](/baby_flagchecker_tree.png)
+![](/tisc24/baby_flagchecker_tree.png)
 
 # SSTI leak
 
@@ -42,7 +42,7 @@ def submit():
 
 Unfortunately, the 32 character length limit means we cannot get RCE. However, we can leak `response_data` with by passing password = `{{response_data}}`:
 
-![](/response_data_leak.png)
+![](/tisc24/response_data_leak.png)
 
 # Backend server
 

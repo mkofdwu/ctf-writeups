@@ -1,6 +1,6 @@
 This was a very charming level, although it was definitely the easiest one in the CTF. I like how the challenge author designed a logo, mascot, and even a soundtrack for this fictional payment service.
 
-![](/agpay.png)
+![](/tisc24/agpay.png)
 
 # JS Code
 
