@@ -5,6 +5,7 @@ import MarkdownIt from 'markdown-it'
 import mdItAnchor from 'markdown-it-anchor'
 import namedCodeBlocks from 'markdown-it-named-code-blocks'
 import hljs from 'highlight.js'
+import hljsDefineSolidity from 'highlightjs-solidity'
 import theOtherObligatoryPyjail from '@/assets/writeups/the-other-obligatory-pyjail.md?raw'
 import diskArchaeology from '@/assets/writeups/tisc23/disk-archaeology.md?raw'
 import recklessMistake from '@/assets/writeups/tisc23/reckless-mistake.md?raw'
@@ -99,6 +100,7 @@ let renderedMd = mdIt.render(md)
 
 const sections = ref<{ label: string; id: string }[]>([])
 
+hljsDefineSolidity(hljs)
 nextTick(() => {
   hljs.highlightAll()
   const elements = document.getElementById('article')!.getElementsByTagName('h1')

@@ -213,7 +213,7 @@ Since we don't have access to the `mystery_contract` bytecode (also, it's reason
 
 # Reversing Setup
 
-When I decompiled Setup on ethervm.io, it helpfully informed me that the decompilation was probably constructor bytecode and to get the actual deployed contract I would have to "remove the constructor prefix, usually up to the next 6060 or 6080". I did so, and got the decompilation:
+When I decompiled Setup on ethervm.io, it helpfully informed me that the decompilation was probably constructor bytecode and to get the actual deployed contract I would have to "remove the constructor prefix, usually up to the next 6060 or 6080". I did so, and got the following decompilation (with a few comments added):
 
 ```solidity
 contract Contract {
@@ -227,7 +227,7 @@ contract Contract {
     
         var0 = msg.data[0x00:0x20] >> 0xe0;
     
-        if (var0 != 0x410eee02) { revert(memory[0x00:0x00]); }
+        if (var0 != 0x410eee02) { revert(memory[0x00:0x00]); } // 0x410eee02 seems to be the selector
     
         var var1 = 0x0043;
         var var2 = 0x003e;
@@ -242,6 +242,8 @@ contract Contract {
     }
     
     function func_003E(var arg0) returns (var r0) {
+        // check password
+        // arg0: user input
         var var0 = 0x00;
         var temp0 = memory[0x40:0x60];
         memory[temp0 + 0x24:temp0 + 0x24 + 0x20] = arg0;
@@ -291,6 +293,9 @@ contract Contract {
     }
     
     function func_0115(var arg0, var arg1) returns (var r0) {
+        // seems to be getting the first param (32 bytes) in arguments (msg.data)
+        // arg0: msg.data.length
+        // arg1: 0x4
         var var0 = 0x00;
     
         if (arg0 - arg1 i>= 0x20) { return msg.data[arg1:arg1 + 0x20]; }
@@ -327,6 +332,9 @@ contract Contract {
     }
 }
 ```
+
+So it checks for the `0x410eee02` function selector (this is probably checkPasssword) and gets the first argument (the password) by calling `func_0115`. 
+I added some comments 
 
 I also went down a mini rabbit hole looking at the suspicious instructions near the end of the contract:
 
