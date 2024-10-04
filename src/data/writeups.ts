@@ -327,7 +327,7 @@ Your task is to find a way to join this exclusive member tier within AlligatorPa
   },
   'hardware-isnt-that-hard': {
     title: 'Hardware isnt that Hard!',
-    author: 'unknown',
+    author: 'jiefeng',
     description: `Shucks... it seems like our enemies are making their own silicon chips??!? They have decided to make their own source of trust, a TPM (Trusted Platform Module) or I guess their best attempt at it.
 
 Your fellow agent smuggled one out for us to reverse engineer. Don't ask us how we did it, we just did it, it was hard ...
@@ -416,7 +416,7 @@ It's up to you now! Can you break through the walls and unveil the hidden secret
   },
   imphash: {
     title: 'Imphash',
-    author: 'unknown',
+    author: 'jro',
     description: `Almost there agent, we might have a chance to gain access into the enemy's systems again!! We are so close.
 
 But, it seems like they've developed a robust anti-malware service that's thwarting all attempts to breach their systems!
@@ -438,7 +438,7 @@ nc chals.tisc24.ctf.sg 53719`,
   },
   diffuse: {
     title: 'Diffuse',
-    author: 'unknown',
+    author: 'Jon Chiang',
     description: `!!! We've found a weird device with a timer counting down! Ccould..it... be...a bomb....?? Your fellow agents found some access into the engineer's machine, will you be able to find some clues and diffuse it before it's too late?
 
 For details on your instance, talk to @DiffuseInstanceBot on Telegram.

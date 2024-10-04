@@ -112,14 +112,16 @@ nextTick(() => {
 </script>
 
 <template>
-  <div class="relative flex flex-col items-center max-w-3xl mx-auto pt-24 pb-14">
+  <div
+    class="relative flex flex-col items-center break-words max-w-[89rem] mx-auto px-[20.5rem] pt-24 pb-14 max-xl:ml-0 max-xl:pl-12 max-lg:mr-0 max-lg:pr-12 max-md:px-8 max-sm:px-5"
+  >
     <chal-info-card :info="chalInfo" :date-posted="datePosted" />
     <div
       id="article"
-      class="markdown w-full flex flex-col gap-y-3 px-4 max-md:mx-6 max-sm:mx-0"
+      class="markdown w-full flex flex-col gap-y-3 px-4 max-md:px-0"
       v-html="renderedMd"
     ></div>
-    <div class="fixed w-[17.5rem] h-full top-0 right-0 pointer-events-none pr-8 max-[900px]:hidden">
+    <div class="fixed w-[17.5rem] h-full top-0 right-0 pointer-events-none pr-8 max-lg:hidden">
       <sections-bar :sections="sections" />
     </div>
   </div>

@@ -41,14 +41,14 @@ nextTick(() => {
       <a
         href="https://github.com/mkofdwu/ctf-writeups"
         target="_blank"
-        class="w-10 h-10 rounded-full grid place-items-center mr-3"
+        class="w-10 h-10 rounded-full grid place-items-center"
       >
         <github-icon />
       </a>
       <a
         href="https://jiajie.surge.sh"
         target="_blank"
-        class="h-10 pl-4 pr-2 flex items-center font-semibold rounded-full border"
+        class="h-10 pl-4 pr-2 ml-3 flex items-center font-semibold rounded-full border max-[460px]:hidden"
       >
         main website
         <material-icon name="arrow_outward" class="ml-3" />
