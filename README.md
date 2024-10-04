@@ -4,5 +4,5 @@
 
 - main search page
 - code blocks copy + toggle wrap buttons
-- put `Date posted` somewhere in the page
-- links to my main website
+- organize the image files a bit better
+- include a way to put captions under images

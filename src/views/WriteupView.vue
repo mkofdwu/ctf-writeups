@@ -95,7 +95,7 @@ if (typeof slug !== 'string' || !(slug in chals)) {
 const chalInfo = chals[slug as string]
 
 const mdIt = new MarkdownIt().use(namedCodeBlocks).use(mdItAnchor)
-const { md } = writeups[slug as string]
+const { md, datePosted } = writeups[slug as string]
 let renderedMd = mdIt.render(md)
 
 const sections = ref<{ label: string; id: string }[]>([])
@@ -111,19 +111,14 @@ nextTick(() => {
 </script>
 
 <template>
-  <div
-    class="writeup flex flex-col pl-[80px] pr-[360px] py-10 max-lg:pl-[60px] max-lg:pr-[340px] max-lg:pt-3 max-[900px]:pr-[60px] max-sm:px-5"
-  >
-    <chal-info-card :info="chalInfo" class="mb-9" />
+  <div class="relative flex flex-col items-center max-w-2xl mx-auto pt-24 pb-14">
+    <chal-info-card :info="chalInfo" :date-posted="datePosted" class="mb-6" />
     <div
       id="article"
-      class="flex flex-col gap-y-3 max-md:mx-6 max-sm:mx-0"
+      class="w-full flex flex-col gap-y-3 max-md:mx-6 max-sm:mx-0"
       v-html="renderedMd"
     ></div>
-    <div
-      class="absolute w-[280px] h-full top-0 right-0 flex pointer-events-none max-xl:pt-16 max-[900px]:hidden"
-    >
-      <div class="wave mr-8"></div>
+    <div class="fixed w-[17.5rem] h-full top-0 right-0 pointer-events-none pr-8 max-[900px]:hidden">
       <sections-bar :sections="sections" />
     </div>
   </div>

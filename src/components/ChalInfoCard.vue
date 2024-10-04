@@ -10,12 +10,13 @@ const catIcons: { [cat: string]: string } = {
   pwn: 'bug_report',
   rev: 'keyboard_double_arrow_left',
   misc: 'help',
-  forensics: 'fingerprint',
+  forensics: 'quick_reference_all',
   crypto: 'key',
   mobile: 'phone_android',
   cloud: 'cloud',
   osint: 'visibility',
-  blockchain: 'currency_bitcoin'
+  blockchain: 'currency_bitcoin',
+  hardware: 'memory'
 }
 
 const mdIt = new MarkdownIt()
@@ -30,25 +31,30 @@ function downloadAll() {
 
 <template>
   <div class="flex flex-col items-start">
-    <h1 class="mb-8">{{ info.title }}</h1>
-    <div class="description mb-8 flex flex-col gap-y-3" v-html="descriptionRendered"></div>
+    <span class="text-2xl opacity-40 mb-1">{{ info.datePosted }}</span>
+    <h1 class="mb-7">{{ info.title }}</h1>
+    <div class="description mb-7 flex flex-col gap-y-3" v-html="descriptionRendered"></div>
     <div class="flex flex-wrap gap-3">
       <div
         v-for="(cat, i) in info.cats"
         :key="i"
-        class="h-9 bg-almost-black rounded-full flex items-center"
+        class="h-9 bg-white rounded-full flex items-center"
       >
-        <material-icon sm :name="catIcons[cat]!" class="ml-3 mr-2" />
-        <span class="mr-4">{{ cat }}</span>
+        <material-icon sm :name="catIcons[cat]!" class="ml-3 mr-2 text-black" />
+        <span class="mr-4 text-black font-semibold">{{ cat }}</span>
       </div>
       <div class="h-9 bg-almost-black rounded-full px-5 flex items-center">
         <span class="mr-4">{{ info.numSolves }} solves</span>
         <span class="opacity-60">{{ info.numPoints }} points</span>
       </div>
+      <div class="h-9 bg-almost-black rounded-full flex items-center">
+        <material-icon sm name="person" class="ml-3 mr-3" />
+        <span class="mr-4">by {{ info.author }}</span>
+      </div>
     </div>
     <div
       v-if="info.attachments.length"
-      class="w-full flex border border-almost-black-lighter rounded-2.5xl mt-8 max-sm:flex-col"
+      class="w-full flex border border-almost-black-lighter rounded-2.5xl mt-7 max-sm:flex-col"
     >
       <div class="flex-1 flex flex-col gap-y-3 px-6 py-5">
         <span>Attachments</span>

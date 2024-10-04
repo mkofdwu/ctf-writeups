@@ -10,7 +10,8 @@
 h1 {
   font-family: 'Judson', serif;
   font-weight: 400;
-  font-size: 56px;
+  font-size: 52px;
+  line-height: 1.2;
 }
 
 @media (max-width: 640px) {
@@ -44,4 +45,20 @@ h1 {
 
 body {
   background: #1e1e1e;
+}
+
+.dotted-line-vert {
+  width: 1.5px;
+  background-image: linear-gradient(to bottom, #525252 33%, rgba(82, 82, 82, 0) 0%);
+  background-size: 12px 12px;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  opacity: 1;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }

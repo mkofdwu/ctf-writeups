@@ -1,6 +1,4 @@
 <script setup lang="ts">
-const { fullWidth } = defineProps<{ fullWidth?: boolean }>()
-
 const ctfs = [
   {
     name: 'TISC 2024',
@@ -90,26 +88,40 @@ const ctfs = [
 </script>
 
 <template>
-  <div v-for="ctf in ctfs" :key="ctf.name" class="flex flex-col mb-8">
-    <span class="opacity-60 ml-9 mb-3">{{ ctf.name }}</span>
-    <router-link
-      v-for="(chal, i) in ctf.chals"
-      :key="chal.slug"
-      :to="`/writeups/${chal.slug}`"
-      class="h-14 flex items-center pl-10 transition-colors"
-      :class="
-        ($route.path.includes(chal.slug)
-          ? 'bg-primary text-black font-medium'
-          : 'bg-almost-black hover:bg-almost-black-lighter') +
-        ' ' +
-        (fullWidth
-          ? 'w-full'
-          : 'w-[280px] ' +
-            (i === 0 ? 'rounded-tr-2.5xl ' : '') +
-            (i === ctf.chals.length - 1 ? 'rounded-br-2.5xl ' : ''))
-      "
-    >
-      {{ chal.name }}
-    </router-link>
+  <div class="flex flex-col">
+    <div v-for="ctf in ctfs" :key="ctf.name" class="w-full flex flex-col mb-5">
+      <span class="opacity-60 ml-9 mb-3">{{ ctf.name }}</span>
+      <router-link
+        v-for="chal in ctf.chals"
+        :key="chal.slug"
+        :to="`/writeups/${chal.slug}`"
+        class="group h-12 flex pl-10"
+      >
+        <svg
+          width="20"
+          height="16"
+          viewBox="0 0 20 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          class="mt-[12px] mr-3"
+        >
+          <path
+            d="M1 0V3C1 9.62742 6.37258 15 13 15H20"
+            class="transition-colors"
+            :stroke="$route.path.includes(chal.slug) ? '#64A577' : '#424242'"
+            stroke-width="2"
+          />
+        </svg>
+        <span
+          class="self-center"
+          :class="
+            $route.path.includes(chal.slug)
+              ? 'text-primary font-medium'
+              : 'group-hover:text-primary'
+          "
+          >{{ chal.name }}</span
+        >
+      </router-link>
+    </div>
   </div>
 </template>

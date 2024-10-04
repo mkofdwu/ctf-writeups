@@ -1,6 +1,6 @@
 export type ChalInfo = {
   title: string
-  subtitle: string
+  author: string
   description: string
   cats: (
     | 'web'
@@ -19,4 +19,5 @@ export type ChalInfo = {
   numPoints: number
   attachments: { name: string; url: string }[]
   sourceUrl: string
+  datePosted: string
 }

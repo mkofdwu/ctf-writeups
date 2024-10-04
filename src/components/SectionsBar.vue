@@ -1,20 +1,21 @@
 <script setup lang="ts">
-import { nextTick, ref } from 'vue'
+import { nextTick, ref, computed } from 'vue'
 
 const { sections } = defineProps<{ sections: { label: string; id: string }[] }>()
 
+let sectionLinks: HTMLCollectionOf<Element>
 const currentSection = ref('')
 
 nextTick(() => {
-  const scrollContainer = document.getElementById('scroll-container')!
+  sectionLinks = document.getElementsByClassName('section-link')
 
-  scrollContainer.onscroll = () => {
+  window.addEventListener('scroll', () => {
     const sectionsReversed = ([] as any[]).concat(sections).reverse()
     let isUnderSection = false
 
     for (const section of sectionsReversed) {
       const sectionOffset = document.getElementById(section.id)!.offsetTop
-      if (scrollContainer.scrollTop + window.innerHeight / 2 > sectionOffset) {
+      if (window.scrollY + window.innerHeight / 4 > sectionOffset) {
         currentSection.value = section.id
         isUnderSection = true
         break
@@ -24,21 +25,41 @@ nextTick(() => {
     if (!isUnderSection) {
       currentSection.value = ''
     }
+  })
+})
+
+const markerTop = computed(() => {
+  if (currentSection.value == '') {
+    return ''
   }
+  const i = sections.findIndex((section) => section.id === currentSection.value)
+  const bbox = sectionLinks.item(i)!.getBoundingClientRect()
+  return `calc(${bbox.top}px + 0.5rem)`
 })
 </script>
 
 <template>
-  <div class="flex flex-col">
-    <span class="mt-7 mb-8 opacity-60">Sections</span>
-    <a
-      v-for="{ label, id } in sections"
-      :key="id"
-      class="font-semibold mb-5 transition-colors pointer-events-auto"
-      :class="id === currentSection ? 'text-primary' : ''"
-      :href="$route.path + '#' + id"
-    >
-      {{ label }}
-    </a>
+  <div class="relative h-full flex">
+    <div class="dotted-line-vert h-auto mb-10 mr-9"></div>
+    <transition name="fade">
+      <div
+        v-if="currentSection"
+        class="w-1 h-8 rounded-sm bg-primary absolute -left-0.5 transition-all"
+        :style="{ top: markerTop }"
+      ></div
+    ></transition>
+    <div class="flex flex-col pt-16">
+      <span class="mt-6 mb-4 opacity-60">Sections</span>
+      <a
+        v-for="{ label, id } in sections"
+        :key="id"
+        class="section-link h-12 flex items-center font-semibold transition-colors pointer-events-auto"
+        :class="id === currentSection ? 'text-primary' : 'hover:text-primary'"
+        :href="$route.path + '#' + id"
+      >
+        {{ label }}
+      </a>
+    </div>
+    <div class="absolute bottom-"></div>
   </div>
 </template>
