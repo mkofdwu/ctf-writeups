@@ -115,15 +115,13 @@ public class query extends C0 {
 }
 ```
 
-It seems to be a page where string decryption is going on. the value of `R.string.str` can be found under `resources/res/values/strings.xml`: 
+It seems to be a page where string decryption is going on, however we have to provide the key and iv. The value of `R.string.str` can be found under `resources/res/values/strings.xml`: 
 
 ```xml:strings.xml
 ...
     <string name="str">4tYKEbM6WqQcItBx0GMJvssyGHpVTJMhpjxHVLEZLVK6cmIH7jAmI/nwEJ1gUDo2</string>
 ...
 ```
-
-# Looking for strings
 
 Looking around the file, I found a few other interesting strings:
 
@@ -140,6 +138,10 @@ Looking around the file, I found a few other interesting strings:
 They seem to also be base64-encoded. Decoding them gives base = `wallowinpain`, dir = `data/`, filename = `sqlite.db`.
 
 Under `resources/assets`, I noticed a `sqlite.db` file. However, attempts to open it were met with the error: `file is not a database`. I tried various methods to patch the file unsuccessfully. Furthermore, a strings check on the file does not return any readable text except for the sqlite header.
+
+> Stuff that didn't work
+> 
+> At this point, I went down a few different rabbit holes. Following the hint in the challenge description that *something* was being loaded at runtime, I rooted my android emulator (took way longer than I would like to admit) and used [Fridump](https://github.com/Nightbringer21/fridump) to dump the app memory. I thought that perhaps the sqlite file was being decrypted at runtime, so the decrypted file would be in the memory dump. This proved to be false.
 
 Eventually, I returned to the three mysterious strings and tried to figure out where they were being used. We can find the string ids in `R.java`
 
@@ -554,14 +556,14 @@ public class h2 {
 
 I placed this file in `resources/assets`. Compile with `javac h2.java` and run it with `java h2.java`, and libnative.so pops out.
 
-# Debugging setup
+# Loading libnative.so
 
 To do testing with this library I created a new project in Android Studio. Then I created a `jniLibs` folder under `app/src/main`, a subfolder `x86_64` under that, and copied libnative.so there. To load the library, I created the following java class:
 
-```java:Test.java
+```java:DynamicClass.java
 package com.example.myapplication;
 
-public class Test {
+public class DynamicClass {
     static {
         System.loadLibrary("native");
     }
@@ -577,13 +579,80 @@ I called nativeMethod when the main activity starts:
     
     override fun onStart() {
         super.onStart()
-        Test.nativeMethod()
+        DynamicClass.nativeMethod()
     }
 
 ...
 ```
 
-# libnative.so reversing
+Now running the app, we can open up the LogCat window and filter by "TISC":
+
+![](/tisc24/libnative_logs_linkerr.png)
+
+Unfortunately, get the error above: `java.lang.UnsatisfiedLinkError: No implementation found for void com.example.myapplication.DynamicClass.nativeMethod() (tried Java_com_example_myapplication_DynamicClass_nativeMethod and Java_com_example_myapplication_DynamicClass_nativeMethod__)`. So android requires a specific function name to resolve the native function, in the format `Java_<package>_<class_name>_<method_name>`.
+
+Because it's a dynamically loaded java class, the package field is omitted, so the function in libnative.so is just called `Java_DynamicClass_nativeMethod`. But how do we get android to omit the package name when it searches for the function?
+
+My solution was to rename the symbol in libnative.so to `Java_com_a_a_Test_nativeMethod`. This is the same length as the original function name so no problems should occur. I created a new android project with the package name `com.a.a`, and the java class named `Test`. Everything else remained the same. Here is the python script used to patch it:
+
+```python:patch.py
+import lief
+
+with open('libnative.so', 'rb') as f:
+    data = f.read()
+
+newdata = data[:]
+
+# NOTE: the following doesnt work, i have no idea why...
+# newdata = newdata.replace(b'Java_DynamicClass_nativeMethod', b'Java_com_a_a_Test_nativeMethod')
+
+with open('libnative1.so', 'wb') as f:
+    f.write(newdata)
+
+# instead i have to use lief to change method name:
+lib = lief.parse('libnative1.so')
+for x in lib.exported_symbols:
+    if x.name == 'Java_DynamicClass_nativeMethod':
+        x.name = 'Java_com_a_a_Test_nativeMethod'
+lib.write('libnative1.so')
+lib.write('/home/smalldonkey/dev/android/A/app/src/main/jniLibs/x86_64/libnative1.so')  # for convenience
+```
+
+In Test.java I changed `System.loadLibrary("native")` to `System.loadLibrary("native1")`. Running the app again, we see more logs, showing that the function was invoked successfully:
+
+![](/tisc24/libnative_logs_fail.png)
+
+Recalling the query.java activity earlier, I tried using the printed key and iv to decrypt the string:
+
+```java:Decrypt.java
+import java.util.Base64;
+import java.util.Arrays;
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
+class Decrypt {
+    public static void main(String[] args) {
+        try {
+            byte[] decode = Base64.getDecoder().decode("4tYKEbM6WqQcItBx0GMJvssyGHpVTJMhpjxHVLEZLVK6cmIH7jAmI/nwEJ1gUDo2");
+            byte[] bytes = "z?<NKKf7m?MUg&>qBp\"b9G$A!bzP&0I(".getBytes();
+            System.out.println(bytes.length);
+            byte[] bytes2 = "apI3`ipq.?3d!t#6".getBytes();
+            System.out.println(bytes2.length);
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            cipher.init(2, new SecretKeySpec(bytes, "AES"), new IvParameterSpec(bytes2));
+            System.out.println("Decrypted data: ".concat(new String(cipher.doFinal(decode))));
+        } catch (Exception unused) {
+            System.out.println("Failed to decrypt data");
+            System.out.println(unused);
+        }
+    }
+}
+```
+
+Unfortunately, this didn't work. Seems like we have to do more reversing to figure out how to get the correct key and iv.
+
+# Reversing libnative.so
 
 After importing libnative.so into ghidra, we can see the nativeMethod hook:
 
@@ -604,7 +673,39 @@ void Java_DynamicClass_nativeMethod(undefined8 param_1)
 }
 ```
 
-Let's look at the first function `FUN_00103230`:
+Referring to [this example](https://developer.android.com/ndk/samples/sample_hellojni#ci) from the android docs, we can see actual function signature:
+
+```c
+JNIEXPORT jstring JNICALL
+Java_com_example_hellojni_HelloJni_stringFromJNI( JNIEnv* env,
+                                                  jobject thiz )
+```
+
+I found [this github repo](https://github.com/extremecoders-re/ghidra-jni) containing the definitions for the JNI objects, which should greatly aid our decompilation. I imported it into ghidra following the instructions in the README.
+
+I then updated the function signature (right click function name, edit function signature):
+
+```c
+void Java_com_a_a_Test_nativeMethod(JNIEnv *param_1)
+
+{
+  undefined4 uVar1;
+  uint uVar2;
+  
+  __android_log_print(3,&DAT_00100a2f,
+                      "There are walls ahead that you\'ll need to face. They have been specially des igned to always result in an error. One false move and you won\'t be able to g et the desired result. Are you able to patch your way out of this mess?"
+                     );
+  uVar1 = FUN_00103230();
+  uVar2 = FUN_00101eb0(uVar1);
+  uVar2 = FUN_00101f90(param_1,uVar2);
+  FUN_001023f0(param_1,uVar2);
+  return;
+}
+```
+
+This will be more useful for the third function call, `FUN_00101f90`, later on. For now, let's look at the first function `FUN_00103230`:
+
+# First wall
 
 ```c
 void FUN_00103230(void)
@@ -618,7 +719,518 @@ void FUN_00103230(void)
 }
 ```
 
-The following script was used to patch the libnative.so file, thereby passing all the 'walls'
+Looks some something went wrong in the decompilation. Looking at the disassembly, we can see what is actually going on.
+
+```plaintext
+   00103230 55         PUSH    RBP
+   00103231 48 89 e5   MOV     RBP,RSP
+   00103234 48 83      SUB     RSP,0x50
+            ec 50
+   00103238 48 8d      LEA     RAX,[PTR_LAB_00105c00]                           = 00103316
+            05 c1 
+            29 00 00
+   0010323f 48 89      MOV     qword ptr [RBP + local_10],RAX=>PTR_LAB_00105c00 = 00103316
+            45 f8
+   00103243 c7 45      MOV     dword ptr [RBP + local_18],0x1
+            f0 01 
+            00 00 00
+   0010324a c7 45      MOV     dword ptr [RBP + local_1c],0xffffff9c
+            ec 9c 
+            ff ff ff
+   00103251 c7 45      MOV     dword ptr [RBP + local_20],0x0
+            e8 00 
+            00 00 00
+   00103258 c7 45      MOV     dword ptr [RBP + local_24],0x0
+            e4 00 
+            00 00 00
+   0010325f 8b 45 e4   MOV     EAX,dword ptr [RBP + local_24]
+   00103262 89 45 dc   MOV     dword ptr [RBP + local_2c],EAX
+   00103265 8b 7d ec   MOV     EDI,dword ptr [RBP + local_1c]
+   00103268 8b 55 e8   MOV     EDX,dword ptr [RBP + local_20]
+   0010326b 44 8b      MOV     R10D,dword ptr [RBP + local_2c]
+            55 dc
+   0010326f 48 8d      LEA     RSI,[s_/sys/wall/facer_00105ab0]                 = "/sys/wall/facer"
+            35 3a 
+            28 00 00
+   00103276 b8 01      MOV     EAX,0x101
+            01 00 00
+   0010327b 0f 05      SYSCALL
+   0010327d 89 45 e0   MOV     dword ptr [RBP + local_28],EAX
+   00103280 8b 45 e0   MOV     EAX,dword ptr [RBP + local_28]
+   00103283 c1 e8 1f   SHR     EAX,0x1f
+   00103286 89 45 f4   MOV     dword ptr [RBP + local_14],EAX
+   00103289 48 8b      MOV     RAX,qword ptr [RBP + local_10]
+            45 f8
+   0010328d 48 63      MOVSXD  RCX,dword ptr [RBP + local_14]
+            4d f4
+   00103291 48 8b      MOV     RAX=>PTR_LAB_00105c00,qword ptr [RAX + RCX*0x8]  = 00103316
+            04 c8
+   00103295 48 8d      LEA     RCX,[PTR_LAB_00105b60]                           = 001032b4
+            0d c4 
+            28 00 00
+   0010329c 48 89      MOV     qword ptr [RBP + local_38],RCX=>PTR_LAB_00105b60 = 001032b4
+            4d d0
+   001032a0 c7 45      MOV     dword ptr [RBP + local_3c],0x2
+            cc 02 
+            00 00 00
+   001032a7 48 89      MOV     qword ptr [RBP + local_48],RCX=>PTR_LAB_00105b60 = 001032b4
+            4d c0
+   001032ab c7 45      MOV     dword ptr [RBP + local_4c],0x2
+            bc 02 
+            00 00 00
+   001032b2 ff e0      JMP     RAX
+```
+
+So it's performing a syscall with rax = 0x101. Consulting [https://x64.syscall.sh/](https://x64.syscall.sh/) shows that is an `openat` call. dfd = 0xffffff9c and filename = "/sys/wall/facer". The output (in rax) is then shifted right by 31 bits and stored in rcx. Then we have `MOV     RAX=>PTR_LAB_00105c00,qword ptr [RAX + RCX*0x8]`. At the end, there is a `jmp rax` instruction.
+
+The output of the `openat` syscall will return a file descriptor or a negative number if an error has occured (if the file does not exist, for example). The SHR instruction is basically checking whether the output is negative, and based on that, take either one of two paths under `PTR_LAB_00105c00`.
+
+Viewing the `PTR_LAB_00105c00` symbol shows those two paths:
+
+![](/tisc24/libnative_filecheck_branch.png)
+
+The second branch (taken when output is negative, rcx = 1) prints out "I need a very specific file to be available. Or do I?". The first branch, however, prints the string "One wall down!", and it can be reached when the file is opened successfully.
+
+```c
+void UndefinedFunction_00103316(void)
+
+{
+  undefined4 uVar1;
+  long unaff_RBP;
+  
+  *(undefined4 *)(unaff_RBP + -0x4c) = 8;
+  uVar1 = FUN_00103370(*(undefined4 *)(unaff_RBP + -0x10));
+  *(undefined4 *)(unaff_RBP + -0x10) = uVar1;
+  uVar1 = FUN_00103370(*(undefined4 *)(unaff_RBP + -0x10),5);
+  *(undefined4 *)(unaff_RBP + -0x10) = uVar1;
+  uVar1 = FUN_00103370(*(undefined4 *)(unaff_RBP + -0x10),*(undefined4 *)(unaff_RBP + -0x4c));
+  *(undefined4 *)(unaff_RBP + -0x10) = uVar1;
+  __android_log_print(4,&DAT_00100a2f,"One wall down!");
+                    /* WARNING: Could not recover jumptable at 0x0010336d. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(*(long *)(unaff_RBP + -0x40) + (long)*(int *)(unaff_RBP + -0x44) * 8))();
+  return;
+}
+```
+
+Looking at `FUN_00103370`, what it's doing is not immediately clear, but it's just doing some operations on some global values.
+
+```c
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+int FUN_00103370(int param_1,int param_2)
+
+{
+  int iVar1;
+  int *piVar2;
+  int *piVar3;
+  int local_38 [4];
+  int local_28;
+  undefined auStack_18 [4];
+  int local_14;
+  int local_10;
+  int local_c;
+  
+  piVar3 = (int *)auStack_18;
+  local_10 = param_1;
+  local_c = param_2;
+  if (0x933c5b6d < (((DAT_00105b50 & _DAT_00105b54) / 0xe671c09a ^ 0x509a612a) & 0x2517461d)) {
+    piVar3 = local_38;
+    local_38[0] = param_2;
+    local_28 = param_1 * param_2;
+  }
+  do {
+    iVar1 = local_c;
+    piVar2 = piVar3 + -4;
+    piVar3 = piVar3 + -8;
+    *piVar2 = local_10;
+    *piVar3 = iVar1;
+    *piVar2 = *piVar3 * *piVar2;
+    local_14 = *piVar2;
+  } while ((DAT_00105b58 * DAT_00105b5c & 0xdb331b78U) == 0x5971cd31);
+  return *piVar2;
+}
+```
+
+I just thought of it as a black box, perhaps some 'hash function', and postulated that these values are used to calculate the key and iv. Notice that the "One wall down!" branch calls this function with different values compared to the branch that prints "I need a very specific file to be available. Or do I?". Hence, I just assumed that as long as we reach the branch that prints the correct string, the correct values will be updated which will hopefully result in the correct key and iv later being printed. I applied the same logic to walls 2 and 3.
+
+I tried creating the file at `sys/wall/facer` but it didn't work, even though I was root. So I tried replacing the file path with something I could write to by patching the binary:
+
+```python:patch.py
+...
+newdata = newdata.replace(b'/sys/wall/facer', b'/data/local/ttt')
+...
+```
+
+For some reason, this still didn't work even though the file was clearly present. Eventually I just patched the assembly code itself, replacing
+
+```x86asm
+mov eax, 0x101
+syscall
+```
+
+with
+
+```x86asm
+mov eax, 0x1
+nop
+nop
+```
+
+So it will be as if the syscall returned a fd of 1.
+
+I updated patch.py:
+
+```python:patch.py
+...
+# handle file check
+j = 0x2277
+newdata = newdata[:j] + b'\x01\x00\x00\x00\x90\x90' + newdata[j+6:]
+...
+```
+
+Running the app with the patched libnative.so successfully prints `One wall down!`. However, there are more errors, more patching to be done. Let's look at the next function:
+
+# Second wall
+
+```c
+undefined4 FUN_00101eb0(undefined4 param_1)
+
+{
+  undefined4 uVar1;
+  uint local_2c;
+  undefined8 local_18;
+  undefined4 local_10;
+  undefined4 local_c;
+  
+  local_c = param_1;
+  local_18 = 0x90ec8148e5894855;
+  local_10 = 0x48000000;
+  for (local_2c = 0;
+      (local_2c < 0xc &&
+      (FUN_00103430[(int)local_2c] == *(code *)((long)&local_18 + (long)(int)local_2c)));
+      local_2c = local_2c + 1) {
+  }
+  if (local_2c != 0xc) {
+    for (local_2c = 0; local_2c < 0xc; local_2c = local_2c + 1) {
+      FUN_00103430[(int)local_2c] = *(code *)((long)&local_18 + (long)(int)local_2c);
+    }
+  }
+  uVar1 = FUN_00103430(0x1,param_1);
+  return uVar1;
+}
+```
+
+There is clearly some dynamic updating of executable code going on in the first part. However, upon inspection I realised it wasn't actually changing anything. Let's look at `FUN_00103430`:
+
+```c
+void FUN_00103430(int param_1)
+
+{
+  switch(param_1 == 0x539) {
+  case false:
+    __android_log_print(6,&DAT_00100a2f,"HAHAHA are you sure you\'ve got the right input parameter?"
+                       );
+                    /* WARNING: Could not recover jumptable at 0x001035a2. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+    (*(code *)PTR_LAB_00105ba8)();
+    return;
+  case true:
+    __android_log_print(4,&DAT_00100a2f,"Input verification success!");
+                    /* WARNING: Could not recover jumptable at 0x0010357a. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+    (*(code *)PTR_LAB_00105b98)();
+    return;
+  }
+}
+```
+
+It's checking that the first parameter is 0x539. However, it is clearly being passed the constant value of 0x1.
+
+There are many ways to patch this, the solution I settled on was replacing 0x539 with 0x1:
+
+```python:patch.py
+# handle parameter check
+i = 0x2450
+newdata = newdata[:i] + b'\x01\x00' + newdata[i+2:]
+```
+
+Now we get `Input verification success!`. Let's continue to the third function.
+
+# Third wall
+
+This function is a bit longer. I retyped the function so that the first parameter is correctly typed as `JNIEnv *`. Now the code is much more understandable.
+
+```c
+undefined4 FUN_00101f90(JNIEnv *param_1,uint param_2)
+
+{
+  _func_259 *p_Var1;
+  JNIEnv *env;
+  jclass clazz;
+  jsize digestLen;
+  uint local_bc;
+  undefined8 local_a4;
+  undefined4 local_9c;
+  int i;
+  int local_94;
+  jbyte *local_90;
+  long local_88;
+  jbyte *local_80;
+  int local_74;
+  jbyteArray digest;
+  jobject p2bytes;
+  jmethodID String_getBytes;
+  jobject msgDigestSHA1;
+  jstring s_SHA_1;
+  jmethodID MessageDigest_digest;
+  jmethodID MessageDigest_update;
+  jmethodID MessageDigestClass_getInstance;
+  jclass MessageDigestClass;
+  jstring p2str;
+  char local_1f [11];
+  uint local_14;
+  JNIEnv *local_10;
+  
+  local_14 = param_2;
+  local_10 = param_1;
+  sprintf(local_1f,"%d",(ulong)param_2);
+  p2str = (*(*local_10)->NewStringUTF)(local_10,local_1f);
+  MessageDigestClass = (*(*local_10)->FindClass)(local_10,"java/security/MessageDigest");
+  MessageDigestClass_getInstance =
+       (*(*local_10)->GetStaticMethodID)
+                 (local_10,MessageDigestClass,"getInstance",
+                  "(Ljava/lang/String;)Ljava/security/MessageDigest;");
+  MessageDigest_update = (*(*local_10)->GetMethodID)(local_10,MessageDigestClass,"update","([B)V");
+  MessageDigest_digest = (*(*local_10)->GetMethodID)(local_10,MessageDigestClass,"digest","()[B");
+  s_SHA_1 = (*(*local_10)->NewStringUTF)(local_10,"SHA-1");
+  msgDigestSHA1 =
+       (*(*local_10)->CallStaticObjectMethod)
+                 (local_10,MessageDigestClass,MessageDigestClass_getInstance,s_SHA_1);
+  env = local_10;
+  p_Var1 = (*local_10)->GetMethodID;
+  clazz = (*(*local_10)->GetObjectClass)(local_10,p2str);
+  String_getBytes = (*p_Var1)(env,clazz,"getBytes","()[B");
+  p2bytes = (*(*local_10)->CallObjectMethod)(local_10,p2str,String_getBytes);
+  (*(*local_10)->CallVoidMethod)(local_10,msgDigestSHA1,MessageDigest_update,p2bytes);
+  digest = (*(*local_10)->CallObjectMethod)(local_10,msgDigestSHA1,MessageDigest_digest);
+  digestLen = (*(*local_10)->GetArrayLength)(local_10,digest);
+  local_74 = (int)digestLen;
+  local_80 = (*(*local_10)->GetByteArrayElements)(local_10,digest,(jboolean *)0x0);
+  local_88 = (long)local_74;
+  local_90 = local_80;
+  local_94 = 0;
+  for (i = 0; i < 0x14; i = i + 1) {
+    local_94 = (uint)(byte)local_80[i] + local_94;
+  }
+  local_a4 = 0xb0ec8148e5894855;
+  local_9c = 0x48000000;
+  for (local_bc = 0;
+      (local_bc < 0xc &&
+      (FUN_001035b0[(int)local_bc] == *(code *)((long)&local_a4 + (long)(int)local_bc)));
+      local_bc = local_bc + 1) {
+  }
+  if (local_bc != 0xc) {
+    for (local_bc = 0; local_bc < 0xc; local_bc = local_bc + 1) {
+      FUN_001035b0[(int)local_bc] = *(code *)((long)&local_a4 + (long)(int)local_bc);
+    }
+  }
+  local_14 = FUN_001035b0(local_94,local_14);
+  (*(*local_10)->ReleaseByteArrayElements)(local_10,digest,local_80,0);
+  (*(*local_10)->DeleteLocalRef)(local_10,p2str);
+  (*(*local_10)->DeleteLocalRef)(local_10,s_SHA_1);
+  (*(*local_10)->DeleteLocalRef)(local_10,p2bytes);
+  (*(*local_10)->DeleteLocalRef)(local_10,digest);
+  (*(*local_10)->DeleteLocalRef)(local_10,msgDigestSHA1);
+  (*(*local_10)->DeleteLocalRef)(local_10,MessageDigestClass);
+  return local_14;
+}
+```
+
+Reversing the java part reveals that it does something like this (translated to python): `local_94 = sum(hashlib.sha1(str(param_2).encode()).digest())`. This value is then passed as the first parameter to `FUN_001035b0`:
+
+```c
+void FUN_001035b0(int param_1)
+
+{
+  __android_log_print(3,&DAT_00100a2f,"Bet you can\'t fix the correct constant :)");
+  switch(param_1 == 0x539) {
+  case false:
+    __android_log_print(6,&DAT_00100a2f,
+                        "I\'m afraid I\'m going to have to stop you from getting the correct key and  IV."
+                       );
+                    /* WARNING: Could not recover jumptable at 0x00103830. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+    (*(code *)PTR_LAB_00105bc8)();
+    return;
+  case true:
+                    /* WARNING: Could not recover jumptable at 0x001036e2. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+    (*(code *)PTR_LAB_00105bc8)();
+    return;
+  }
+}
+```
+
+Here's the relevant disassembly:
+
+```plaintext
+   001035bb 48 8d      LEA     RAX,[switchD_0010366e::switchdataD_00105c30]                         = 0010380a
+            05 6e 
+            26 00 00
+   001035c2 48 89      MOV     qword ptr [RBP + local_10],RAX=>switchD_0010366e::switchdataD_00105  = 0010380a
+            45 f8
+
+...
+
+   001035e6 8b 45 f0   MOV     EAX,dword ptr [RBP + local_18] // param_1
+   001035e9 8b 0d      MOV     ECX,dword ptr [DAT_00100ba8]                                         = 00000539h
+            b9 d5 
+            ff ff
+   001035ef 29 c8      SUB     EAX,ECX
+   001035f1 0f 94 c0   SETZ    AL
+   001035f4 0f b6 c0   MOVZX   EAX,AL
+   001035f7 89 45 f4   MOV     dword ptr [RBP + local_14],EAX
+   001035fa 48 8b      MOV     RAX,qword ptr [RBP + local_10]
+            45 f8
+   001035fe 48 63      MOVSXD  RCX,dword ptr [RBP + local_14]
+            4d f4
+   00103602 48 8b      MOV     RAX=>switchD_0010366e::switchdataD_00105c30,qword ptr [RAX + RCX*0x8]= 0010380a
+            04 c8
+
+...
+
+                    switchD_0010366e::switchD
+   0010366e ff e0      JMP     RAX
+```
+
+So at the end, it's jumping to the code at `switchD_0010366e::switchdataD_00105c30[param_1 - 0x539]`. We clearly want to avoid the first branch, so let's look at the what the second branch does:
+
+```plaintext
+                    switchD_0010366e::caseD_1         XREF[3]: 0010366e(j), 
+                                                               00105bb8(*), 
+                                                               00105c38(*)  
+   001036d6 48 63      MOVSXD  RCX,dword ptr [RBP + local_2c]
+            4d dc
+   001036da 48 8b      MOV     RAX,qword ptr [RBP + local_28]
+            45 e0
+   001036de 48 8b      MOV     RAX,qword ptr [RAX + RCX*0x8]=>PTR_LAB_00105bc8                      = 00103779
+            04 c8
+   001036e2 ff e0      JMP     RAX=>LAB_00103779
+```
+
+local_2c and local_28 are constants previously set in the parent function:
+
+```plaintext
+   00103606 48 8d      LEA     RCX,[PTR_LAB_00105b60]                                               = 001032b4
+            0d 53 
+            25 00 00
+   0010360d 48 89      MOV     qword ptr [RBP + local_28],RCX=>PTR_LAB_00105b60                     = 001032b4
+            4d e0
+   00103611 c7 45      MOV     dword ptr [RBP + local_2c],0xd
+            dc 0d 
+            00 00 00
+```
+
+So calculating the expected value, we should end up at jumping to the address at 0x105bc8:
+
+```plaintext
+                    PTR_LAB_00105bc8                  XREF[2]: check_constant:001036d
+                                                               check_constant:0010382
+   00105bc8 79 37      addr    LAB_00103779
+            10 00 
+            00 00 
+   00105bd0 70 36      addr    LAB_00103670
+            10 00 
+            00 00 
+   00105bd8 43 37      addr    LAB_00103743
+            10 00 
+            00 00 
+   00105be0 e4 36      addr    LAB_001036e4 // win function
+            10 00 
+            00 00 
+   00105be8 9b 37      addr    LAB_0010379b
+            10 00 
+            00 00 
+   00105bf0 65 37      addr    LAB_00103765
+            10 00 
+            00 00 
+   00105bf8 fe 37      addr    LAB_001037fe
+            10 00 
+            00 00 
+```
+
+Looking at the code at `LAB_00103779` we see it eventually leads to printing "Not like this..." However, we can also see that `LAB_001036e4` is in the array of pointers, and it prints "I guess it\'s time to reveal the correct key and IV!". So by setting `param_1` to 0x53a and replacing 0xd with 0x10 we should reach that branch.
+
+However, there is a simpler solution. Looking back at `switchD_0010366e::switchdataD` we see the our desired destination is also in this array of pointers:
+
+```plaintext
+                    switchD_0010366e::switchdataD_00  XREF[3]: check_constant:001035b
+                                                               check_constant:001035c
+                                                               check_constant:0010360
+   00105c30 0a 38      addr    switchD_0010366e::caseD_0
+            10 00 
+            00 00 
+   00105c38 d6 36      addr    switchD_0010366e::caseD_1
+            10 00 
+            00 00 
+                    PTR_LAB_00105c40                  XREF[2]: check_constant:0010362
+                                                               check_constant:0010362
+   00105c40 43 37      addr    LAB_00103743
+            10 00 
+            00 00 
+   00105c48 70 36      addr    LAB_00103670
+            10 00 
+            00 00 
+                    PTR_LAB_00105c50                  XREF[2]: check_constant:0010363
+                                                               check_constant:0010364
+   00105c50 9b 37      addr    LAB_0010379b
+            10 00 
+            00 00 
+   00105c58 e4 36      addr    LAB_001036e4 // <-- here!
+            10 00 
+            00 00 
+```
+
+So if we set `param_1 = 0x539 + 5`, we should jump to the correct branch immediately!
+
+For this patch, I replaced the following assembly:
+
+```x86asm
+sub eax, ecx ; eax = param_1, ecx = 0x539
+setz al
+movzx eax, al
+```
+
+with:
+
+```x86asm
+xor eax, eax
+add eax, 0x5
+nop
+nop
+nop
+```
+
+This was done in the patch.py script (assembly was compiled with pwntools `asm` function):
+
+```python:patch.py
+...
+# replace eax with the correct value ...
+k = 0x25ef
+newdata = newdata[:k] + b'1\xc0\x83\xc0\x05\x90\x90\x90' + newdata[k+8:]
+...
+```
+
+Running the app with the patched libnative.so, there seem to be no errors, and a new key and iv is printed:
+
+![](/tisc24/libnative_logs_success.png)
+
+Running Decrypt.java with the updated key and iv, the flag is printed!
+
+`TISC{1_4m_y0ur_w4llbr34k3r_!i#Leb}`
+
+Here is the final patch.py script:
 
 ```python:patch.py
 from Crypto.Util.number import long_to_bytes as ltb
@@ -628,32 +1240,21 @@ with open('libnative.so', 'rb') as f:
     data = f.read()
 newdata = data[:]
 
-# NOTE: the following doesnt work, i have no idea why...
-# newdata = newdata.replace(b'Java_DynamicClass_nativeMethod', b'Java_com_a_a_Test_nativeMethod')
-
-# no idea why this doesnt work either...
-# newdata = newdata.replace(b'/sys/wall/facer', b'/data/local/ttt')
-
 # handle file check
 j = 0x2277
 newdata = newdata[:j] + b'\x01\x00\x00\x00\x90\x90' + newdata[j+6:]
 
 # handle parameter check
-i = 0x2450  # 0xf79
+i = 0x2450
 newdata = newdata[:i] + b'\x01\x00' + newdata[i+2:]
 
 # replace eax with the correct value ...
 k = 0x25ef
 newdata = newdata[:k] + b'1\xc0\x83\xc0\x05\x90\x90\x90' + newdata[k+8:]
 
-# for debugging
-# k = 0x2830
-# newdata = newdata[:k] + b'\xcc' + newdata[k+1:]
-
 with open('libnative1.so', 'wb') as f:
     f.write(newdata)
 
-# instead i have to use lief to change method name:
 lib = lief.parse('libnative1.so')
 for x in lib.exported_symbols:
     if x.name == 'Java_DynamicClass_nativeMethod':
@@ -661,4 +1262,22 @@ for x in lib.exported_symbols:
 lib.write('libnative1.so')
 ```
 
-I ran the patched libnative1.so file in a new project on android studio and got the flag:
+# More debugging notes
+
+While patching libnative.so, there were many times I needed to see what was actually going on in memory. I wasn't able to attach gdb or setup any other debugger, however I found the following approach sufficient:
+
+I would replace a certain instruction with the `\xcc` opcode, as follows:
+
+```python:patch.py
+...
+# for debugging
+k = 0x2830
+newdata = newdata[:k] + b'\xcc' + newdata[k+1:]
+...
+```
+
+When android reaches this instruction, the app would crash a memory dump would be printed to LogCat:
+
+![](/tisc24/libnative_logs_memdump.png)
+
+Thus, I was able to inspect the values of each register, which for this challenge was sufficient to debug effectively.
