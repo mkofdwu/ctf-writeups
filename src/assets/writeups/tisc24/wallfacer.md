@@ -139,7 +139,7 @@ They seem to also be base64-encoded. Decoding them gives base = `wallowinpain`, 
 
 Under `resources/assets`, I noticed a `sqlite.db` file. However, attempts to open it were met with the error: `file is not a database`. I tried various methods to patch the file unsuccessfully. Furthermore, a strings check on the file does not return any readable text except for the sqlite header.
 
-> Stuff that didn't work
+> **Stuff that didn't work**
 > 
 > At this point, I went down a few different rabbit holes. Following the hint in the challenge description that *something* was being loaded at runtime, I rooted my android emulator (took way longer than I would like to admit) and used [Fridump](https://github.com/Nightbringer21/fridump) to dump the app memory. I thought that perhaps the sqlite file was being decrypted at runtime, so the decrypted file would be in the memory dump. This proved to be false.
 

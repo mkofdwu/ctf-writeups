@@ -95,7 +95,7 @@ body {
 
 .markdown code,
 .markdown code * {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
 }
 
 .markdown code {
@@ -171,8 +171,4 @@ body {
   margin-bottom: 0.75rem;
   border-left: 0.125rem solid white;
   border-right: 0.125rem solid white;
-}
-
-.markdown blockquote > p:first-child {
-  font-weight: 600;
 }

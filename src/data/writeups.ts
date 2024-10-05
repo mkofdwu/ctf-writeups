@@ -423,7 +423,7 @@ But, it seems like they've developed a robust anti-malware service that's thwart
 
 We've found this import hashing plugin which is a key component of their malware analysis pipeline. Agent, can you find a way around it?
 
-nc chals.tisc24.ctf.sg 53719`,
+\`nc chals.tisc24.ctf.sg 53719\``,
     cats: ['pwn'],
     numSolves: 17,
     numPoints: 0,
