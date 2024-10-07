@@ -361,7 +361,7 @@ Ensure your wallet is sufficiently funded for travel and any potential challenge
 
 \`nc chals.tisc24.ctf.sg 31127\``,
     cats: ['blockchain'],
-    numSolves: 63,
+    numSolves: 27,
     numPoints: 0,
     attachments: [
       {
@@ -383,7 +383,7 @@ We know that they use this phrase for establishing communications between one an
 
 [http://chals.tisc24.ctf.sg:52416/](http://chals.tisc24.ctf.sg:52416/)`,
     cats: ['rev', 'blockchain'],
-    numSolves: 50,
+    numSolves: 17,
     numPoints: 0,
     attachments: [
       {

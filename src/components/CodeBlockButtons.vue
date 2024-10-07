@@ -21,10 +21,13 @@ function copyText() {
 }
 
 function toggleWrap() {
+  // @ts-ignore
   if (codeElement.style.textWrap === 'wrap') {
+    // @ts-ignore
     codeElement.style.textWrap = 'nowrap'
     isWrapped.value = false
   } else {
+    // @ts-ignore
     codeElement.style.textWrap = 'wrap'
     isWrapped.value = true
   }
