@@ -113,19 +113,23 @@ body {
   padding-top: 3.5rem;
 }
 
-.markdown .named-fence-block {
+.markdown pre {
   position: relative;
 }
 
 .markdown .named-fence-filename {
   position: absolute;
-  top: 0.625rem;
-  left: 0.625rem;
+  top: 0.75rem;
+  left: 0.75rem;
   color: #f2f2f2;
   font-family: 'Gabarito', sans-serif;
-  padding: 4px 12px 4px 12px;
+  height: 2rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  display: flex;
+  align-items: center;
   background-color: #222;
-  border-radius: 8px;
+  border-radius: 0.5rem;
 }
 
 .markdown h1 {
@@ -133,6 +137,7 @@ body {
   font-size: 1.25rem;
   font-weight: 600;
   margin-top: 0.75rem;
+  scroll-margin-top: 6rem;
 }
 
 .markdown h1:first-child {

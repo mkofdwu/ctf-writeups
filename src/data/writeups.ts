@@ -193,7 +193,7 @@ You ready your fingers on the keyboard, confident that you'll be able to deliver
     author: 'Cameron',
     description: `I love how there are so many different types of pickles. I tried experimenting with two of them.
 
-ncat --ssl push-and-pickle.chal.uiuc.tf 1337`,
+\`ncat --ssl push-and-pickle.chal.uiuc.tf 1337\``,
     cats: ['misc'],
     numSolves: 55,
     numPoints: 468,
@@ -338,9 +338,9 @@ You will be provided with the following compressed flash dump:
 - MD5 (flash_dump.bin.xz) = fdff2dbda38f694111ad744061ca2f8a
 
 Flash was dumped from the device using the command:
-esptool.py -p /dev/REDACTED -b 921600 read_flash 0 0x400000 flash_dump.bin
+\`esptool.py -p /dev/REDACTED -b 921600 read_flash 0 0x400000 flash_dump.bin\`
 
-You can perform your attack on a live TPM module via the i2c implant device hosted behind enemy lines: nc chals.tisc24.ctf.sg 61622`,
+You can perform your attack on a live TPM module via the i2c implant device hosted behind enemy lines: \`nc chals.tisc24.ctf.sg 61622\``,
     cats: ['rev', 'hardware'],
     numSolves: 89,
     numPoints: 0,
@@ -359,7 +359,7 @@ We have heard rumours that to access the treasure, you must navigate to the corr
 
 Ensure your wallet is sufficiently funded for travel and any potential challenges you may encounter. Your journey begins now. It's your mission now - crack the code and see what treasures they are hiding!
 
-nc chals.tisc24.ctf.sg 31127`,
+\`nc chals.tisc24.ctf.sg 31127\``,
     cats: ['blockchain'],
     numSolves: 63,
     numPoints: 0,
@@ -381,7 +381,7 @@ While scanning their network, your fellow agents chanced upon a tool used by the
 
 We know that they use this phrase for establishing communications between one another, but the one we have is way outdated... It's time for an update.
 
-http://chals.tisc24.ctf.sg:52416/`,
+[http://chals.tisc24.ctf.sg:52416/](http://chals.tisc24.ctf.sg:52416/)`,
     cats: ['rev', 'blockchain'],
     numSolves: 50,
     numPoints: 0,
@@ -399,7 +399,7 @@ http://chals.tisc24.ctf.sg:52416/`,
     author: 'unknown',
     description: `Breaking news! We've managed to seize an app from their device.
 
-It seems to be an app that stores user data, but doesn’t seem to do much other than that... The other agent who recovered this said he heard them say something about parts of the app are only loaded during runtime, hiding crucial details.
+It seems to be an app that stores user data, but doesn't seem to do much other than that... The other agent who recovered this said he heard them say something about parts of the app are only loaded during runtime, hiding crucial details.
 
 It's up to you now! Can you break through the walls and unveil the hidden secrets within this app?`,
     cats: ['rev', 'mobile'],

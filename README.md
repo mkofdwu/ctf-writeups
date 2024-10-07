@@ -1,9 +1,10 @@
 # ctf-writeups
 
+Designed in Figma, built with Vue & Tailwind.
+
 ## TODO
 
-- main search page
-- code blocks copy + toggle wrap buttons
+- home page
+- search function
 - include a way to put captions under images
-- click to go to section - add top padding
 - main website button animation

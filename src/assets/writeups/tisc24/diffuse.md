@@ -460,7 +460,7 @@ Through dynamic analysis, I was able to find the input and output of the AES-lik
 
 The decrypted output is as follows:
 
-![](/tisc24/diffuse_decrypted.png)
+![](/tisc24/diffuse_aes_decrypted.png)
 
 I wrote the python script to simulate the exact same description, and tested different modes of AES encryption:
 
