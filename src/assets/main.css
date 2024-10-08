@@ -185,9 +185,11 @@ body {
   display: flex;
   flex-direction: column;
   row-gap: 1rem;
-  padding: 0.5rem 1.75rem 0.5rem 1.75rem;
+  padding: 1.25rem 1.75rem 1.25rem 1.75rem;
   margin-top: 0.75rem;
   margin-bottom: 0.75rem;
-  border-left: 0.125rem solid white;
-  border-right: 0.125rem solid white;
+  border-left: 0.25rem solid white;
+  background-color: #323232;
+  border-top-right-radius: 1.25rem;
+  border-bottom-right-radius: 1.25rem;
 }
