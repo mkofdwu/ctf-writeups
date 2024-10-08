@@ -2,6 +2,8 @@
 
 Designed in Figma, built with Vue & Tailwind.
 
+Deployed at [https://jiajie-writeups.surge.sh](https://jiajie-writeups.surge.sh)
+
 ## TODO
 
 - home page
