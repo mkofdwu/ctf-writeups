@@ -2,7 +2,7 @@ Coming from a very straightforward level 6, this challenge was a significant ste
 
 # 1. Initial examination
 
-![landing page](/devsecmeow-landing.png)
+![landing page](/tisc23/devsecmeow-landing.png)
 
 First, I clicked on the two urls. The first one ("submit the required details here") seems to return json data, with another two urls - one url for `csr` and one for `crt`. The second urls ("temporary credentials here") returns 403 unauthorized.
 
@@ -689,4 +689,4 @@ openssl pkcs12 -export -out client.p12 -inkey client.key -in client.crt
 
 I imported the p12 file to Chrome and accessed the production instance, where I got the second half of the flag: `yOuR_d3vSeCOps_P1peL1nEs!!<##:3##>}`
 
-![flag2](/devsecmeow-flag2.png)
+![flag2](/tisc23/devsecmeow-flag2.png)

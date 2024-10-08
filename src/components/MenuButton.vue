@@ -14,7 +14,7 @@ defineProps<{ opened: boolean }>()
 .bar {
   width: 1.25rem;
   height: 0.125rem;
-  background-color: black;
+  background-color: #f2f2f2;
 }
 
 .b1,

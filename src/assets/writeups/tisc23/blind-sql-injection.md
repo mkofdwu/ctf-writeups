@@ -13,7 +13,7 @@ app.post('/api/submit-reminder', (req, res) => {
 
 Looking at the Dockerfile, it seems that there is a aws config folder at `/root/.aws`. Hence, we can access the credentials by sending a post request to `/api/submit-reminder` with viewType as `/root/.aws/credentials`. This is the response:
 
-![](/blind-sql-injection-0.png)
+![](/tisc23/blind-sql-injection-0.png)
 
 I set the credentials using `aws configure`.
 

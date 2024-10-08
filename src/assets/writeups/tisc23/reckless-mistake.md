@@ -2,7 +2,7 @@ I usually avoid the crypto category in ctfs, and hence approached this level wit
 
 After reading through the code, I saw that the gcm encryption algorithm was being used. Being unfamiliar with this algorithm, I did some research on it and studied how it works.
 
-![GCM diagram](/reckless-mistake-gcm-diagram.png)
+![GCM diagram](/tisc23/reckless-mistake-gcm-diagram.png)
 
 At first, I did not look at the above diagram carefully and mistakenly thought that the ciphertext blocks were all being xored to produce the tag (the result was in fact passed through a hash function each time). I wrote a program to test this and it didnt work, and I realised my mistake.
 

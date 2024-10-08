@@ -1,5 +1,7 @@
 This was the first challenge I solved during the CTF and it was also a first blood, which I was quite happy about.
 
+# Challenge overview
+
 The code is rather short, and the main part is as follows:
 
 ```javascript:index.js
@@ -57,6 +59,8 @@ app.post('/render', (req, res) => {
 So, it is clearly SSTI with some filters (an SSTI jail, if you will). A whitelist instead of a blacklist narrows the search space quite a lot. So I dived right into the [Pug source code](https://github.com/pugjs/pug). Under the `pug/packages` folder, there are 3 main directories of interest: `pug-lexer`, `pug-parser`, and `pug-code-gen`. 
 
 Here is a brief description of my understanding of how it works. A lexer converts raw string input into a sequence of tokens, such as numbers/symbols/identifiers. A parser then takes the sequence of tokens as input and constructs a sort of abstract syntax tree (AST), another abstraction that organises the data further. Finally, the code generator takes this AST and compiles it to javascript code by recursively visiting each node in the tree. This javascript code is then executed server side to produce the final HTML file sent to the client.
+
+# Pug source code
 
 So with this in mind, it would be a good idea to start looking in `pug-code-gen` to try and find an entrypoint for us to inject our JS code. I looked up how code is generated for each whitelisted node type. `visitTag` seemed to be the most promising:
 
@@ -314,6 +318,8 @@ div&attributes{global.process.mainModule.constructor._load("child_process").exec
 # Testing environment setup
 
 At this point it may be a good idea to briefly describe how I set up the environment for testing locally. The relevant dockerfiles were provided along with the source code, but I just ran node from my machine because it was faster (and the behavior probably won't have significant changes). I just added two print statements, a `console.dir(ast)` to see the node types, and a `console.log(code)` at the end to check the JS code run.
+
+# Final payload
 
 Going back to the challenge, the payload I submitted worked flawlessly. The problem now is that there isn't a straightforward way to display the command result, so I made a call to a webhook.site.
 
