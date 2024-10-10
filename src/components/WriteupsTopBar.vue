@@ -35,7 +35,11 @@ nextTick(() => {
     <div
       class="w-full h-16 flex-shrink-0 flex items-center justify-between px-10 max-sm:px-5 max-sm:h-14"
     >
-      <menu-button class="cursor-pointer mr-3" :opened="opened" @click="opened = !opened" />
+      <menu-button
+        class="cursor-pointer mr-3 xl:hidden"
+        :opened="opened"
+        @click="opened = !opened"
+      />
       <span class="text-xl font-semibold">Jia Jie's writeups</span>
       <div class="flex-1"></div>
       <button class="w-10 h-10 rounded-full grid place-items-center">
@@ -57,7 +61,7 @@ nextTick(() => {
         <material-icon name="arrow_outward" class="ml-3" />
       </a>
       <div
-        class="hide-scrollbar fixed left-0 top-16 z-10 w-full bg-black overflow-y-auto origin-top duration-300 transition-all"
+        class="hide-scrollbar fixed left-0 top-16 z-10 w-full bg-black overflow-y-auto origin-top duration-300 transition-all xl:hidden"
         :class="opened ? 'menu-opened' : 'h-0'"
       >
         <div
