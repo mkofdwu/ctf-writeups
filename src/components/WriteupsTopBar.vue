@@ -19,7 +19,9 @@ nextTick(() => {
   prevScrollOffset = window.scrollY
 
   window.addEventListener('scroll', () => {
-    showTopBar.value = window.scrollY < prevScrollOffset
+    if (!opened.value) {
+      showTopBar.value = window.scrollY < prevScrollOffset
+    }
     prevScrollOffset = window.scrollY
   })
 })
@@ -33,6 +35,7 @@ nextTick(() => {
     <div
       class="w-full h-16 flex-shrink-0 flex items-center justify-between px-10 max-sm:px-5 max-sm:h-14"
     >
+      <menu-button class="cursor-pointer mr-3" :opened="opened" @click="opened = !opened" />
       <span class="text-xl font-semibold">Jia Jie's writeups</span>
       <div class="flex-1"></div>
       <button class="w-10 h-10 rounded-full grid place-items-center">
@@ -48,14 +51,13 @@ nextTick(() => {
       <a
         href="https://jiajie.surge.sh"
         target="_blank"
-        class="h-10 pl-4 pr-2 ml-3 flex items-center font-semibold rounded-full border max-[460px]:hidden"
+        class="h-10 pl-4 pr-2 ml-3 flex items-center font-semibold rounded-full border max-[500px]:hidden"
       >
         main website
         <material-icon name="arrow_outward" class="ml-3" />
       </a>
-      <!-- <menu-button class="cursor-pointer" :opened="opened" @click="opened = !opened" />
       <div
-        class="hide-scrollbar fixed left-0 top-14 z-10 w-full bg-black overflow-y-auto origin-top duration-300 transition-all"
+        class="hide-scrollbar fixed left-0 top-16 z-10 w-full bg-black overflow-y-auto origin-top duration-300 transition-all"
         :class="opened ? 'menu-opened' : 'h-0'"
       >
         <div
@@ -64,7 +66,7 @@ nextTick(() => {
         >
           <writeups-list :full-width="true" />
         </div>
-      </div> -->
+      </div>
     </div>
     <div class="dotted-line-hori z-10 w-[calc(100vw-5rem)] max-sm:w-screen"></div>
   </div>

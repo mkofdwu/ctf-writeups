@@ -3,7 +3,7 @@ defineProps<{ opened: boolean }>()
 </script>
 
 <template>
-  <div class="flex flex-col gap-y-1">
+  <div class="w-10 h-10 flex flex-col items-center justify-center gap-y-1">
     <div class="bar b1" :class="{ opened }"></div>
     <div class="bar b2" :class="{ opened }"></div>
     <div class="bar b3" :class="{ opened }"></div>
@@ -13,7 +13,7 @@ defineProps<{ opened: boolean }>()
 <style scoped>
 .bar {
   width: 1.25rem;
-  height: 0.125rem;
+  height: 0.11rem;
   background-color: #f2f2f2;
 }
 
@@ -30,7 +30,7 @@ defineProps<{ opened: boolean }>()
 }
 
 .b1.opened {
-  transform: translateY(0.375rem) rotate(45deg);
+  transform: translateY(0.36rem) rotate(45deg);
 }
 
 .b2.opened {
@@ -39,6 +39,6 @@ defineProps<{ opened: boolean }>()
 }
 
 .b3.opened {
-  transform: translateY(-0.375rem) rotate(-45deg);
+  transform: translateY(-0.36rem) rotate(-45deg);
 }
 </style>
