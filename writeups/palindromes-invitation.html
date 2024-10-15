@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400..600" rel="stylesheet">
     <title>Jia Jie's writeups</title>
-    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-dc6fed37.js"></script>
+    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-fedccffe.js"></script>
     <link rel="stylesheet" href="/ctf-writeups/assets/index-5c167933.css">
   </head>
   <body>
@@ -33,7 +33,7 @@ jobs:
           cat test
 </code><div class="named-fence-filename">test_portal.yml</div></pre>
 <p>I looked through the branches and commit history, but there was nothing interesting there. There seemed to be a few issues and pull requests, but I soon realised that these were created by other participants. Then I moved to the actions tab, and found the <code>Portal opening</code> job triggered by palindrome-wow, and saw interesting stuff in the logs:</p>
-<p><img src="/tisc23/palindromes-invitation-gh-log.png" alt="portal opening logs"></p>
+<p><img src="/ctf-writeups/tisc23/palindromes-invitation-gh-log.png" alt="portal opening logs"></p>
 <p>It seems that the <code>PORTAL_URL</code> and <code>PORTAL_PASSWORD</code> have been leaked in the logs. Although <code>PORTAL_URL</code> is redacted, we can see there was an attempt to connect to 18.143.127.62:45938. Accessing this in the browser, we are greeted with a login page:</p>
 <p><img src="/tisc23/palindromes-invitation-portal.png" alt="palindrome portal"></p>
 <p>I tried submitting <code>:dIcH:..uU9gp1%3C@%3C3Q%22DBM5F%3C)64S%3C(01tF(Jj%25ATV@$Gl</code> as the password, but this didn't work. But after putting this value into CyberChef, I realised it was the base85 encoded and url encoded string <code>"PALINDROME has an AUTOMATED secretary"</code>. It turned out that the correct password was base85 encoded value, <code>":dIcH:..uU9gp1&lt;@&lt;3Q"DBM5F&lt;)64S&lt;(01tF(Jj%ATV@$Gl"</code>. After entering this in, I am presented with a discord invite link, with some token in the comments:</p>

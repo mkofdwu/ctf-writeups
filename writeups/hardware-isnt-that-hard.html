@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400..600" rel="stylesheet">
     <title>Jia Jie's writeups</title>
-    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-dc6fed37.js"></script>
+    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-fedccffe.js"></script>
     <link rel="stylesheet" href="/ctf-writeups/assets/index-5c167933.css">
   </head>
   <body>
@@ -27,7 +27,7 @@
 <h1 id="overview" tabindex="-1">Overview</h1>
 <p>I started by trying to get an overall idea of the the various concepts involved, beginning with the Trusted Platform Module (TPM). I watched <a href="https://www.youtube.com/watch?v=RW2zHvVO09g">this video</a>.</p>
 <p>Based on my understanding, a TPM is a piece of hardware that does encryption and decryption of data passed to it. It has a "mini-processor" and the key is stored inside it, allowing all operations to occur independently of the actual computer. Hence, it is impossible for an attacker to inject their own code or otherwise interfere with the encryption and decryption algorithms. Neither is it possible to leak the encryption key since it is stored on an entirely different memory chip.</p>
-<p><img src="/tisc24https://upload.wikimedia.org/wikipedia/commons/b/be/TPM.svg" alt=""></p>
+<p><img src="/ctf-writeups/tisc24https://upload.wikimedia.org/wikipedia/commons/b/be/TPM.svg" alt=""></p>
 <p>Next, I began researching ways to reverse the firmware dump. My search led to <a href="https://github.com/tenable/esp32_image_parser">esp32_image_parser</a> on github (some other useful resources I came across are <a href="https://github.com/BlackVS/ESP32-reversing?tab=readme-ov-file#firmware">https://github.com/BlackVS/ESP32-reversing?tab=readme-ov-file#firmware</a> and <a href="https://olof-astrand.medium.com/reverse-engineering-of-esp32-flash-dumps-with-ghidra-or-ida-pro-8c7c58871e68">https://olof-astrand.medium.com/reverse-engineering-of-esp32-flash-dumps-with-ghidra-or-ida-pro-8c7c58871e68</a>)</p>
 <h1 id="extracting-the-firmware-elf" tabindex="-1">Extracting the firmware ELF</h1>
 <p>The first thing to do is list the partitions on the firmware dump. This is done with <code>python esp32_image_parser.py show_partitions flash_dump.bin</code></p>

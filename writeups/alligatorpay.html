@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400..600" rel="stylesheet">
     <title>Jia Jie's writeups</title>
-    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-dc6fed37.js"></script>
+    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-fedccffe.js"></script>
     <link rel="stylesheet" href="/ctf-writeups/assets/index-5c167933.css">
   </head>
   <body>
@@ -18,7 +18,7 @@
 <p><img src="https://assets-hgsv2z3wsyxzjayx.sgp1.digitaloceanspaces.com/albert.png" alt="AlligatorPay mascot"></p>
 <p>Your task is to find a way to join this exclusive member tier within AlligatorPay and give us intel on future cyberattacks. AlligatorPay recently launched an <a href="https://agpay.chals.tisc24.ctf.sg/">online balance checker</a> for their payment cards. We heard it's still in beta, so maybe you might find something useful.</p>
 </div><div class="flex flex-wrap gap-3"><!--[--><div class="h-9 bg-white rounded-full flex items-center"><i class="material-symbols-outlined text-xl ml-3 mr-2 text-black">language</i><span class="mr-4 text-black font-semibold">web</span></div><!--]--><div class="h-9 bg-almost-black rounded-full px-5 flex items-center"><span class="mr-4">304 solves</span><span class="opacity-60">0 points</span></div><div class="h-9 bg-almost-black rounded-full flex items-center"><i class="material-symbols-outlined text-xl ml-3 mr-3">person</i><span class="mr-4">by unknown</span></div></div><div class="dotted-line-hori self-stretch w-auto mx-4 mt-10 mb-7 max-md:mx-0"></div></div><div id="article" class="markdown w-full flex flex-col gap-y-3 px-4 max-md:px-0"><p>This was a very charming level, although it was definitely the easiest one in the CTF. I like how the challenge author designed a logo, mascot, and even a soundtrack for this fictional payment service.</p>
-<p><img src="/tisc24/agpay.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/agpay.png" alt=""></p>
 <h1 id="js-code" tabindex="-1">JS Code</h1>
 <p>One of the first things I did was upload a random file and try sending it, and check the chrome devtools network tab to see what kind of request was being sent. To my surprise, there was no request at all. Taking a look at the javascript code, it becomes clear that checks are being done client side:</p>
 <pre><code class="language-javascript">document.addEventListener("DOMContentLoaded", function () {

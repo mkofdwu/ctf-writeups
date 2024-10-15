@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400..600" rel="stylesheet">
     <title>Jia Jie's writeups</title>
-    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-dc6fed37.js"></script>
+    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-fedccffe.js"></script>
     <link rel="stylesheet" href="/ctf-writeups/assets/index-5c167933.css">
   </head>
   <body>
@@ -22,7 +22,7 @@
 </div><div class="flex flex-wrap gap-3"><!--[--><div class="h-9 bg-white rounded-full flex items-center"><i class="material-symbols-outlined text-xl ml-3 mr-2 text-black">help</i><span class="mr-4 text-black font-semibold">misc</span></div><!--]--><div class="h-9 bg-almost-black rounded-full px-5 flex items-center"><span class="mr-4">451 solves</span><span class="opacity-60">0 points</span></div><div class="h-9 bg-almost-black rounded-full flex items-center"><i class="material-symbols-outlined text-xl ml-3 mr-3">person</i><span class="mr-4">by unknown</span></div></div><div class="dotted-line-hori self-stretch w-auto mx-4 mt-10 mb-7 max-md:mx-0"></div></div><div id="article" class="markdown w-full flex flex-col gap-y-3 px-4 max-md:px-0"><p>I initially encountered many server issues with this challenge on the first day, so I just went to sleep. Fortunately, more instances were added and the issues were resolved the next morning.</p>
 <h1 id="overview" tabindex="-1">Overview</h1>
 <p>We are greeted with the following webpage:</p>
-<p><img src="/tisc24/llm_welcome.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/llm_welcome.png" alt=""></p>
 <p>Clearly there is some llm in the challenge, but how is it being used to transform the image? I tried a bunch of different payloads to get an idea of what was going on, using a random image of a blank white square.</p>
 <p>For example, sending the blank image with the prompt <code>Make this square white</code> yields the following result:</p>
 <p><img src="/tisc24/llm_example.png" alt=""></p>

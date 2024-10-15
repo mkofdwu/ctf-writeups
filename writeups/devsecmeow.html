@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400..600" rel="stylesheet">
     <title>Jia Jie's writeups</title>
-    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-dc6fed37.js"></script>
+    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-fedccffe.js"></script>
     <link rel="stylesheet" href="/ctf-writeups/assets/index-5c167933.css">
   </head>
   <body>
@@ -18,7 +18,7 @@
 <p>Note: Concatenate flag1 and flag2 to form the flag for submission.</p>
 </div><div class="flex flex-wrap gap-3"><!--[--><div class="h-9 bg-white rounded-full flex items-center"><i class="material-symbols-outlined text-xl ml-3 mr-2 text-black">cloud</i><span class="mr-4 text-black font-semibold">cloud</span></div><!--]--><div class="h-9 bg-almost-black rounded-full px-5 flex items-center"><span class="mr-4">28 solves</span><span class="opacity-60">0 points</span></div><div class="h-9 bg-almost-black rounded-full flex items-center"><i class="material-symbols-outlined text-xl ml-3 mr-3">person</i><span class="mr-4">by unknown</span></div></div><div class="dotted-line-hori self-stretch w-auto mx-4 mt-10 mb-7 max-md:mx-0"></div></div><div id="article" class="markdown w-full flex flex-col gap-y-3 px-4 max-md:px-0"><p>Coming from a very straightforward level 6, this challenge was a significant step up in difficulty as well as length. However, I learned quite a bit about AWS and enumeration from it.</p>
 <h1 id="1.-initial-examination" tabindex="-1">1. Initial examination</h1>
-<p><img src="/tisc23/devsecmeow-landing.png" alt="landing page"></p>
+<p><img src="/ctf-writeups/tisc23/devsecmeow-landing.png" alt="landing page"></p>
 <p>First, I clicked on the two urls. The first one ("submit the required details here") seems to return json data, with another two urls - one url for <code>csr</code> and one for <code>crt</code>. The second urls ("temporary credentials here") returns 403 unauthorized.</p>
 <p>I then tried to access the <code>csr</code> and <code>crt</code> urls. Both of them returned some error, hence I did some research and realised that they were aws presigned urls to access files in a s3 bucket. However, I was still unable to interact with either of them. So I returned to the landing page, and found a helpful list of tips:</p>
 <pre><code class="language-plaintext">Okay I am ready to tackle the problem(s). Any tips?

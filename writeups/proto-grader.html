@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400..600" rel="stylesheet">
     <title>Jia Jie's writeups</title>
-    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-dc6fed37.js"></script>
+    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-fedccffe.js"></script>
     <link rel="stylesheet" href="/ctf-writeups/assets/index-5c167933.css">
   </head>
   <body>
@@ -17,7 +17,7 @@
 <p><a href="http://challs.nusgreyhats.org:33337">http://challs.nusgreyhats.org:33337</a></p>
 </div><div class="flex flex-wrap gap-3"><!--[--><div class="h-9 bg-white rounded-full flex items-center"><i class="material-symbols-outlined text-xl ml-3 mr-2 text-black">language</i><span class="mr-4 text-black font-semibold">web</span></div><!--]--><div class="h-9 bg-almost-black rounded-full px-5 flex items-center"><span class="mr-4">2 solves</span><span class="opacity-60">997 points</span></div><div class="h-9 bg-almost-black rounded-full flex items-center"><i class="material-symbols-outlined text-xl ml-3 mr-3">person</i><span class="mr-4">by jro</span></div></div><div class="w-full flex border border-almost-black-lighter rounded-2.5xl mt-7 mb-9 max-sm:flex-col"><div class="flex-1 flex flex-col gap-y-2 px-6 pt-4 pb-5"><span>Attachments</span><!--[--><a href="https://ctfd.nusgreyhats.org/files/b109c61e525f342d1f08427dff46ea9d/dist-proto_grader.zip?token=eyJ1c2VyX2lkIjozNSwidGVhbV9pZCI6MTEsImZpbGVfaWQiOjM4fQ.ZrbkIw.JZLnLOMwC6WLvoFgY5eTq_NbCh4" class="underline">dist-proto_grader.zip</a><!--]--></div><button class="pl-9 pr-10 font-semibold flex items-center border-l border-almost-black-lighter rounded-tr-2.5xl rounded-br-2.5xl transition-colors hover:bg-almost-black active:bg-almost-black-lighter max-sm:border-l-0 max-sm:border-t max-sm:pl-6 max-sm:py-4 max-sm:rounded-tr-none max-sm:rounded-bl-2.5xl"><i class="material-symbols-outlined text-2xl mr-4">download</i> Download all </button></div></div><div id="article" class="markdown w-full flex flex-col gap-y-3 px-4 max-md:px-0"><h1 id="overview" tabindex="-1">Overview</h1>
 <p>The web page is a simple flag checker with a single input field:</p>
-<p><img src="/grey24/proto_grader.png" alt="screenshot"></p>
+<p><img src="/ctf-writeups/grey24/proto_grader.png" alt="screenshot"></p>
 <p>Looking in the source code, here is the flag checking route in flask:</p>
 <pre class="named-fence-block"><code class="language-python">@app.route("/grade", methods=["POST"])
 def receive_grade():

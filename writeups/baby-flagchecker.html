@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400..600" rel="stylesheet">
     <title>Jia Jie's writeups</title>
-    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-dc6fed37.js"></script>
+    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-fedccffe.js"></script>
     <link rel="stylesheet" href="/ctf-writeups/assets/index-5c167933.css">
   </head>
   <body>
@@ -18,7 +18,7 @@
 <p>We know that they use this phrase for establishing communications between one another, but the one we have is way outdated... It's time for an update.</p>
 <p><a href="http://chals.tisc24.ctf.sg:52416/">http://chals.tisc24.ctf.sg:52416/</a></p>
 </div><div class="flex flex-wrap gap-3"><!--[--><div class="h-9 bg-white rounded-full flex items-center"><i class="material-symbols-outlined text-xl ml-3 mr-2 text-black">keyboard_double_arrow_left</i><span class="mr-4 text-black font-semibold">rev</span></div><div class="h-9 bg-white rounded-full flex items-center"><i class="material-symbols-outlined text-xl ml-3 mr-2 text-black">currency_bitcoin</i><span class="mr-4 text-black font-semibold">blockchain</span></div><!--]--><div class="h-9 bg-almost-black rounded-full px-5 flex items-center"><span class="mr-4">17 solves</span><span class="opacity-60">0 points</span></div><div class="h-9 bg-almost-black rounded-full flex items-center"><i class="material-symbols-outlined text-xl ml-3 mr-3">person</i><span class="mr-4">by unknown</span></div></div><div class="w-full flex border border-almost-black-lighter rounded-2.5xl mt-7 mb-9 max-sm:flex-col"><div class="flex-1 flex flex-col gap-y-2 px-6 pt-4 pb-5"><span>Attachments</span><!--[--><a href="https://api.tisc24.csit-events.sg/file?id=cm0y2eipy38w208543nwsh40i&amp;name=baby_flagchecker.zip&amp;req=clzv2z8zr0c5q0854jk6g5acs&amp;reqHash=f316095a237261216e1674a9501c74d2129ef2734263c6cedbc04ddcc4edc5049442a55e83eef141e093af331a2db2e0bc2d8f0cea3803ec5104932fb45f6856&amp;reqExp=1727782114" class="underline">baby_flagchecker.zip</a><!--]--></div><button class="pl-9 pr-10 font-semibold flex items-center border-l border-almost-black-lighter rounded-tr-2.5xl rounded-br-2.5xl transition-colors hover:bg-almost-black active:bg-almost-black-lighter max-sm:border-l-0 max-sm:border-t max-sm:pl-6 max-sm:py-4 max-sm:rounded-tr-none max-sm:rounded-bl-2.5xl"><i class="material-symbols-outlined text-2xl mr-4">download</i> Download all </button></div></div><div id="article" class="markdown w-full flex flex-col gap-y-3 px-4 max-md:px-0"><p>Similar to level 6, this is also a blockchain challenge, though with more emphasis on rev. Partial source is provided for this challenge:</p>
-<p><img src="/tisc24/baby_flagchecker_tree.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/baby_flagchecker_tree.png" alt=""></p>
 <h1 id="ssti-leak" tabindex="-1">SSTI leak</h1>
 <p>There are 2 parts, the frontend web app and the backend where the private blockchain network is running. I quickly spotted the ssti vulnerability with the password field:</p>
 <pre class="named-fence-block"><code class="language-python">@app.route('/submit', methods=['POST'])

@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400..600" rel="stylesheet">
     <title>Jia Jie's writeups</title>
-    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-dc6fed37.js"></script>
+    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-fedccffe.js"></script>
     <link rel="stylesheet" href="/ctf-writeups/assets/index-5c167933.css">
   </head>
   <body>
@@ -19,7 +19,7 @@
 </div><div class="flex flex-wrap gap-3"><!--[--><div class="h-9 bg-white rounded-full flex items-center"><i class="material-symbols-outlined text-xl ml-3 mr-2 text-black">quick_reference_all</i><span class="mr-4 text-black font-semibold">forensics</span></div><!--]--><div class="h-9 bg-almost-black rounded-full px-5 flex items-center"><span class="mr-4">342 solves</span><span class="opacity-60">0 points</span></div><div class="h-9 bg-almost-black rounded-full flex items-center"><i class="material-symbols-outlined text-xl ml-3 mr-3">person</i><span class="mr-4">by unknown</span></div></div><div class="w-full flex border border-almost-black-lighter rounded-2.5xl mt-7 mb-9 max-sm:flex-col"><div class="flex-1 flex flex-col gap-y-2 px-6 pt-4 pb-5"><span>Attachments</span><!--[--><a href="https://api.tisc24.csit-events.sg/file?id=cm0y2897q386d0854o00mm0rp&amp;name=metadata.txt&amp;req=clzv2z8zr0c5q0854jk6g5acs&amp;reqHash=f316095a237261216e1674a9501c74d2129ef2734263c6cedbc04ddcc4edc5049442a55e83eef141e093af331a2db2e0bc2d8f0cea3803ec5104932fb45f6856&amp;reqExp=1727782114" class="underline">metadata.txt</a><!--]--></div><button class="pl-9 pr-10 font-semibold flex items-center border-l border-almost-black-lighter rounded-tr-2.5xl rounded-br-2.5xl transition-colors hover:bg-almost-black active:bg-almost-black-lighter max-sm:border-l-0 max-sm:border-t max-sm:pl-6 max-sm:py-4 max-sm:rounded-tr-none max-sm:rounded-bl-2.5xl"><i class="material-symbols-outlined text-2xl mr-4">download</i> Download all </button></div></div><div id="article" class="markdown w-full flex flex-col gap-y-3 px-4 max-md:px-0"><h1 id="overview" tabindex="-1">Overview</h1>
 <p>Unzipping <code>disk.zip</code> we see a single disk file: <code>csitfanUPDATED0509.ad1</code>. I ran some preliminary strings checks to see if there was anything immediately obvious, but nothing came up.</p>
 <p>I opened the disk file in FTKImager, and began by looking in the user’s home folder.</p>
-<p><img src="/tisc24/ftk_1.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/ftk_1.png" alt=""></p>
 <p>There is a file <code>csitfan1@google[2].txt</code> under the Cookies folder (this later proved to be useless), as well as some program called <code>mypal</code>, which a quick google search reveals is a “web browser for windows XP”.</p>
 <p>Looking under the Recent folder, we see there link files, shown below:</p>
 <p><img src="/tisc24/ftk_2.png" alt=""></p>

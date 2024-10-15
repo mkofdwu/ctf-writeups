@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400..600" rel="stylesheet">
     <title>Jia Jie's writeups</title>
-    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-dc6fed37.js"></script>
+    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-fedccffe.js"></script>
     <link rel="stylesheet" href="/ctf-writeups/assets/index-5c167933.css">
   </head>
   <body>
@@ -60,7 +60,7 @@
 }
 </code><div class="named-fence-filename">MainActivity.java</div></pre>
 <p>Unfortunately, it seems that <code>str</code> is user-entered, and there is no way to reverse the sha1 hashes, hence we have to look elsewhere. At this point, I installed the apk on my phone, and saw that there was the following dialog:</p>
-<p><img src="/tisc23/kpa-screenshot.jpg" alt="Screenshot of the app"></p>
+<p><img src="/ctf-writeups/tisc23/kpa-screenshot.jpg" alt="Screenshot of the app"></p>
 <p>I realised this is loaded by the onResume method:</p>
 <pre class="named-fence-block"><code class="language-java">@Override // androidx.fragment.app.e, android.app.Activity
 public void onResume() {

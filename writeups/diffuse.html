@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400..600" rel="stylesheet">
     <title>Jia Jie's writeups</title>
-    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-dc6fed37.js"></script>
+    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-fedccffe.js"></script>
     <link rel="stylesheet" href="/ctf-writeups/assets/index-5c167933.css">
   </head>
   <body>
@@ -81,7 +81,7 @@ def main(from_date=None, to_date=None, search_term=None):
 <p>Looking in the <code>WindowCaptureTextIndex_content</code> table under ukg.db, we see some interesting strings, for example <code>Command Prompt - curl  -v -X "POST" --data-binary "&lt;?php echo system('whoami /all'); ?&gt;" -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0" -H "Content-Type: application/x-www-form-urlencoded" "http://localho</code>.</p>
 <h1 id="php-web-server" tabindex="-1">PHP web server</h1>
 <p>Running <code>curl http://localhost/</code> reveals that there is indeed a web server running. I downloaded <a href="https://github.com/OJ/gobuster/releases/tag/v3.6.0">gobuster.exe</a> and transferred it to the windows instance. Running it yields the following results:</p>
-<p><img src="/tisc24/diffuse_gobuster.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/diffuse_gobuster.png" alt=""></p>
 <p>I looked through all the routes but there were no leads. In the end, I returned to the curl command and realised it seem to be performing some kind of exploit. A quick google search for xampp php vulnerabilities reveals <a href="https://book.hacktricks.xyz/network-services-pentesting/pentesting-web/php-tricks-esp#xampp-cgi-rce-cve-2024-4577">this cve</a> which seems to fit the bill.</p>
 <p>Running <code>curl -d "&lt;?php echo system('whoami /all')?&gt;" -X POST http://localhost/submit.php?%ADd+allow_url_include%3d1+%ADd+auto_prepend_file%3dphp://input</code> returns a 403 error. However, after a bit more testing I realised that <code>prepend</code> was being blacklisted. Replacing it with <code>pr%65pend</code> allows the request to go through, and we get the output of the command, and realise that we have RCE on the Administrator acccount!</p>
 <p>Earlier, I found the file <code>C:\ProgramData\ssh\administrators_authorized_keys</code> from looking at Notepad++ AppData (under <code>C:\Users\diffuser\AppData\Roaming\Notepad++\session.xml</code>). Replacing it with my my own ssh private key, I am able to ssh as the diffuse user.</p>

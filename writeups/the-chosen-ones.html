@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400..600" rel="stylesheet">
     <title>Jia Jie's writeups</title>
-    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-dc6fed37.js"></script>
+    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-fedccffe.js"></script>
     <link rel="stylesheet" href="/ctf-writeups/assets/index-5c167933.css">
   </head>
   <body>
@@ -17,7 +17,7 @@
 <p><a href="http://chals.tisc23.ctf.sg:51943">http://chals.tisc23.ctf.sg:51943</a></p>
 </div><div class="flex flex-wrap gap-3"><!--[--><div class="h-9 bg-white rounded-full flex items-center"><i class="material-symbols-outlined text-xl ml-3 mr-2 text-black">language</i><span class="mr-4 text-black font-semibold">web</span></div><!--]--><div class="h-9 bg-almost-black rounded-full px-5 flex items-center"><span class="mr-4">52 solves</span><span class="opacity-60">0 points</span></div><div class="h-9 bg-almost-black rounded-full flex items-center"><i class="material-symbols-outlined text-xl ml-3 mr-3">person</i><span class="mr-4">by unknown</span></div></div><div class="dotted-line-hori self-stretch w-auto mx-4 mt-10 mb-7 max-md:mx-0"></div></div><div id="article" class="markdown w-full flex flex-col gap-y-3 px-4 max-md:px-0"><p>Overall, I feel this challenge was comparitively straightforward and provided some respite from the previous challenges.</p>
 <p>We are asked to guess a number on the landing page, and the number seems to be randomly generated each time:</p>
-<p><img src="/tisc23/the-chosen-ones-first.png" alt="number guessing page"></p>
+<p><img src="/ctf-writeups/tisc23/the-chosen-ones-first.png" alt="number guessing page"></p>
 <p>Initially, I assumed the php <code>rand()</code> function was being used, and spent sometime researching on methods to predict the next random value based on previous outputs. This was largely unsuccessful. However, I eventually realised the source code for generating the 6 digit number was provided in a base32 encoded comment in the html.</p>
 <pre><code class="language-php">function random() {
   $prev = $_SESSION["seed"];

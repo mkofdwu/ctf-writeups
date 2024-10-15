@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400..600" rel="stylesheet">
     <title>Jia Jie's writeups</title>
-    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-dc6fed37.js"></script>
+    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-fedccffe.js"></script>
     <link rel="stylesheet" href="/ctf-writeups/assets/index-5c167933.css">
   </head>
   <body>
@@ -27,7 +27,7 @@
 });
 </code><div class="named-fence-filename">server.js</div></pre>
 <p>Looking at the Dockerfile, it seems that there is a aws config folder at <code>/root/.aws</code>. Hence, we can access the credentials by sending a post request to <code>/api/submit-reminder</code> with viewType as <code>/root/.aws/credentials</code>. This is the response:</p>
-<p><img src="/tisc23/blind-sql-injection-0.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc23/blind-sql-injection-0.png" alt=""></p>
 <p>I set the credentials using <code>aws configure</code>.</p>
 <p>To list the permissions available, I tried using the <code>getUserIamPermissions.sh</code> script from level 7, however it didn't work because the credentials did not have the necessary permissions.</p>
 <p>However, there is a lambda function invocation of <code>craft_query</code> in the code, hence I deduced that I would be able to get the function. I ran <code>aws lambda get-function --function-name craft_query</code>. This returned a large json response with a link to the code:</p>
