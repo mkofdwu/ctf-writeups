@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400..600" rel="stylesheet">
     <title>Jia Jie's writeups</title>
-    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-69f64ba0.js"></script>
+    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-8c7df4c2.js"></script>
     <link rel="stylesheet" href="/ctf-writeups/assets/index-5c167933.css">
   </head>
   <body>
@@ -85,7 +85,7 @@ Personnel List &lt;br&gt;
 <p>There are 3 schemas, <code>information_schema</code>, <code>palindrome</code>, and <code>performance_schema</code>. palindrome seems to be what we want, so I listed the tables there with <code>rank=-1 union select table_name, 1, 1, 1 from information_schema.tables where table_schema = "palindrome";--</code>.</p>
 <p>There were 2 tables, <code>CTF_SECRET</code> and <code>PERSONNEL</code>. I listed the columns in the <code>CTF_SECRET</code> table using <code>rank=-1 union select column_name, 1, 1, 1 from information_schema.columns where table_name = "CTF_SECRET";--</code>. There was only one column: <code>flag</code>.</p>
 <p>I sent my final request with <code>rank=-1 union select flag, 1, 1, 1 from palindrome.CTF_SECRET;--</code>, and got the flag: <code>TISC{Y0u_4rE_7h3_CH0s3n_0nE}</code>.</p>
-</div><div class="fixed w-[17.5rem] h-full top-0 right-0 pointer-events-none pr-8 max-lg:hidden"><div class="relative h-full flex"><div class="dotted-line-vert h-auto mb-10 mr-9"></div><!----><div class="flex flex-col pt-16"><span class="mt-6 mb-4 opacity-60">Sections</span><!--[--><!--]--></div><div class="absolute bottom-"></div></div></div></div></div></div>
+</div><div class="fixed w-[17.5rem] h-full top-0 right-0 pointer-events-none pr-8 max-lg:hidden"><!----></div></div></div></div>
     
   
 
