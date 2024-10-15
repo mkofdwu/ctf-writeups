@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400..600" rel="stylesheet">
     <title>Jia Jie's writeups</title>
-    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-fedccffe.js"></script>
+    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-9d44fda9.js"></script>
     <link rel="stylesheet" href="/ctf-writeups/assets/index-5c167933.css">
   </head>
   <body>
@@ -20,7 +20,7 @@
 <p><img src="/ctf-writeups/tisc24/wallfacer_home.jpg" alt=""></p>
 <h1 id="java-decompilation" tabindex="-1">Java decompilation</h1>
 <p>I used jadx to decompile the apk: <code>jadx wallfacer-x86_64.apk</code>. We can see a number of decompiled java files under <code>sources/com/wall/facer</code>:</p>
-<p><img src="/tisc24/wallfacer_java_files.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/wallfacer_java_files.png" alt=""></p>
 <p>Storage is a simple class implementing the singleton pattern, with a secretMessage property:</p>
 <pre class="named-fence-block"><code class="language-java">package com.wall.facer;
 /* loaded from: classes.dex */
@@ -531,7 +531,7 @@ public class DynamicClass {
 ...
 </code><div class="named-fence-filename">MainActivity.kt</div></pre>
 <p>Now running the app, we can open up the LogCat window and filter by "TISC":</p>
-<p><img src="/tisc24/libnative_logs_linkerr.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/libnative_logs_linkerr.png" alt=""></p>
 <p>Unfortunately, get the error above: <code>java.lang.UnsatisfiedLinkError: No implementation found for void com.example.myapplication.DynamicClass.nativeMethod() (tried Java_com_example_myapplication_DynamicClass_nativeMethod and Java_com_example_myapplication_DynamicClass_nativeMethod__)</code>. So android requires a specific function name to resolve the native function, in the format <code>Java_&lt;package&gt;_&lt;class_name&gt;_&lt;method_name&gt;</code>.</p>
 <p>Because it's a dynamically loaded java class, the package field is omitted, so the function in libnative.so is just called <code>Java_DynamicClass_nativeMethod</code>. But how do we get android to omit the package name when it searches for the function?</p>
 <p>My solution was to rename the symbol in libnative.so to <code>Java_com_a_a_Test_nativeMethod</code>. This is the same length as the original function name so no problems should occur. I created a new android project with the package name <code>com.a.a</code>, and the java class named <code>Test</code>. Everything else remained the same. Here is the python script used to patch it:</p>
@@ -557,7 +557,7 @@ lib.write('libnative1.so')
 lib.write('/home/smalldonkey/dev/android/A/app/src/main/jniLibs/x86_64/libnative1.so')  # for convenience
 </code><div class="named-fence-filename">patch.py</div></pre>
 <p>In Test.java I changed <code>System.loadLibrary("native")</code> to <code>System.loadLibrary("native1")</code>. Running the app again, we see more logs, showing that the function was invoked successfully:</p>
-<p><img src="/tisc24/libnative_logs_fail.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/libnative_logs_fail.png" alt=""></p>
 <p>Recalling the query.java activity earlier, I tried using the printed key and iv to decrypt the string:</p>
 <pre class="named-fence-block"><code class="language-java">import java.util.Base64;
 import java.util.Arrays;
@@ -698,7 +698,7 @@ Java_com_example_hellojni_HelloJni_stringFromJNI( JNIEnv* env,
 <p>So it's performing a syscall with rax = 0x101. Consulting <a href="https://x64.syscall.sh/">https://x64.syscall.sh/</a> shows that is an <code>openat</code> call. dfd = 0xffffff9c and filename = "/sys/wall/facer". The output (in rax) is then shifted right by 31 bits and stored in rcx. Then we have <code>MOV     RAX=&gt;PTR_LAB_00105c00,qword ptr [RAX + RCX*0x8]</code>. At the end, there is a <code>jmp rax</code> instruction.</p>
 <p>The output of the <code>openat</code> syscall will return a file descriptor or a negative number if an error has occured (if the file does not exist, for example). The SHR instruction is basically checking whether the output is negative, and based on that, take either one of two paths under <code>PTR_LAB_00105c00</code>.</p>
 <p>Viewing the <code>PTR_LAB_00105c00</code> symbol shows those two paths:</p>
-<p><img src="/tisc24/libnative_filecheck_branch.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/libnative_filecheck_branch.png" alt=""></p>
 <p>The second branch (taken when output is negative, rcx = 1) prints out "I need a very specific file to be available. Or do I?". The first branch, however, prints the string "One wall down!", and it can be reached when the file is opened successfully.</p>
 <pre><code class="language-c">void UndefinedFunction_00103316(void)
 
@@ -1068,7 +1068,7 @@ newdata = newdata[:k] + b'1\xc0\x83\xc0\x05\x90\x90\x90' + newdata[k+8:]
 ...
 </code><div class="named-fence-filename">patch.py</div></pre>
 <p>Running the app with the patched libnative.so, there seem to be no errors, and a new key and iv is printed:</p>
-<p><img src="/tisc24/libnative_logs_success.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/libnative_logs_success.png" alt=""></p>
 <p>Running Decrypt.java with the updated key and iv, the flag is printed!</p>
 <p><code>TISC{1_4m_y0ur_w4llbr34k3r_!i#Leb}</code></p>
 <p>Here is the final patch.py script:</p>
@@ -1110,7 +1110,7 @@ newdata = newdata[:k] + b'\xcc' + newdata[k+1:]
 ...
 </code><div class="named-fence-filename">patch.py</div></pre>
 <p>When android reaches this instruction, the app would crash a memory dump would be printed to LogCat:</p>
-<p><img src="/tisc24/libnative_logs_memdump.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/libnative_logs_memdump.png" alt=""></p>
 <p>Thus, I was able to inspect the values of each register, which for this challenge was sufficient to debug effectively.</p>
 </div><div class="fixed w-[17.5rem] h-full top-0 right-0 pointer-events-none pr-8 max-lg:hidden"><div class="relative h-full flex"><div class="dotted-line-vert h-auto mb-10 mr-9"></div><!----><div class="flex flex-col pt-16"><span class="mt-6 mb-4 opacity-60">Sections</span><!--[--><!--]--></div><div class="absolute bottom-"></div></div></div></div></div></div>
     

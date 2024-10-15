@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400..600" rel="stylesheet">
     <title>Jia Jie's writeups</title>
-    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-fedccffe.js"></script>
+    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-9d44fda9.js"></script>
     <link rel="stylesheet" href="/ctf-writeups/assets/index-5c167933.css">
   </head>
   <body>
@@ -156,10 +156,10 @@ def main(from_date=None, to_date=None, search_term=None):
 </code></pre>
 <p>I copied the Desktop/project_incendiary folder over to my local machine and looked through it. It seems to contain plans for an arduino bomb design, with firmware.hex being the, well, firmware dump we have to reverse.</p>
 <p>Further searching reveals the schematic pdf under <code>C:/Users/diffuse/AppData\Roaming/Incendiary/Schematics/schematics.pdf</code>:</p>
-<p><img src="/tisc24/diffuse_schematic.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/diffuse_schematic.png" alt=""></p>
 <p>I also did some forensic analysis of Recall data for this user, and although there turned out to be no useful information, it made me aware of the existence of <a href="https://wokwi.com/">Wokwi</a>, a tool used to simulate arduino hardware.</p>
 <p>After some googling I was able to find the necessary components and cobble together something resembling the schematic:</p>
-<p><img src="/tisc24/wokwi_diagram.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/wokwi_diagram.png" alt=""></p>
 <blockquote>
 <p>At the start, I ran the simulation in the browser, but later on when I needed to attach gdb for debugging I ran it in vscode instead (the web interface doesn't allow debugging with a firmware.hex file without source).</p>
 </blockquote>
@@ -331,9 +331,9 @@ end
 </code></pre>
 <p>Seeing the <code>FUN_code_0760</code> invocation, I placed a breakpoint at that address, <code>b *(void(*)())0xec0</code> (yes, for some reason I have to add the <code>(void(*)())</code> type before each code address or else gdb will place the breakpoint at <code>0x800ec0</code>, I have no idea why).</p>
 <p>Reaching the breakpoint, I stepped did <code>si 4</code> to step through 4 instructions, reaching the actual <code>ld</code> instruction.</p>
-<p><img src="/tisc24/diffuse_gdb_1.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/diffuse_gdb_1.png" alt=""></p>
 <p>Just looking at these few lines of assembly code, we can see it's xoring a string at 0x16f and storing it at 0x874. I placed a breakpoint at the return statement to see the result once the xoring is done:</p>
-<p><img src="/tisc24/diffuse_gdb_2.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/diffuse_gdb_2.png" alt=""></p>
 <p>We can see from the updated value of the X register that 32 bytes were xored and copied.</p>
 <blockquote>
 <p>While attempting the challenge I was lucky enough to get a value of $r20 such that the entire xored string was printable characters. This prompted me to investigate the string further.</p>
@@ -396,12 +396,12 @@ for i in range(256):
 )
 </code></pre>
 <p>I thought that all the xoring and shifting was so difficult to follow that it seemed like a hash function. Consulting chatgpt, it suggested that it was AES encryption:</p>
-<p><img src="/tisc24/diffuse_chatgpt_aes.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/diffuse_chatgpt_aes.png" alt=""></p>
 <p>I watched <a href="https://www.youtube.com/watch?v=O4xNJsjtN6E">this youtube video</a> to figure out how the algorithm works, and all the implementation details seem to line up! But which mode of AES was being used?</p>
 <p>Through dynamic analysis, I was able to find the input and output of the AES-like algorithm. I did a memory dump using the gdb command <code>dump binary memory result.bin 0x800000 0x801000</code>, and the input of the algorithm is highlighted as follows:</p>
-<p><img src="/tisc24/diffuse_hexeditor.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/diffuse_hexeditor.png" alt=""></p>
 <p>The decrypted output is as follows:</p>
-<p><img src="/tisc24/diffuse_aes_decrypted.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/diffuse_aes_decrypted.png" alt=""></p>
 <p>I wrote the python script to simulate the exact same description, and tested different modes of AES encryption:</p>
 <pre class="named-fence-block"><code class="language-python">import base64
 from Crypto.Cipher import AES
@@ -502,7 +502,7 @@ with open('schematic1.pdf', 'wb') as f:
     f.write(data)
 </code><div class="named-fence-filename">patch_pdf.py</div></pre>
 <p>Opening up the new pdf, we see the actual embedded key on the second page!</p>
-<p><img src="/tisc24/schematic_page2.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/schematic_page2.png" alt=""></p>
 <p>I copied it over to my python script:</p>
 <pre class="named-fence-block"><code class="language-python">from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad

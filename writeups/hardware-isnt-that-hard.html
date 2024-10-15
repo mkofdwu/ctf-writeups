@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400..600" rel="stylesheet">
     <title>Jia Jie's writeups</title>
-    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-fedccffe.js"></script>
+    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-9d44fda9.js"></script>
     <link rel="stylesheet" href="/ctf-writeups/assets/index-5c167933.css">
   </head>
   <body>
@@ -112,12 +112,12 @@ index 6503cf7..0abcc86 100755
              size = len(section_data[name]['data'])
 </code><div class="named-fence-filename">git</div></pre>
 <p>Now, rerunning the command produces an ELF file. To decompile the file with ghidra, I had to install ghidra version 11+ as previous versions did not have support for xtensa esp32 instructions (another option was using https://github.com/Ebiroll/ghidra-xtensa). Now after importing the file into ghidra, we can see the decompilation.</p>
-<p><img src="/tisc24/firmware_decomp.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/firmware_decomp.png" alt=""></p>
 <p>To be honest, I wasn't expecting the decompilation to work since I wasn't even sure if the ELF had been extracted correctly, or if the patches had messed it up somehow. Anyway, I continued on.</p>
 <h1 id="reversing-the-elf" tabindex="-1">Reversing the ELF</h1>
 <p>The entry function seems to be quite complex and there is no immediately obvious program logic. One good way to locate the program logic is to try and find where readable strings are being used. A strings check on the ELF file yielded a very long list, but one string in particular stood out: <code>BRYXcorp_CrapTPM v1.0-TISC!</code>.</p>
 <p>I searched for this string in ghidra using <code>Search &gt; Memory</code></p>
-<p><img src="/tisc24/hardware_ghidra_search.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/hardware_ghidra_search.png" alt=""></p>
 <p>Following its references, we can see its being used in the following function:</p>
 <pre><code class="language-c">void FUN_400d1578(void)
 
@@ -203,7 +203,7 @@ LAB_400d1689:
 }
 </code></pre>
 <p>clicking on the <code>DAT_3ffbdb6a</code> symbol I found that it points to an interesting string:</p>
-<p><img src="/tisc24/hardware_interesting_string.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/hardware_interesting_string.png" alt=""></p>
 <p>A fake flag! This proves we're on the right track. The function above is probably the main function, and <code>FUN_400f25bc</code> is probably analgous to <code>__libc_start_main</code>?</p>
 <p>Let's take a closer look at this branch:</p>
 <pre><code class="language-c">    if (uVar5 == 0x46) {
@@ -252,7 +252,7 @@ LAB_400d1689:
 </code></pre>
 <p>I assumed that passing <code>0x4d</code> to the firmware would result in the string "BRYXcorp_CrapTPM" being returned.</p>
 <p>Now I had to figure out how to interact with the firmware. Here is the firmware interface provided (nc command in chal description):</p>
-<p><img src="/tisc24/firmware_interface.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/firmware_interface.png" alt=""></p>
 <p>Looking at the example for SEND, it seems like the first argument is some address or opcode, and the second argument is the payload.</p>
 <p>I tried sending <code>SEND 12 4d</code> followed by <code>RECV 4</code> but I received only null bytes. After some more unsuccessful tries, I decided to see if it was possible to brute force the first argument (after all, it's only 1 byte). I wrote the following python script to do so:</p>
 <pre class="named-fence-block"><code class="language-python">from pwn import *

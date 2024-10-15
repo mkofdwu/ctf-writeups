@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400..600" rel="stylesheet">
     <title>Jia Jie's writeups</title>
-    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-fedccffe.js"></script>
+    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-9d44fda9.js"></script>
     <link rel="stylesheet" href="/ctf-writeups/assets/index-5c167933.css">
   </head>
   <body>
@@ -238,7 +238,7 @@ RUN chmod 755 /home/ctf/.local/share/radare2/plugins/libcoreimp.so
 <h1 id="array-oob-write" tabindex="-1">Array OOB write</h1>
 <p>Then "." (value 0x2e) is written to <code>all_imports[-2]</code>. Conveniently, <code>offset</code> is a 2 byte value stored right before <code>all_imports</code>, so the LSB of <code>offset</code> is overwritten. Now <code>offset = 0xff2e = -210</code>, and our next write will be to <code>all_imports[-210]</code></p>
 <p>Looking at the stack layout, there doesn't seem to be anything important in that memory region:</p>
-<p><img src="/tisc24/imphash_stacklayout.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/imphash_stacklayout.png" alt=""></p>
 <p>If write 208 more bytes then we should reach <code>offset</code> and overwrite the LSB with the next byte. So we have control of <code>offset</code> and thus can write to any arbitrary memory location in a 0x7fff byte radius around <code>all_imports</code>. The most obvious thing to overwrite seems to be the <code>command</code> string, since it basically gives us RCE.</p>
 <p>Unfortunately, we can't overwrite the full <code>command</code> string due to a number of issues. Firstly, <code>command</code> is located 0x100 bytes below <code>all_imports</code>, so we need <code>offset = 0xff00</code> - but we can't write a null byte because the number of bytes written is dictated by <code>strlen</code>. Maybe it would be possible to write 0xff to the LSB followed by writing 0xfe to the MSB, but this also fails because of the next issue: At the end of the function a 32 byte hex string is written to <code>command[5:37]</code>, messing up whatever command we were planning to execute.</p>
 <p>What if we put our code <em>after</em> the 32 byte region? I checked if it was possible to run a command in backticks or in <code>$()</code> in radare2:</p>

@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400..600" rel="stylesheet">
     <title>Jia Jie's writeups</title>
-    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-fedccffe.js"></script>
+    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-9d44fda9.js"></script>
     <link rel="stylesheet" href="/ctf-writeups/assets/index-5c167933.css">
   </head>
   <body>
@@ -52,7 +52,7 @@ def submit():
         return str(e)
 </code><div class="named-fence-filename">main.py</div></pre>
 <p>Unfortunately, the 32 character length limit means we cannot get RCE. However, we can leak <code>response_data</code> with by passing password = <code>{{response_data}}</code>:</p>
-<p><img src="/tisc24/response_data_leak.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/response_data_leak.png" alt=""></p>
 <h1 id="backend-server" tabindex="-1">Backend server</h1>
 <p>On the backend there is a single POST endpoint:</p>
 <pre class="named-fence-block"><code class="language-python">...
@@ -439,7 +439,7 @@ class Setup:
 <h1 id="finding-an-oracle" tabindex="-1">Finding an Oracle</h1>
 <p>I went back to the web interface to see if there was anything I missed. Looking at the response_data leak, is there any additional information we can use? Aside from the contract bytecodes and output, we also have access to <code>setup_contract_address</code> and <code>gas</code>. The former is useless since it is a fixed value we can't do anything with. But what about <code>gas</code>?</p>
 <p>I recalled from browsing this list of <a href="https://ethereum.org/en/developers/docs/evm/opcodes/">ethervm opcodes</a> that each opcode has a specific gas cost. So if a different sequence of opcodes are executed, the gas cost will be different. After testing some payloads, I confirmed that <code>gas</code> is deterministic based on the input.</p>
-<p><img src="/evm_opcode_gas.png" alt=""></p>
+<p><img src="/ctf-writeups/evm_opcode_gas.png" alt=""></p>
 <p>I realised that it was possible to perform something similar to a timing attack, where in this case the gas cost represents the 'time' taken to execute the flag checking algorithm. If a certain string has a higher gas cost compared to another one, that means it passed more of the checks in the character-by-character string comparison. Thus, we can write a script to query a large number of strings that vary by only a single character, and narrow down which character is correct. Repeating this process for each character in the flag allows us to leak it eventually.</p>
 <p>I wrote a python script to achieve this:</p>
 <pre class="named-fence-block"><code class="language-python">import requests

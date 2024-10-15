@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400..600" rel="stylesheet">
     <title>Jia Jie's writeups</title>
-    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-fedccffe.js"></script>
+    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-9d44fda9.js"></script>
     <link rel="stylesheet" href="/ctf-writeups/assets/index-5c167933.css">
   </head>
   <body>
@@ -72,13 +72,13 @@ Personnel List &lt;br&gt;
 {'PHPSESSID': 'srav744br8cui13r6dgb15j2cv', 'rank': '0'}
 </code></pre>
 <p>I copied the <code>PHPSESSID</code> and <code>rank</code> cookies into Chrome, and viewed <code>/table.php</code>.</p>
-<p><img src="/tisc23/the-chosen-ones-table.png" alt="table"></p>
+<p><img src="/ctf-writeups/tisc23/the-chosen-ones-table.png" alt="table"></p>
 <p>I tried some standard sql injection payloads such as <code>' or 1=1;--</code>, however they didn't seem to work. I then tried a polyglot injection payload I found on PayloadAllTheThings:</p>
 <pre><code class="language-sql">SLEEP(1) /*' or SLEEP(1) or '" or SLEEP(1) or "*/
 </code></pre>
 <p>This yielded no results on both the username and password fields.</p>
 <p>Then I remembered the strange <code>rank</code> cookie and tried to figure out what it did. I changed the value to 1, and this time the table was larger:</p>
-<p><img src="/tisc23/the-chosen-ones-table-2.png" alt="table"></p>
+<p><img src="/ctf-writeups/tisc23/the-chosen-ones-table-2.png" alt="table"></p>
 <p>Changing the value to 2, I could see more rows with users of rank 2 as well. So rank is probably included in the sql query as well and a possible vector for sql injection. I set rank to the polyglot injection payload above and sent another request. This time, the request returned a server error after a while, so the sql injection was successful.</p>
 <p>Next, I had to identify the type of database. Referring to this <a href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/SQL%20Injection#dbms-identification">list of payloads</a>, I sent <code>rank=1 and conv('a',16,2)=conv('a',16,2);--</code> and it succeeded, showing that the underlying database is MySQL.</p>
 <p>Next, we have to extract information about the db schema. Following <a href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/SQL%20Injection/MySQL%20Injection.md#extract-database-with-information_schema">this section</a>, I sent a request with <code>rank=-1 union select schema_name, 1, 1, 1 from information_schema.schemata;--</code></p>

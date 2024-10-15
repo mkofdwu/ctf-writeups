@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400..600" rel="stylesheet">
     <title>Jia Jie's writeups</title>
-    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-fedccffe.js"></script>
+    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-9d44fda9.js"></script>
     <link rel="stylesheet" href="/ctf-writeups/assets/index-5c167933.css">
   </head>
   <body>
@@ -23,16 +23,16 @@
 <p>I looked through the profile and saw an interesting higlights reel titled 'Discord'.</p>
 <p><img src="/ctf-writeups/tisc24/vi_vox223_ig.png" alt=""></p>
 <p>Seems like this discord bot is the next part of the challenge. A few slides later, another piece of information is revealed:</p>
-<p><img src="/tisc24/vi_vox223_ig_2.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/vi_vox223_ig_2.png" alt=""></p>
 <h1 id="2.-discord-bot" tabindex="-1">2. Discord bot</h1>
 <p>I created an empty discord server and tried to add the bot from <code>https://top.gg/bot/1258440262951370813</code>. However, top.gg returned a 403 error.</p>
 <p>After some googling, I found <a href="https://discordjs.guide/preparations/adding-your-bot-to-servers.html#bot-invite-links">this guide</a> which described the format of the oauth url used to invite the bot to a server. After using the link <code>https://discord.com/api/oauth2/authorize?client_id=1258440262951370813&amp;permissions=0&amp;scope=bot%20applications.commands</code> I was able to add the bot to my server. However, the bot didn't seem to respond to my messages.</p>
 <p>I thought it was because the bot was missing some permissions, and used the following site to get the correct permissions code: <a href="https://discordapi.com/permissions.html">https://discordapi.com/permissions.html</a>. After some failed attempts (I was pinging the bot when in retrospect I should have just typed the command at the start of each message) I eventually just gave the bot all permissions, inviting it to the server via the following link: <code>https://discord.com/oauth2/authorize?client_id=1258440262951370813&amp;scope=bot&amp;permissions=1099511627775</code>. Now the bot seems to be working properly.</p>
-<p><img src="/tisc24/factbuddy.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/factbuddy.png" alt=""></p>
 <p>I created the role <code>D0PP3L64N63R</code> and assigned it to myself. Now when running <code>!help</code>, we get some new commands:</p>
-<p><img src="/tisc24/factbuddy_new_commands.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/factbuddy_new_commands.png" alt=""></p>
 <p>I listed the files:</p>
-<p><img src="/tisc24/factbuddy_list.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/factbuddy_list.png" alt=""></p>
 <p>After looking through each file one by one, I reached <code>Update_030624.eml</code>:</p>
 <pre class="named-fence-block"><code class="language-plaintext">From: "Vivoxanderith"
 To: "#Headquarters#"
@@ -95,10 +95,10 @@ spatial technology, which employs shape-based location triangulation a=
 nd partitions areas of the Earth into identifiable cells.
 </code></pre>
 <p>After googling for Uber's geospatial technology, I found the website: <a href="https://h3geo.org/">https://h3geo.org/</a>. Keying in the 3 hex values in the email shows a promising result:</p>
-<p><img src="/tisc24/uber_geolocation.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/uber_geolocation.png" alt=""></p>
 <p>I tried sending the two locations named on the map, 'San francesco' and 'Cimitero di Sermoneta', to the Telegram bot, but this yielded no results. More digging is required. I found 'Cimitero di Sermoneta' on Google maps, and found that the exact location covered by the three hexagons was 'Quercia secolare'.</p>
 <p>Submitting this to the Telegram bot, I got the flag!</p>
-<p><img src="/tisc24/tisc24_l1_flag.jpg" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/tisc24_l1_flag.jpg" alt=""></p>
 </div><div class="fixed w-[17.5rem] h-full top-0 right-0 pointer-events-none pr-8 max-lg:hidden"><div class="relative h-full flex"><div class="dotted-line-vert h-auto mb-10 mr-9"></div><!----><div class="flex flex-col pt-16"><span class="mt-6 mb-4 opacity-60">Sections</span><!--[--><!--]--></div><div class="absolute bottom-"></div></div></div></div></div></div>
     
   

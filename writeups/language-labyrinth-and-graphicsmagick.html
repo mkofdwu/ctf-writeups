@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400..600" rel="stylesheet">
     <title>Jia Jie's writeups</title>
-    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-fedccffe.js"></script>
+    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-9d44fda9.js"></script>
     <link rel="stylesheet" href="/ctf-writeups/assets/index-5c167933.css">
   </head>
   <body>
@@ -25,7 +25,7 @@
 <p><img src="/ctf-writeups/tisc24/llm_welcome.png" alt=""></p>
 <p>Clearly there is some llm in the challenge, but how is it being used to transform the image? I tried a bunch of different payloads to get an idea of what was going on, using a random image of a blank white square.</p>
 <p>For example, sending the blank image with the prompt <code>Make this square white</code> yields the following result:</p>
-<p><img src="/tisc24/llm_example.png" alt=""></p>
+<p><img src="/ctf-writeups/tisc24/llm_example.png" alt=""></p>
 <p>If we click on the 'View your hash.txt' link, we get a plaintext response: <code>gm convert /tmp/ecf823bce33c430c89eda6f1114a7ffc_Blank_Square.png -fill red -draw 'color 0,0 floodfill' /tmp/ecf823bce33c430c89eda6f1114a7ffc_Blank_Square.png_output.png</code></p>
 <p>Refering to the challenge title, and googling <code>gm command</code> reveals that GraphicsMagick is being used to transform the image.</p>
 <p>So it seems that our llm prompt is being used to generate a shell command that uses <code>gm</code> to transform the image.</p>
