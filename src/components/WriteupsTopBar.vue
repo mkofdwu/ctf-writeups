@@ -16,6 +16,8 @@ watch(useRoute(), () => {
 })
 
 nextTick(() => {
+  if (typeof window === 'undefined') return // handle non-SSG aware code below
+
   prevScrollOffset = window.scrollY
 
   window.addEventListener('scroll', () => {

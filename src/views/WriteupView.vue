@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { nextTick, ref, h, render } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
 import MarkdownIt from 'markdown-it'
 import mdItAnchor from 'markdown-it-anchor'
 import namedCodeBlocks from 'markdown-it-named-code-blocks'
@@ -10,13 +9,9 @@ import ChalInfoCard from '@/components/ChalInfoCard.vue'
 import SectionsBar from '@/components/SectionsBar.vue'
 import CodeBlockButtons from '@/components/CodeBlockButtons.vue'
 import { chals } from '@/data/writeups'
-import { defaultWriteupSlug } from '@/data/sidebarList'
 import { slugToMd } from '@/data/slugToMd'
 
-const { slug } = useRoute().params
-if (typeof slug !== 'string' || !(slug in chals)) {
-  useRouter().push(defaultWriteupSlug)
-}
+const { slug } = defineProps<{ slug: string }>()
 
 const chalInfo = chals[slug as string]
 
@@ -28,6 +23,8 @@ const sections = ref<{ label: string; id: string }[]>([])
 
 hljsDefineSolidity(hljs)
 nextTick(() => {
+  if (typeof window === 'undefined') return // handle non-SSG aware code below
+
   hljs.highlightAll()
   const headers = document.getElementById('article')!.getElementsByTagName('h1')
   for (const el of headers) {

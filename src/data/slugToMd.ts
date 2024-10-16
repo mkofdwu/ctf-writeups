@@ -21,7 +21,7 @@ import wallfacer from '@/assets/writeups/tisc24/wallfacer.md?raw'
 import imphash from '@/assets/writeups/tisc24/imphash.md?raw'
 import diffuse from '@/assets/writeups/tisc24/diffuse.md?raw'
 
-export const slugToMd: { [slug: string]: string } = {
+const _slugToMd: { [slug: string]: string } = {
   'the-other-obligatory-pyjail': theOtherObligatoryPyjail,
   'disk-archaeology': diskArchaeology,
   'reckless-mistake': recklessMistake,
@@ -45,3 +45,13 @@ export const slugToMd: { [slug: string]: string } = {
   imphash: imphash,
   diffuse: diffuse
 }
+
+// handle gh-pages prefix
+
+function fixImagePrefixes(md: string): string {
+  return md.replace(/^!\[(.*?)\]\(\//gm, '![$1](/ctf-writeups/')
+}
+
+export const slugToMd = import.meta.env.PROD
+  ? Object.fromEntries(Object.entries(_slugToMd).map(([slug, md]) => [slug, fixImagePrefixes(md)]))
+  : _slugToMd

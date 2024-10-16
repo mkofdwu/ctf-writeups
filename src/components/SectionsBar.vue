@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { nextTick, ref, computed } from 'vue'
 
+const thisUrl = location.href // account for gh pages prefix ($route.fullPath doesnt work...)
+
 const { sections } = defineProps<{ sections: { label: string; id: string }[] }>()
 
 let sectionLinks: HTMLCollectionOf<Element>
 const currentSection = ref('')
 
 nextTick(() => {
+  if (typeof window === 'undefined') return // handle non-SSG aware code below
+
   sectionLinks = document.getElementsByClassName('section-link')
 
   window.addEventListener('scroll', () => {
@@ -55,7 +59,7 @@ const markerTop = computed(() => {
         :key="id"
         class="section-link h-12 flex items-center font-semibold transition-colors pointer-events-auto"
         :class="id === currentSection ? 'text-primary' : 'hover:text-primary'"
-        :href="$route.path + '#' + id"
+        :href="thisUrl + '#' + id"
       >
         {{ label }}
       </a>
