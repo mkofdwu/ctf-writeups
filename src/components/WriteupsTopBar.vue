@@ -63,8 +63,8 @@ nextTick(() => {
         <material-icon name="arrow_outward" class="ml-3" />
       </a>
       <div
-        class="hide-scrollbar fixed left-0 top-16 z-10 w-full bg-black overflow-y-auto origin-top duration-300 transition-all xl:hidden"
-        :class="opened ? 'menu-opened' : 'h-0'"
+        class="hide-scrollbar fixed left-0 top-16 z-10 w-full bg-black overflow-y-auto origin-top duration-300 transition-all xl:hidden max-sm:top-14"
+        :class="opened ? 'h-[calc(100vh-4rem)] max-sm:h-[calc(100vh-3.5rem)]' : 'h-0'"
       >
         <div
           class="pt-10 duration-300 transition-opacity"
@@ -77,9 +77,3 @@ nextTick(() => {
     <div class="dotted-line-hori z-10 w-[calc(100vw-5rem)] max-sm:w-screen"></div>
   </div>
 </template>
-
-<style scoped>
-.menu-opened {
-  height: calc(100vh - 4rem);
-}
-</style>
