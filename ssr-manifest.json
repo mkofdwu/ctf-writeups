@@ -123,6 +123,10 @@
   ],
   "node_modules/@unhead/shared/dist/index.mjs": [
   ],
+  "node_modules/@unhead/vue/dist/index.mjs": [
+  ],
+  "node_modules/@unhead/vue/dist/shared/vue.8fc199ce.mjs": [
+  ],
   "node_modules/@unhead/vue/dist/shared/vue.f49591ad.mjs": [
   ],
   "node_modules/@vue/reactivity/dist/reactivity.esm-bundler.js": [
