@@ -10,6 +10,7 @@ import SectionsBar from '@/components/SectionsBar.vue'
 import CodeBlockButtons from '@/components/CodeBlockButtons.vue'
 import { chals } from '@/data/writeups'
 import { slugToMd } from '@/data/slugToMd'
+import { useHead, useSeoMeta } from '@unhead/vue'
 
 const { slug } = defineProps<{ slug: string }>()
 
@@ -20,6 +21,17 @@ const md = slugToMd[slug as string]
 let renderedMd = mdIt.render(md)
 
 const sections = ref<{ label: string; id: string }[]>([])
+
+useHead({
+  title: `${chalInfo.ctf} - ${chalInfo.title}`
+})
+
+useSeoMeta({
+  title: `${chalInfo.ctf} - ${chalInfo.title}`,
+  description: md,
+  author: 'Jia Jie',
+  articleTag: [chalInfo.ctf, ...chalInfo.cats]
+})
 
 hljsDefineSolidity(hljs)
 nextTick(() => {

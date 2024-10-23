@@ -6,7 +6,7 @@ I started by trying to get an overall idea of the the various concepts involved,
 
 Based on my understanding, a TPM is a piece of hardware that does encryption and decryption of data passed to it. It has a "mini-processor" and the key is stored inside it, allowing all operations to occur independently of the actual computer. Hence, it is impossible for an attacker to inject their own code or otherwise interfere with the encryption and decryption algorithms. Neither is it possible to leak the encryption key since it is stored on an entirely different memory chip.
 
-![](/tisc24https://upload.wikimedia.org/wikipedia/commons/b/be/TPM.svg)
+![](https://upload.wikimedia.org/wikipedia/commons/b/be/TPM.svg)
 
 Next, I began researching ways to reverse the firmware dump. My search led to [esp32_image_parser](https://github.com/tenable/esp32_image_parser) on github (some other useful resources I came across are [https://github.com/BlackVS/ESP32-reversing?tab=readme-ov-file#firmware](https://github.com/BlackVS/ESP32-reversing?tab=readme-ov-file#firmware) and [https://olof-astrand.medium.com/reverse-engineering-of-esp32-flash-dumps-with-ghidra-or-ida-pro-8c7c58871e68](https://olof-astrand.medium.com/reverse-engineering-of-esp32-flash-dumps-with-ghidra-or-ida-pro-8c7c58871e68))
 

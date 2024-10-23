@@ -2,6 +2,7 @@ import type { ChalInfo } from '@/types/ChalInfo'
 
 export const chals: { [slug: string]: ChalInfo } = {
   'the-other-obligatory-pyjail': {
+    ctf: 'LITCTF 2023',
     title: 'the other obligatory pyjail',
     author: 'quasar',
     description:
@@ -19,6 +20,7 @@ export const chals: { [slug: string]: ChalInfo } = {
     datePosted: '11/09/2023'
   },
   'disk-archaeology': {
+    ctf: 'TISC 2023',
     title: 'Disk Archaeology',
     author: 'unknown',
     description: `Unknown to the world, the sinister organization PALINDROME has been crafting a catastrophic malware that threatens to plunge civilization into chaos. Your mission, if you choose to accept it, is to infiltrate their secret digital lair, a disk image exfiltrated by our spies. This disk holds the key to unraveling their diabolical scheme and preventing the unleashing of a suspected destructive virus.
@@ -42,6 +44,7 @@ Notes:
     datePosted: '03/10/2023'
   },
   'reckless-mistake': {
+    ctf: 'TISC 2023',
     title: "XIPHEREHPIX's Reckless Mistake",
     author: 'unknown',
     description: `Our sources told us that one of PALINDROME's lieutenants, XIPHEREHPIX, wrote a special computer program for certain members of PALINDROME. We have somehow managed to get a copy of the source code and the compiled binary. The intention of the program is unclear, but we think encrypted blob inside the program could contain a valuable secret.`,
@@ -62,6 +65,7 @@ Notes:
     datePosted: '03/10/2023'
   },
   kpa: {
+    ctf: 'TISC 2023',
     title: 'KPA',
     author: 'unknown',
     description: `We've managed to grab an app from a suspicious device just before it got reset! The copying couldn't finish so some of the last few bytes got corrupted... But not all is lost! We heard that the file shouldn't have any comments in it! Help us uncover the secrets within this app!`,
@@ -78,6 +82,7 @@ Notes:
     datePosted: '03/10/2023'
   },
   rubg: {
+    ctf: 'TISC 2023',
     title: 'Really Unfair Battleships Game',
     author: 'unknown',
     description: `After last year's hit online RPG game "Slay The Dragon", the cybercriminal organization PALINDROME has once again released another seemingly impossible game called "Really Unfair Battleships Game" (RUBG). This version of Battleships is played on a 16x16 grid, and you only have one life. Once again, we suspect that the game is being used as a recruitment campaign. So once again, you're up!
@@ -117,6 +122,7 @@ You will be provided with the following:
     datePosted: '03/10/2023'
   },
   'palindromes-invitation': {
+    ctf: 'TISC 2023',
     title: "PALINDROME's Invitation",
     author: 'unknown',
     description: `Valuable intel suggests that PALINDROME has established a secret online chat room for their members to discuss on plans to invade Singapore's cyber space. One of their junior developers accidentally left a repository public, but he was quick enough to remove all the commit history, only leaving some non-classified files behind. One might be able to just dig out some secrets of PALINDROME and get invited to their secret chat room...who knows?
@@ -130,6 +136,7 @@ Start here: [https://github.com/palindrome-wow/PALINDROME-PORTAL](https://github
     datePosted: '03/10/2023'
   },
   'the-chosen-ones': {
+    ctf: 'TISC 2023',
     title: 'The Chosen Ones',
     author: 'unknown',
     description: `We have discovered PALINDROME's recruitment site. Infiltrate it and see what you can find!
@@ -143,6 +150,7 @@ Start here: [https://github.com/palindrome-wow/PALINDROME-PORTAL](https://github
     datePosted: '03/10/2023'
   },
   devsecmeow: {
+    ctf: 'TISC 2023',
     title: 'DevSecMeow',
     author: 'unknown',
     description: `Palindrome has accidentally exposed one of their onboarding guide! Sneak in as a new developer and exfiltrate any meaningful intelligence on their production system.
@@ -158,6 +166,7 @@ Note: Concatenate flag1 and flag2 to form the flag for submission.`,
     datePosted: '03/10/2023'
   },
   'blind-sql-injection': {
+    ctf: 'TISC 2023',
     title: 'Blind SQL Injection',
     author: 'unknown',
     description: `As part of the anti-PALINDROME task force, you find yourself face to face with another task.
@@ -189,6 +198,7 @@ You ready your fingers on the keyboard, confident that you'll be able to deliver
     datePosted: '03/10/2023'
   },
   'push-and-pickle': {
+    ctf: 'UIUCTF 2024',
     title: 'Push and Pickle',
     author: 'Cameron',
     description: `I love how there are so many different types of pickles. I tried experimenting with two of them.
@@ -211,6 +221,7 @@ You ready your fingers on the keyboard, confident that you'll be able to deliver
     datePosted: '07/07/2024'
   },
   'hi-doggy': {
+    ctf: 'Greyhats 2024',
     title: 'Hi Doggy',
     author: 'devesh',
     description: `I figured out the best defence against SSTI, just remove the stuff that can execute code from the template! I even used a whitelist like the pros tell you to do!
@@ -230,6 +241,7 @@ You ready your fingers on the keyboard, confident that you'll be able to deliver
     datePosted: '29/07/2024'
   },
   'proto-grader': {
+    ctf: 'Greyhats 2024',
     title: 'Proto Grader',
     author: 'jro',
     description: `Here's a website to check if you've got the right flag! It's just a prototype at the moment, I hope it doesn't break!
@@ -249,6 +261,7 @@ You ready your fingers on the keyboard, confident that you'll be able to deliver
     datePosted: '12/08/2024'
   },
   'navigating-the-digital-labyrinth': {
+    ctf: 'TISC 2024',
     title: 'Navigating the Digital Labyrinth',
     author: 'unknown',
     description: `The dust has settled since we won the epic battle against PALINDROME one year ago.
@@ -268,6 +281,7 @@ Our mission now requires a meticulous investigation into **vi_vox223**'s activit
     datePosted: '30/09/2024'
   },
   'language-labyrinth-and-graphicsmagick': {
+    ctf: 'TISC 2024',
     title: 'Language, Labyrinth and (Graphics)Magick',
     author: 'unknown',
     description: `Good job on identifying the source of the attack! We are one step closer to identifying the mysterious entity, but there's still much we do not know.
@@ -289,6 +303,7 @@ Any one of the following instances will work:
     datePosted: '30/09/2024'
   },
   'digging-up-history': {
+    ctf: 'TISC 2024',
     title: 'Digging Up History',
     author: 'unknown',
     description: `Ah, who exactly is behind the attacks? If only our enemies left more images on their image transformation server. We are one step closer, but there is still so much to uncover...
@@ -309,6 +324,7 @@ A disc image file was recovered from them! We have heard that they have a histor
     datePosted: '30/09/2024'
   },
   alligatorpay: {
+    ctf: 'TISC 2024',
     title: 'AlligatorPay',
     author: 'unknown',
     description: `![AlligatorPay logo](https://assets-hgsv2z3wsyxzjayx.sgp1.digitaloceanspaces.com/agpay.png)
@@ -326,6 +342,7 @@ Your task is to find a way to join this exclusive member tier within AlligatorPa
     datePosted: '30/09/2024'
   },
   'hardware-isnt-that-hard': {
+    ctf: 'TISC 2024',
     title: 'Hardware isnt that Hard!',
     author: 'jiefeng',
     description: `Shucks... it seems like our enemies are making their own silicon chips??!? They have decided to make their own source of trust, a TPM (Trusted Platform Module) or I guess their best attempt at it.
@@ -349,6 +366,7 @@ You can perform your attack on a live TPM module via the i2c implant device host
     datePosted: ''
   },
   noncevigator: {
+    ctf: 'TISC 2024',
     title: 'Noncevigator',
     author: 'unknown',
     description: `I guess their Trusted Platform Modules were not so trusted afterall. What about blockchain? Blockchain is secure by design, right?
@@ -373,6 +391,7 @@ Ensure your wallet is sufficiently funded for travel and any potential challenge
     datePosted: ''
   },
   'baby-flagchecker': {
+    ctf: 'TISC 2024',
     title: 'Baby Flagchecker',
     author: 'unknown',
     description: `You've come so far, brave agents! Let us continue our mission to identify our threats, and retrieve the crucial information that they are hiding from the world.
@@ -395,6 +414,7 @@ We know that they use this phrase for establishing communications between one an
     datePosted: ''
   },
   wallfacer: {
+    ctf: 'TISC 2024',
     title: 'Wallfacer',
     author: 'unknown',
     description: `Breaking news! We've managed to seize an app from their device.
@@ -415,6 +435,7 @@ It's up to you now! Can you break through the walls and unveil the hidden secret
     datePosted: ''
   },
   imphash: {
+    ctf: 'TISC 2024',
     title: 'Imphash',
     author: 'jro',
     description: `Almost there agent, we might have a chance to gain access into the enemy's systems again!! We are so close.
@@ -437,6 +458,7 @@ We've found this import hashing plugin which is a key component of their malware
     datePosted: ''
   },
   diffuse: {
+    ctf: 'TISC 2024',
     title: 'Diffuse',
     author: 'Jon Chiang',
     description: `!!! We've found a weird device with a timer counting down! Ccould..it... be...a bomb....?? Your fellow agents found some access into the engineer's machine, will you be able to find some clues and diffuse it before it's too late?

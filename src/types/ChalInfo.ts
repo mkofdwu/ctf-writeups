@@ -1,4 +1,5 @@
 export type ChalInfo = {
+  ctf: string
   title: string
   author: string
   description: string
