@@ -20,11 +20,7 @@ export const createApp = ViteSSG(App, {
   routes: [
     {
       path: '/',
-      redirect: '/writeups/' + defaultWriteupSlug
-    },
-    {
-      path: '/writeups',
-      redirect: '/writeups/' + defaultWriteupSlug,
+      redirect: '/' + defaultWriteupSlug,
       component: WriteupWrapper,
       children: writeupRoutes
     }

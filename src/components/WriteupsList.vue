@@ -9,7 +9,7 @@ import { sidebarList } from '@/data/sidebarList'
       <router-link
         v-for="chal in ctf.chals"
         :key="chal.slug"
-        :to="`/writeups/${chal.slug}`"
+        :to="`/${chal.slug}`"
         class="group h-12 flex pl-10"
       >
         <svg
