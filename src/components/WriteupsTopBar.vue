@@ -55,7 +55,7 @@ nextTick(() => {
         <github-icon />
       </a>
       <a
-        href="https://jiajie.surge.sh"
+        href="https://mkofdwu.github.io/"
         target="_blank"
         class="h-10 pl-4 pr-2 ml-3 flex items-center font-semibold rounded-full border max-[500px]:hidden"
       >
