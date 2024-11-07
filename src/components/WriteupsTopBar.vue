@@ -44,23 +44,26 @@ nextTick(() => {
       />
       <span class="text-xl font-semibold">Jia Jie's writeups</span>
       <div class="flex-1"></div>
-      <button class="w-10 h-10 rounded-full grid place-items-center">
+      <!-- <button class="w-10 h-10 rounded-full grid place-items-center">
         <material-icon name="search" />
-      </button>
+      </button> -->
       <a
         href="https://github.com/mkofdwu/ctf-writeups"
         target="_blank"
-        class="w-10 h-10 rounded-full grid place-items-center"
+        class="group w-10 h-10 rounded-full grid place-items-center"
       >
-        <github-icon />
+        <github-icon class="transition-colors fill-white group-hover:fill-primary" />
       </a>
       <a
         href="https://mkofdwu.github.io/"
         target="_blank"
-        class="h-10 pl-4 pr-2 ml-3 flex items-center font-semibold rounded-full border max-[500px]:hidden"
+        class="main-website-btn group h-10 pl-4 pr-2 ml-3 flex items-center font-semibold rounded-full border max-[500px]:hidden transition-all duration-500 hover:border-primary hover:text-black"
       >
         main website
-        <material-icon name="arrow_outward" class="ml-3" />
+        <material-icon
+          name="arrow_outward"
+          class="text-xl ml-2 transition-colors duration-500 group-hover:text-black"
+        />
       </a>
       <div
         class="hide-scrollbar fixed left-0 top-16 z-10 w-full bg-black overflow-y-auto origin-top duration-300 transition-all xl:hidden max-sm:top-14"
@@ -77,3 +80,15 @@ nextTick(() => {
     <div class="dotted-line-hori z-10 w-[calc(100vw-5rem)] max-sm:w-screen"></div>
   </div>
 </template>
+
+<style>
+.main-website-btn {
+  background: linear-gradient(to left, #1e1e1e, #1e1e1e, #64a577, #64a577);
+  background-size: 300% 100%;
+  background-position-x: 100%;
+}
+
+.main-website-btn:hover {
+  background-position-x: 0%;
+}
+</style>

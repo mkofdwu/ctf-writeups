@@ -8,4 +8,3 @@ Deployed at [https://mkofdwu.github.io/ctf-writeups/](https://mkofdwu.github.io/
 
 - search function
 - include a way to put captions under images
-- main website button animation
