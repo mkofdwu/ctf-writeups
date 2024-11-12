@@ -1,23 +1,10 @@
 <script setup lang="ts">
-import type { ChalInfo } from '@/types/ChalInfo'
+import type { ChalInfo, ChalCat } from '@/types/ChalInfo'
 import MaterialIcon from './MaterialIcon.vue'
 import MarkdownIt from 'markdown-it'
+import { catIcons } from '@/data/catIcons'
 
 const { info } = defineProps<{ info: ChalInfo }>()
-
-const catIcons: { [cat: string]: string } = {
-  web: 'language',
-  pwn: 'bug_report',
-  rev: 'keyboard_double_arrow_left',
-  misc: 'help',
-  forensics: 'quick_reference_all',
-  crypto: 'key',
-  mobile: 'phone_android',
-  cloud: 'cloud',
-  osint: 'visibility',
-  blockchain: 'currency_bitcoin',
-  hardware: 'memory'
-}
 
 const mdIt = new MarkdownIt()
 const descriptionRendered = mdIt.render(info.description)
@@ -31,7 +18,7 @@ function downloadAll() {
 
 <template>
   <div class="w-full flex flex-col items-start">
-    <span class="text-2xl opacity-40 mb-1">{{ info.datePosted }}</span>
+    <span class="text-xl opacity-40 mb-1">{{ info.datePosted }}</span>
     <h1 class="mb-7">{{ info.title }}</h1>
     <div class="markdown mb-7 flex flex-col gap-y-3" v-html="descriptionRendered"></div>
     <div class="flex flex-wrap gap-3">
@@ -40,7 +27,7 @@ function downloadAll() {
         :key="i"
         class="h-9 bg-white rounded-full flex items-center"
       >
-        <material-icon sm :name="catIcons[cat]!" class="ml-3 mr-2 text-black" />
+        <material-icon sm :name="catIcons[cat as ChalCat]!" class="ml-3 mr-2 text-black" />
         <span class="mr-4 text-black font-semibold">{{ cat }}</span>
       </div>
       <div class="h-9 bg-almost-black rounded-full px-5 flex items-center">

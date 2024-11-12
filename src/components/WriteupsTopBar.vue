@@ -5,11 +5,13 @@ import MenuButton from './MenuButton.vue'
 import WriteupsList from './WriteupsList.vue'
 import MaterialIcon from './MaterialIcon.vue'
 import GithubIcon from './icons/GithubIcon.vue'
+import { useSearchModalStore } from '@/stores/searchModal'
 
 let prevScrollOffset: number
 
 const opened = ref(false)
 const showTopBar = ref(true)
+const searchModal = useSearchModalStore()
 
 watch(useRoute(), () => {
   opened.value = false
@@ -44,9 +46,12 @@ nextTick(() => {
       />
       <span class="text-xl font-semibold">Jia Jie's writeups</span>
       <div class="flex-1"></div>
-      <!-- <button class="w-10 h-10 rounded-full grid place-items-center">
-        <material-icon name="search" />
-      </button> -->
+      <button
+        class="group w-10 h-10 rounded-full grid place-items-center"
+        @click="searchModal.open()"
+      >
+        <material-icon name="search" class="transition-colors group-hover:text-primary" />
+      </button>
       <a
         href="https://github.com/mkofdwu/ctf-writeups"
         target="_blank"

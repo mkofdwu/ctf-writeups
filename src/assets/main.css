@@ -48,6 +48,11 @@ body {
   background: #1e1e1e;
 }
 
+input {
+  background: none;
+  outline: none;
+}
+
 .dotted-line-vert {
   width: 1.5px;
   background-image: linear-gradient(to bottom, #525252 33%, rgba(82, 82, 82, 0) 0%);
@@ -62,6 +67,7 @@ body {
 
 .fade-enter-active,
 .fade-leave-active {
+  transition: opacity 300ms;
   opacity: 1;
 }
 

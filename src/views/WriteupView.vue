@@ -8,7 +8,7 @@ import hljsDefineSolidity from 'highlightjs-solidity'
 import ChalInfoCard from '@/components/ChalInfoCard.vue'
 import SectionsBar from '@/components/SectionsBar.vue'
 import CodeBlockButtons from '@/components/CodeBlockButtons.vue'
-import { chals } from '@/data/writeups'
+import { chals } from '@/data/chals'
 import { slugToMd } from '@/data/slugToMd'
 import { useHead, useSeoMeta } from '@unhead/vue'
 
