@@ -9,8 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400..600" rel="stylesheet">
     <title>TISC 2023 - KPA</title>
-    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-e8aa76ab.js"></script>
-    <link rel="stylesheet" href="/ctf-writeups/assets/index-b150752b.css">
+    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-7e5aabe4.js"></script>
+    <link rel="stylesheet" href="/ctf-writeups/assets/index-c9002530.css">
   <meta property="article:tag" content="TISC 2023"><meta property="article:tag" content="mobile"><meta name="description" content="# 1. Fixing the apk
 
 When I first tried to decompile the apk with jadx, it produced an error and failed to decompile correctly. I remembered from the challenge description that &quot;some of the last few bytes got corrupted&quot;, so I knew I had to fix the file before decompiling it. I searched for an apk file format specification online but realised an apk is a zip archive, so I used the specification [here](https://users.cs.jmu.edu/buchhofp/forensics/formats/pkzip-printable.html) and edited the file using ghex.

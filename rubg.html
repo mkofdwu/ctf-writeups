@@ -9,8 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400..600" rel="stylesheet">
     <title>TISC 2023 - Really Unfair Battleships Game</title>
-    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-e8aa76ab.js"></script>
-    <link rel="stylesheet" href="/ctf-writeups/assets/index-b150752b.css">
+    <script type="module" crossorigin="" src="/ctf-writeups/assets/app-7e5aabe4.js"></script>
+    <link rel="stylesheet" href="/ctf-writeups/assets/index-c9002530.css">
   <meta property="article:tag" content="TISC 2023"><meta property="article:tag" content="pwn"><meta property="article:tag" content="misc"><meta name="description" content="When I run the rubg-1.0.0.AppImage file, I am greeted with a welcome screen followed by a 16x16 grid. I clicked on one of the squares and immediately lost.
 
 First, I tried to decompile it using ghidra, however I was unable to locate the app logic. After unsuccessfully looking through the code for a while, I came up with an idea - maybe each time I start a new game, it uses some random function from libc to generate the grid. So I wrote a library to overwrite some libc functions:
