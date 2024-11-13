@@ -7,7 +7,7 @@ defineEmits(['update:modelValue', 'focusIn', 'focusOut'])
 
 <template>
   <div>
-    <div class="h-16 px-6 flex items-center">
+    <div class="h-16 pl-6 pr-16 flex items-center">
       <material-icon name="search" class="opacity-60 mr-5" />
       <input
         type="text"

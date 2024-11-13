@@ -4,7 +4,7 @@
 // perhaps if i find a better way to do this in the future i will refactor it
 // but for now it works (mostly)
 
-import { computed, onMounted, onUnmounted, ref, watch, nextTick } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import MiniSearch from 'minisearch'
 import TextSearchInput from './TextSearchInput.vue'
 import FilterByCat from './FilterByCat.vue'
@@ -15,6 +15,7 @@ import type { ChalCat, ChalInfo } from '@/types/ChalInfo'
 import { chals } from '@/data/chals'
 import { sidebarList } from '@/data/sidebarList'
 import { slugToMd } from '@/data/slugToMd'
+import MaterialIcon from '../MaterialIcon.vue'
 
 type SearchMethod = 'none' | 'textSearch' | 'filterByCat' | 'filterByCtf'
 
@@ -186,7 +187,7 @@ function moveBack() {
 <template>
   <div
     ref="parentContainer"
-    class="fixed z-30 w-[48rem] h-3/4 left-1/2 bottom-0 -translate-x-1/2 bg-almost-black rounded-t-2.5xl"
+    class="fixed z-30 w-[800px] h-3/4 left-1/2 bottom-0 -translate-x-1/2 bg-almost-black rounded-t-2.5xl max-[800px]:w-full max-[400px]:h-full max-[400px]:rounded-none"
   >
     <transition name="fade">
       <text-search-input
@@ -223,5 +224,11 @@ function moveBack() {
         :results="results"
       />
     </transition>
+    <button
+      class="group absolute top-3 right-3 w-10 h-10 rounded-full grid place-items-center"
+      @click="searchModal.close()"
+    >
+      <material-icon name="close" class="transition-colors group-hover:text-primary" />
+    </button>
   </div>
 </template>
