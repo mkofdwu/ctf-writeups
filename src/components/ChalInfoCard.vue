@@ -18,7 +18,7 @@ function downloadAll() {
 
 <template>
   <div class="w-full flex flex-col items-start">
-    <span class="text-xl opacity-40 mb-1">{{ info.datePosted }}</span>
+    <span class="text-xl opacity-60 mb-1">{{ info.datePosted }}</span>
     <h1 class="mb-7">{{ info.title }}</h1>
     <div class="markdown mb-7 flex flex-col gap-y-3" v-html="descriptionRendered"></div>
     <div class="flex flex-wrap gap-3">
