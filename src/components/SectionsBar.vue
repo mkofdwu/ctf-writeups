@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { nextTick, ref, computed } from 'vue'
 
-const thisUrl = location.href // account for gh pages prefix ($route.fullPath doesnt work...)
+const thisUrl = location.href.split('#')[0] // account for gh pages prefix ($route.fullPath doesnt work...)
 
 const { sections } = defineProps<{ sections: { label: string; id: string }[] }>()
 

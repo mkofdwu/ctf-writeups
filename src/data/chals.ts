@@ -472,5 +472,24 @@ Note: Instances may be refreshed periodically. Remember to save your work outsid
     attachments: [],
     sourceUrl: '',
     datePosted: ''
+  },
+  masquerade: {
+    ctf: 'Codegate 2025 Quals',
+    title: 'Masquerade',
+    author: 'unknown',
+    description: `Enjoy Masquerade with many roles!
+    
+[http://3.35.104.112:3000/](http://3.35.104.112:3000/)`,
+    cats: ['web'],
+    numSolves: 41,
+    numPoints: 250,
+    attachments: [
+      {
+        name: 'for_user.zip',
+        url: 'https://gen.codegate.org/files/fa6896ca7f365477d384f111c75385ed/for_user.zip?token=eyJ1c2VyX2lkIjoxMDY2LCJ0ZWFtX2lkIjoxNDMsImZpbGVfaWQiOjQ3fQ.Z-jEQw.mBoBk7MKovNZAgR6yymjvREJf24'
+      }
+    ],
+    sourceUrl: '',
+    datePosted: '30/03/2025'
   }
 }

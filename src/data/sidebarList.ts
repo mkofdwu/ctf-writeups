@@ -1,5 +1,14 @@
 export const sidebarList = [
   {
+    name: 'Codegate 2025 Quals',
+    chals: [
+      {
+        name: 'Masquerade',
+        slug: 'masquerade'
+      }
+    ]
+  },
+  {
     name: 'TISC 2024',
     chals: [
       {
