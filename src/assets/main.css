@@ -88,14 +88,12 @@ input {
 }
 
 .markdown pre {
-  /* overflow: auto; */
-  /* overflow: hidden; */
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
   padding-left: 0.625rem;
   padding-right: 0.625rem;
   padding-bottom: 0.5rem;
-  border-radius: 1.25rem;
+  border-radius: 1rem;
   background-color: #121212;
 }
 
@@ -151,11 +149,11 @@ input {
 }
 
 .markdown img {
-  /* width: 100%; */
   margin-left: auto;
   margin-right: auto;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+  border-radius: 0.5rem;
 }
 
 .markdown a {
@@ -195,19 +193,16 @@ input {
   padding: 1.25rem 1.75rem 1.25rem 1.75rem;
   margin-top: 0.75rem;
   margin-bottom: 0.75rem;
-  /* border-left: 0.25rem solid white; */
   background-color: #323232;
-  border-radius: 1.25rem;
-  /* border-top-right-radius: 1.25rem;
-  border-bottom-right-radius: 1.25rem; */
+  border-radius: 1rem;
 }
 
 .markdown blockquote::before {
   content: '';
   position: absolute;
   width: 0.25rem;
-  height: calc(100% - 3rem);
-  top: 1.5rem;
+  height: calc(100% - 2.5rem);
+  top: 1.25rem;
   left: 0;
   border-radius: 0.125rem;
   background-color: white;
