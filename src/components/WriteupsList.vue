@@ -18,20 +18,25 @@ import { sidebarList } from '@/data/sidebarList'
           viewBox="0 0 20 16"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          class="mt-[12px] mr-3"
+          class="mt-[12px] mr-1"
         >
           <path
             d="M1 0V3C1 9.62742 6.37258 15 13 15H20"
             class="transition-colors"
-            :stroke="$route.path.includes(chal.slug) ? '#64A577' : '#424242'"
+            :class="
+              $route.path.includes(chal.slug)
+                ? 'stroke-primary'
+                : 'stroke-[#424242] group-hover:stroke-primary/30'
+            "
             stroke-width="2"
           />
         </svg>
         <span
-          class="self-center font-semibold"
-          :class="$route.path.includes(chal.slug) ? 'text-primary' : 'group-hover:text-primary'"
-          >{{ chal.name }}</span
+          class="flex-1 pl-3 rounded-xl flex items-center font-semibold transition-colors group-hover:bg-primary/10"
+          :class="$route.path.includes(chal.slug) ? 'text-primary' : ''"
         >
+          {{ chal.name }}
+        </span>
       </router-link>
     </div>
   </div>

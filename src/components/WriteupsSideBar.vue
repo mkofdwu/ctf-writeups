@@ -4,7 +4,7 @@ import WriteupsList from './WriteupsList.vue'
 
 <template>
   <div class="fixed z-10 w-[17.5rem] h-screen overflow-y-hidden flex max-xl:hidden">
-    <writeups-list class="hide-scrollbar h-full overflow-y-auto pt-24 pr-8" />
+    <writeups-list class="hide-scrollbar h-full overflow-y-auto pt-24 pr-5" />
     <div class="dotted-line-vert h-auto mb-10"></div>
   </div>
 </template>

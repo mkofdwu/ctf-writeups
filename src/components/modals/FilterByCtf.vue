@@ -14,7 +14,9 @@ defineEmits(['toggleSelectCtf'])
         :key="name"
         class="h-9 border transition-colors rounded-full flex items-center px-4"
         :class="
-          selectedCtfs.includes(name) ? 'bg-primary border-primary text-black' : 'border-[#525252]'
+          selectedCtfs.includes(name)
+            ? 'bg-primary border-primary text-black'
+            : 'border-[#525252] hover:bg-almost-black-lighter hover:border-[#626262]'
         "
         @click="$emit('toggleSelectCtf', name)"
       >

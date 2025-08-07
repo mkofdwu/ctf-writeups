@@ -491,5 +491,51 @@ Note: Instances may be refreshed periodically. Remember to save your work outsid
     ],
     sourceUrl: '',
     datePosted: '30/03/2025'
+  },
+  ctfinder: {
+    ctf: 'idek 2025',
+    title: 'CTFinder',
+    author: 'p1ain',
+    description: `I made a chat service where you can have CTF related conversations using ctftime MCP!
+
+Oh but it's still in beta so I haven't actually applied MCP to the service yet and am just testing.. there shouldn't be any problems right?
+
+- MCP server may take some time to start up (3-5 seconds)
+- Challenge can be solved without Claude API key
+- Use "localhost" instead of container names in the instance server
+
+[Instancer](https://instancer.idek.team/challenge/ctfinder)`,
+    cats: ['web'],
+    numSolves: 8,
+    numPoints: 457,
+    attachments: [
+      {
+        name: 'ctfinder.tar.gz',
+        url: 'https://idekctf-challenges.storage.googleapis.com/uploads/caff3c4cef7824728da40a4bb17322cfbc1006b9459c63f5bdd6a45a1ee5f1b6/ctfinder.tar.gz'
+      }
+    ],
+    sourceUrl: '',
+    datePosted: '06/08/2025'
+  },
+  jnotes: {
+    ctf: 'idek 2025',
+    title: 'jnotes',
+    author: 'downgrade',
+    description: `jsonp and jquery in 2025 (not at all to be confused with jnotes from dicectf 2023)
+
+[https://jnotes-web.chal.idek.team](https://jnotes-web.chal.idek.team)
+
+[Admin Bot](https://admin-bot.idek.team/jnotes)`,
+    cats: ['web'],
+    numSolves: 3,
+    numPoints: 487,
+    attachments: [
+      {
+        name: 'jnotes.tar.gz',
+        url: 'https://idekctf-challenges.storage.googleapis.com/uploads/eb5c88f7470ffebb70bf4f5dc043ddb026fc3c4ded003c80cfa5bd85f7823b06/jnotes.tar.gz'
+      }
+    ],
+    sourceUrl: '',
+    datePosted: '07/08/2025'
   }
 }

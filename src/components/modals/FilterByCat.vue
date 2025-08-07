@@ -18,7 +18,7 @@ defineEmits(['toggleSelectCat'])
         :class="
           selectedCats.includes(cat as ChalCat)
             ? 'bg-primary border-primary text-black'
-            : 'border-[#525252]'
+            : 'border-[#525252] hover:bg-almost-black-lighter hover:border-[#626262]'
         "
         @click="$emit('toggleSelectCat', cat as ChalCat)"
       >

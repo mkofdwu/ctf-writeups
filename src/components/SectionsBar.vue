@@ -44,26 +44,25 @@ const markerTop = computed(() => {
 
 <template>
   <div class="relative h-full flex">
-    <div class="dotted-line-vert h-auto mb-10 mr-9"></div>
+    <div class="dotted-line-vert h-auto mb-10 mr-5"></div>
     <transition name="fade">
       <div
         v-if="currentSection"
         class="w-1 h-8 rounded-sm bg-primary absolute -left-0.5 transition-all"
         :style="{ top: markerTop }"
-      ></div
-    ></transition>
-    <div class="flex flex-col pt-16">
-      <span class="mt-6 mb-4 opacity-60">Sections</span>
+      ></div>
+    </transition>
+    <div class="flex-1 flex flex-col pt-16">
+      <span class="mt-6 mb-4 ml-4 opacity-60">Sections</span>
       <a
         v-for="{ label, id } in sections"
         :key="id"
-        class="section-link h-12 flex items-center font-semibold transition-colors pointer-events-auto"
-        :class="id === currentSection ? 'text-primary' : 'hover:text-primary'"
+        class="section-link h-12 pl-4 rounded-xl flex items-center font-semibold pointer-events-auto transition-colors hover:bg-primary/10"
+        :class="id === currentSection ? 'text-primary' : ''"
         :href="thisUrl + '#' + id"
       >
         {{ label }}
       </a>
     </div>
-    <div class="absolute bottom-"></div>
   </div>
 </template>

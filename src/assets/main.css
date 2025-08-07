@@ -161,6 +161,10 @@ input {
   text-decoration: underline;
 }
 
+.markdown a:hover {
+  text-decoration-thickness: 0.125rem;
+}
+
 .markdown ul {
   display: flex;
   flex-direction: column;
@@ -189,7 +193,7 @@ input {
   position: relative;
   display: flex;
   flex-direction: column;
-  row-gap: 1rem;
+  row-gap: 0.75rem;
   padding: 1.25rem 1.75rem 1.25rem 1.75rem;
   margin-top: 0.75rem;
   margin-bottom: 0.75rem;

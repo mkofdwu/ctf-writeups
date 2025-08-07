@@ -21,6 +21,8 @@ import wallfacer from '@/assets/writeups/tisc24/wallfacer.md?raw'
 import imphash from '@/assets/writeups/tisc24/imphash.md?raw'
 import diffuse from '@/assets/writeups/tisc24/diffuse.md?raw'
 import masquerade from '@/assets/writeups/masquerade.md?raw'
+import ctfinder from '@/assets/writeups/idek25/ctfinder.md?raw'
+import jnotes from '@/assets/writeups/idek25/jnotes.md?raw'
 
 const _slugToMd: { [slug: string]: string } = {
   'the-other-obligatory-pyjail': theOtherObligatoryPyjail,
@@ -45,7 +47,9 @@ const _slugToMd: { [slug: string]: string } = {
   wallfacer: wallfacer,
   imphash: imphash,
   diffuse: diffuse,
-  masquerade: masquerade
+  masquerade: masquerade,
+  ctfinder: ctfinder,
+  jnotes: jnotes
 }
 
 // handle gh-pages prefix

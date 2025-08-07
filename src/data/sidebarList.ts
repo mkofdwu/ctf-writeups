@@ -1,5 +1,18 @@
 export const sidebarList = [
   {
+    name: 'idek 2025',
+    chals: [
+      {
+        name: 'CTFinder',
+        slug: 'ctfinder'
+      },
+      {
+        name: 'jnotes',
+        slug: 'jnotes'
+      }
+    ]
+  },
+  {
     name: 'Codegate 2025 Quals',
     chals: [
       {
