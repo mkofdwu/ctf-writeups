@@ -583,8 +583,6 @@ The resulting DOM looks like this (signed in as a user):
             </style></div></div>
 ```
 
-> This was the reason for the `style-src 'unsafe-inline'` csp directive!
-
 I reported this session and checked `/admin/sessions/{session_id}/report`:
 
 ```json
