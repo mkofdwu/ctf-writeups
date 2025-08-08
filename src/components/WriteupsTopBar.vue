@@ -75,7 +75,7 @@ nextTick(() => {
         :class="opened ? 'h-[calc(100vh-4rem)] max-sm:h-[calc(100vh-3.5rem)]' : 'h-0'"
       >
         <div
-          class="pt-10 duration-300 transition-opacity"
+          class="pt-10 pr-7 duration-300 transition-opacity"
           :class="opened ? 'opacity-100' : 'opacity-0'"
         >
           <writeups-list :full-width="true" />

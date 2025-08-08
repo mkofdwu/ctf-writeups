@@ -28,7 +28,7 @@ useHead({
 
 useSeoMeta({
   title: `${chalInfo.ctf} - ${chalInfo.title}`,
-  description: md,
+  description: chalInfo.description,
   author: 'Jia Jie',
   articleTag: [chalInfo.ctf, ...chalInfo.cats]
 })

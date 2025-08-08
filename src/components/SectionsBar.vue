@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { nextTick, ref, computed } from 'vue'
 
-const thisUrl = location.href.split('#')[0] // account for gh pages prefix ($route.fullPath doesnt work...)
-
 const { sections } = defineProps<{ sections: { label: string; id: string }[] }>()
 
 let sectionLinks: HTMLCollectionOf<Element>
 const currentSection = ref('')
+
+let thisUrl: string
+if (!import.meta.env.SSR) {
+  thisUrl = location.href.split('#')[0] // account for gh pages prefix ($route.fullPath doesnt work...)
+}
 
 nextTick(() => {
   if (typeof window === 'undefined') return // handle non-SSG aware code below
